@@ -148,6 +148,23 @@ namespace CBuilding {
            `automotive_factory` at `automotive_theory`, `radar_station` at
            `electronic_engineering_practical`.*/
         constexpr uintptr_t technology_category_ptr = 0x88;
+
+        /**@brief **the most levels a province may have**, whole levels - `max_level`.
+                  `CCountry::IsBuildingAllowed` (`0xDFFC0`) reads it at `0xE007E` and sets
+                  it against the province's `level_max` / 1000*/
+        constexpr uintptr_t max_allowed_level = 0x68;
+    }
+}
+
+/**
+ * A finished building waiting in the deploy menu to be put in a province. No RTTI name of
+ * its own has been read; BiceLib's name, from `CBuildingDeployment::CanDeployIn`.
+ */
+namespace CBuildingDeployment {
+    namespace Offsets {
+        /**@brief the CBuilding being placed. `CanDeployIn` (`0x17E480`) hands it to
+                  `CCountry::IsBuildingAllowed` as the building at `0x17E4D9`*/
+        constexpr uintptr_t building = 0x38;
     }
 }
 

@@ -137,6 +137,12 @@ namespace CLeader {
         /**@brief puts a leader back to `starting_skill` and `starting_experience` with rank
            0; the leader in eax*/
         constexpr uintptr_t ResetToStarting = 0x181E10;
+
+        /**@brief **gives a leader a trait**: `void __stdcall AddTrait(CLeader*, CTrait*)`.
+           Read 2026-11-07: the leader at `[ebp+8]`, whose type (`+0x68`) indexes three bytes
+           at `trait +0x2B0` before anything is added, the trait at `[ebp+0xC]`, and both
+           exits `ret 8`*/
+        constexpr uintptr_t AddTrait = 0x181A60;
     }
 
     namespace Global {

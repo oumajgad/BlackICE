@@ -3,11 +3,7 @@
 
 #include <string>
 #include <iostream>
-#include <intrin.h>
 #include <processthreadsapi.h>
-#include <chrono>
-#include <unordered_map>
-#include <utility>
 #include <vector>
 
 #include <utils.hpp>
@@ -15,13 +11,13 @@
 #include <CrashReport.hpp>
 #include <Overlay.hpp>
 #include <HoiDataStructures.hpp>
+#include <Patches.hpp>
 
 #include <Commands/BiceCommandExample.hpp>
 #include <Commands/CBiceCommands.hpp>
 #include <GameClasses/CCountry.hpp>
 #include <GameClasses/CCountryTag.hpp>
 #include <GameClasses/CTrait.hpp>
-#include <HoiDataStructures.hpp>
 #include <GameClasses/CUnit.hpp>
 #include <GameClasses/CSubUnitDefinition.hpp>
 #include <GameClasses/CTerrain.hpp>
@@ -29,151 +25,165 @@
 #include <GameClasses/CCurrentGameState.hpp>
 #include <GameClasses/CLeader.hpp>
 #include <GameClasses/CInGameIdler.hpp>
-#include <Hooks/Hooks.hpp>
-#include <Hooks/RankSpecificTraits.hpp>
-#include <Hooks/CArmyHooks.hpp>
-#include <Hooks/CNavyHooks.hpp>
-#include <Hooks/HookedPatches.hpp>
+#include <GameClasses/GameMessage.hpp>
+#include <GameClasses/CCountryDataBase.hpp>
 #include <GameState/AutoSave.hpp>
 #include <GameState/EventCandidates.hpp>
 #include <GameState/MapEdgeScroll.hpp>
 #include <GameState/PureCall.hpp>
-#include <Settings.hpp>
+#include <Gui/LuaBridge.hpp>
+#include <Hooks/Hooks.hpp>
 #include <Hooks/EffectText/KillLeaderText.hpp>
 #include <Hooks/EffectText/LoadOobText.hpp>
-#include <Hooks/TriggerText/TriggerIndentText.hpp>
-#include <Hooks/TriggerText/TriggerScrollText.hpp>
-#include <GameClasses/GameMessage.hpp>
-#include <GameClasses/CCountryDataBase.hpp>
-#include <Hooks/Tooltips/CombatUnitStats.hpp>
-#include <Hooks/Tooltips/ManpowerText.hpp>
 #include <Hooks/HistoryLeaderRanks.hpp>
 #include <Hooks/LeaderListSkill.hpp>
 #include <Hooks/MaxInfrastructure.hpp>
-#include <Hooks/ResourceConversion.hpp>
+#include <Hooks/NavyScreenPenalty.hpp>
+#include <Hooks/OffmapIc.hpp>
 #include <Hooks/OobLeaderRanks.hpp>
+#include <Hooks/PlaceUnresearchedBuildings.hpp>
+#include <Hooks/QueuedHistoricalModel.hpp>
+#include <Hooks/RankSpecificTraits.hpp>
+#include <Hooks/ResourceConversion.hpp>
+#include <Hooks/Tooltips/CombatUnitStats.hpp>
+#include <Hooks/Tooltips/ManpowerText.hpp>
+#include <Hooks/TriggerText/TriggerIndentText.hpp>
+#include <Hooks/TriggerText/TriggerScrollText.hpp>
 #include <Hooks/UnassignSelected.hpp>
+#include <Hooks/UnitAttachmentLimit.hpp>
 #include <Reversing/Counters.hpp>
-#include <Gui/LuaBridge.hpp>
 #include <Reversing/MessageProbe.hpp>
-#include <Reversing/WriteWatch.hpp>
 #include <Reversing/Watch.hpp>
-#include <Patches.hpp>
+#include <Reversing/WriteWatch.hpp>
+#include <Settings.hpp>
 
+// Every Lua state that has loaded BiceLib; the overlay's memory page reads it
 std::vector<lua_State*> *LUA_STATES = new std::vector<lua_State*>;
+
+namespace {
+    /**
+    @brief what every switch below does with the outcome: says so, and hands Lua a boolean
+
+    @param status why it failed, from the feature's own status(); not printed on success
+    */
+    int reportInstall(lua_State* L, const char* name, bool ok, const char* status) {
+        if (ok) {
+            INFO_OUT(printf("'%s' succeeded \n", name));
+        }
+        else {
+            ERROR_OUT(printf("'%s' failed: %s \n", name, status != nullptr ? status : "?"));
+        }
+        lua_pushboolean(L, ok);
+        return 1;
+    }
+
+    /**@brief the same for a byte patch, which says what went wrong itself*/
+    int reportPatch(lua_State* L, const char* name, bool (*patch)(uintptr_t)) {
+        return reportInstall(L, name, patch(Hooks::MODULE_BASE), "see the line above");
+    }
+
+    /**@brief the country named by the tag at \p index, or 0*/
+    uintptr_t countryArg(lua_State* L, int index) {
+        return CCountry::findByTag(luaL_checkstring(L, index));
+    }
+}
 
 /////////////////////////////////////
 //       GAME INFO FUNCTIONS       //
 /////////////////////////////////////
 
 // Countries come from the game state, which is the game's own list - CCountry::all().
-// There used to be a cache here, filled once from a 300 slot array that a hook on the
-// CCountry constructor wrote into. The list makes both unnecessary, and unlike the
-// cache it cannot go stale or miss a country that appears later.
 
 __declspec(dllexport) int getProvinceDetails(lua_State* L)
 {
     Diagnostics::LuaScope luaScope(L);
-    int provinceId = luaL_checkinteger(L, 1);
+    const int provinceId = static_cast<int>(luaL_checkinteger(L, 1));
 
     // Nil for an id the map does not have, which the one caller -
-    // BiceData.ProvinceBuildings.Details - already reports as "no details". Pushing the
-    // empty province instead would fault on the next line: the modifiers are read
-    // through a pointer an empty province does not have.
+    // BiceData.ProvinceBuildings.Details - already reports as "no details"
     if (CCurrentGameState::province(provinceId) == 0) {
         lua_pushnil(L);
         return 1;
     }
-    auto province = CMapProvince::GetMapProvinceById(provinceId);
-    CMapProvince::PushCMapProvinceToStack(L, province);
+    CMapProvince::PushCMapProvinceToStack(L, CMapProvince::GetMapProvinceById(provinceId));
     return 1;
 }
 
 __declspec(dllexport) int getCountryActiveEventModifiers(lua_State* L)
 {
-    std::string searchTag = luaL_checklstring(L, 1, NULL);
-    uintptr_t ctr = CCountry::findByTag(searchTag);
-    if (ctr != 0) {
-        auto activeModifiers = CCountry::getActiveEventModifiers(ctr);
-        lua_createtable(L, activeModifiers.size(), 0);
-        for (size_t i = 0; i < activeModifiers.size(); i++) {
-            lua_pushstring(L, activeModifiers.at(i).first.c_str());
-            lua_pushstring(L, activeModifiers.at(i).second.c_str());
-            lua_settable(L, -3);
-        }
+    const uintptr_t country = countryArg(L, 1);
+    if (country == 0) {
+        lua_pushnil(L);
         return 1;
     }
-    lua_pushnil(L);
+    const auto modifiers = CCountry::getActiveEventModifiers(country);
+    lua_createtable(L, 0, static_cast<int>(modifiers.size()));
+    for (const auto& modifier : modifiers) {
+        lua_pushstring(L, modifier.second.c_str());
+        lua_setfield(L, -2, modifier.first.c_str());
+    }
     return 1;
 }
 
 __declspec(dllexport) int getCountryGeneralModifiers(lua_State* L)
 {
-    std::string searchTag = luaL_checklstring(L, 1, NULL);
-    uintptr_t ctr = CCountry::findByTag(searchTag);
-    if (ctr != 0) {
-        auto values = CCountry::getGeneralModifiers(ctr);
-        lua_createtable(L, values.size(), 0);
-        for (size_t i = 0; i < values.size(); i++) {
-            lua_pushstring(L, values.at(i).first.c_str());
-            lua_pushnumber(L, values.at(i).second);
-            lua_settable(L, -3);
-        }
+    const uintptr_t country = countryArg(L, 1);
+    if (country == 0) {
+        lua_pushnil(L);
         return 1;
     }
-    lua_pushnil(L);
+    const auto values = CCountry::getGeneralModifiers(country);
+    lua_createtable(L, 0, static_cast<int>(values.size()));
+    for (const auto& value : values) {
+        lua_pushnumber(L, value.second);
+        lua_setfield(L, -2, value.first.c_str());
+    }
     return 1;
 }
 
 __declspec(dllexport) int getCountryFlags(lua_State* L)
 {
-    std::string searchTag = luaL_checklstring(L, 1, NULL);
-    uintptr_t ctr = CCountry::findByTag(searchTag);
-    if (ctr != 0) {
-        auto flags = CCountry::getFlags(ctr);
-        lua_createtable(L, flags.size(), 0);
-        for (size_t i = 0; i < flags.size(); i++) {
-            lua_pushstring(L, flags.at(i).c_str());
-            lua_rawseti(L, -2, i + 1);
-        }
+    const uintptr_t country = countryArg(L, 1);
+    if (country == 0) {
+        lua_pushnil(L);
         return 1;
-
     }
-    lua_pushnil(L);
+    const auto flags = CCountry::getFlags(country);
+    lua_createtable(L, static_cast<int>(flags.size()), 0);
+    for (size_t i = 0; i < flags.size(); i++) {
+        lua_pushstring(L, flags[i].c_str());
+        lua_rawseti(L, -2, static_cast<int>(i + 1));
+    }
     return 1;
 }
 
 __declspec(dllexport) int getCountryVariables(lua_State* L)
 {
-    std::string searchTag = luaL_checklstring(L, 1, NULL);
-    uintptr_t ctr = CCountry::findByTag(searchTag);
-    if (ctr != 0) {
-        auto vars = CCountry::getVars(ctr);
-        lua_createtable(L, 0, vars.size());
-        for (size_t i = 0; i < vars.size(); i++) {
-            lua_pushstring(L, vars.at(i).name.c_str());
-            lua_pushinteger(L, vars.at(i).value);
-            lua_settable(L, -3);
-        }
+    const uintptr_t country = countryArg(L, 1);
+    if (country == 0) {
+        lua_pushnil(L);
         return 1;
     }
-    lua_pushnil(L);
+    const auto variables = CCountry::getVars(country);
+    lua_createtable(L, 0, static_cast<int>(variables.size()));
+    for (const auto& variable : variables) {
+        lua_pushinteger(L, variable.value);
+        lua_setfield(L, -2, variable.name.c_str());
+    }
     return 1;
 }
 
+/**@brief the offmap IC the last daily pass worked out for the country; see Hooks/OffmapIc.hpp*/
 __declspec(dllexport) int getCountryOffmapIc(lua_State* L)
 {
-    std::string searchTag = luaL_checklstring(L, 1, NULL);
-    uintptr_t ctr = CCountry::findByTag(searchTag);
-    if (ctr != 0) {
-        int countryId = *(int *)(ctr + CCountry::Offsets::tag + CCountryTag::Offsets::id);
-        lua_pushinteger(L, Hooks::Patches::offmapIcPerCountry[countryId]);
+    const uintptr_t country = countryArg(L, 1);
+    if (country == 0) {
+        lua_pushnil(L);
         return 1;
     }
-    lua_pushnil(L);
+    lua_pushinteger(L, Hooks::OffmapIc::offmapIc(country));
     return 1;
 }
-
 
 /**
  * What a country may convert today under customResourceConversion, in stockpile units:
@@ -184,9 +194,8 @@ __declspec(dllexport) int getCountryOffmapIc(lua_State* L)
  */
 __declspec(dllexport) int getCountryResourceConversion(lua_State* L)
 {
-    std::string searchTag = luaL_checklstring(L, 1, NULL);
     Hooks::ResourceConversion::Capacity capacity;
-    if (!Hooks::ResourceConversion::capacity(CCountry::findByTag(searchTag), capacity)) {
+    if (!Hooks::ResourceConversion::capacity(countryArg(L, 1), capacity)) {
         lua_pushnil(L);
         return 1;
     }
@@ -208,56 +217,43 @@ __declspec(dllexport) int getCountryResourceConversion(lua_State* L)
 /////////////////////////////////////
 //        LEADER FUNCTIONS         //
 /////////////////////////////////////
-// Traits come from the game's own list - CTrait::all() and CTrait::findByName().
-// There used to be a cache here, filled by scanning every committed page for the
-// CTrait vftable and sifting the hits with a magic number. The list is reached in
-// three reads and holds exactly the traits the game has.
-//
-// It is empty until the mod's traits are loaded, which is what the deferrals below
-// are waiting for - the same thing the empty cache used to mean.
+// Traits come from the game's own list - CTrait::all() and CTrait::findByName(). It is
+// empty until the mod's traits are loaded, which is what the deferrals are waiting for.
 
 __declspec(dllexport) int getLeaderDetails(lua_State* L) {
     Diagnostics::LuaScope luaScope(L);
-    DEBUG_OUT(printf("getLeaderDetails called\n"));
-    unsigned int leaderId = luaL_checkinteger(L, 1);
-    DEBUG_OUT(printf("leaderId: %d\n", leaderId));
-    auto leader = CLeader::GetLeaderById(leaderId);
-    if (leader.id != 0) {
-        CLeader::PushCLeaderToStack(L, leader);
-    }
-    else {
+    const unsigned int leaderId = static_cast<unsigned int>(luaL_checkinteger(L, 1));
+    const CLeader::CLeader leader = CLeader::GetLeaderById(leaderId);
+    if (leader._address == 0) {
         lua_pushnil(L);
+        return 1;
     }
+    CLeader::PushCLeaderToStack(L, leader);
     return 1;
 }
 
-typedef void(__stdcall* CLeaderAddTraitFunction)(int leaderAddress, unsigned int* trait);
-__declspec(dllexport) int addTraitToLeader(lua_State* L){
-    DEBUG_OUT(printf("addTraitToLeader called\n"));
+/**@brief `addTraitToLeader(leaderId, traitName)`, through the game's own CLeader::AddTrait*/
+__declspec(dllexport) int addTraitToLeader(lua_State* L) {
+    const unsigned int leaderId = static_cast<unsigned int>(luaL_checkinteger(L, 1));
+    const std::string traitName = luaL_checkstring(L, 2);
 
-    unsigned int leaderId = luaL_checkinteger(L, 1);
-    DEBUG_OUT(printf("leaderId: '%u'\n", leaderId));
-    std::string traitName = luaL_checklstring(L, 2, NULL);
-    DEBUG_OUT(printf("trait: '%s'\n", traitName.c_str()));
-
-    auto leader = CLeader::GetLeaderById(leaderId);
-    auto traitAddr = CTrait::findByName(traitName);
+    const CLeader::CLeader leader = CLeader::GetLeaderById(leaderId);
+    const uintptr_t trait = CTrait::findByName(traitName);
     if (leader._address == 0) {
-        ERROR_OUT(printf("Couldn't find leader with ID '%u'\n", leaderId));
+        ERROR_OUT(printf("addTraitToLeader: no leader with id %u\n", leaderId));
         lua_pushboolean(L, false);
         return 1;
     }
-    else if (traitAddr == 0) {
-        ERROR_OUT(printf("Couldn't find trait with name '%s'\n", traitName.c_str()));
+    if (trait == 0) {
+        ERROR_OUT(printf("addTraitToLeader: no trait called '%s'\n", traitName.c_str()));
         lua_pushboolean(L, false);
         return 1;
     }
 
-    CLeaderAddTraitFunction cLeaderAddTraitFunction = reinterpret_cast<CLeaderAddTraitFunction>(Hooks::MODULE_BASE + 0x181a60);
-    cLeaderAddTraitFunction(leader._address, (unsigned int*) traitAddr);
-
+    typedef void(__stdcall* AddTrait)(uintptr_t leader, uintptr_t trait);
+    reinterpret_cast<AddTrait>(Hooks::MODULE_BASE + CLeader::GameFunction::AddTrait)(
+        leader._address, trait);
     lua_pushboolean(L, true);
-    DEBUG_OUT(printf("addTraitToLeader finished\n"));
     return 1;
 }
 
@@ -279,10 +275,8 @@ __declspec(dllexport) int addRankSpecificTrait(lua_State* L) {
 __declspec(dllexport) int activateRankSpecificTraits(lua_State* L)
 {
     if (!Hooks::RankSpecificTraits::install()) {
-        ERROR_OUT(printf("Hook 'activateRankSpecificTraits' failed: %s \n",
-            Hooks::RankSpecificTraits::status()));
-        lua_pushboolean(L, false);
-        return 1;
+        return reportInstall(L, "activateRankSpecificTraits", false,
+            Hooks::RankSpecificTraits::status());
     }
     lua_pushboolean(L, Hooks::RankSpecificTraits::activate());
     return 1;
@@ -295,20 +289,14 @@ __declspec(dllexport) int checkRankSpecificTraitsConsistency(lua_State* L)
     return 0;
 }
 
-
 /**
  * Shows a leader's maximum skill beside his skill in the leader window, in the list and for
  * the selected leader. Either name installs both; see Hooks/LeaderListSkill.hpp.
  */
 __declspec(dllexport) int activateLeaderListShowMaxSkill(lua_State* L)
 {
-    const bool ok = Hooks::LeaderListSkill::install();
-    if (!ok) {
-        ERROR_OUT(printf("Hook 'activateLeaderListShowMaxSkill' failed: %s \n",
-            Hooks::LeaderListSkill::status()));
-    }
-    lua_pushboolean(L, ok);
-    return 1;
+    return reportInstall(L, "activateLeaderListShowMaxSkill",
+        Hooks::LeaderListSkill::install(), Hooks::LeaderListSkill::status());
 }
 
 __declspec(dllexport) int activateLeaderListShowMaxSkillSelected(lua_State* L)
@@ -316,132 +304,101 @@ __declspec(dllexport) int activateLeaderListShowMaxSkillSelected(lua_State* L)
     return activateLeaderListShowMaxSkill(L);
 }
 
+/**
+ * Makes holding Ctrl while confirming `CONFIRM_REMOVEAll` - the "unassign all leaders"
+ * dialog - unassign only the leaders of the units that are currently selected.
+ *
+ * With Ctrl up the dialog does exactly what it always did. The hook sits on the skip
+ * test the game's own unassign loop already makes per unit, so an unselected unit is
+ * passed over by the same path that passes over a unit on loan to another country. See
+ * Hooks/UnassignSelected.hpp.
+ */
+__declspec(dllexport) int activateCtrlUnassignSelected(lua_State* L)
+{
+    const bool ok = Hooks::UnassignSelected::install();
+    if (ok) {
+        Hooks::UnassignSelected::setActive(true);
+    }
+    return reportInstall(L, "activateCtrlUnassignSelected", ok, Hooks::UnassignSelected::status());
+}
+
+/**
+ * Gives a leader an order of battle puts on a land unit the rank the game itself would
+ * want for that unit - division 1, corps 2, army 3, army group and theatre 4 - raising or
+ * lowering him, and puts him in service if he is not yet. Only while an order of battle
+ * file is read (`load_oob`, a new game's history, the custom game setup), never a save;
+ * another country's leader is left alone. See Hooks/OobLeaderRanks.hpp.
+ */
+__declspec(dllexport) int activateOobLeaderRanks(lua_State* L)
+{
+    return reportInstall(L, "activateOobLeaderRanks",
+        Hooks::OobLeaderRanks::install(), Hooks::OobLeaderRanks::status());
+}
+
+/**
+ * Brings a leader whose history dates his first rank after the start into service at the
+ * rank that line names, where the game gives rank 1 whatever it says. One store in the
+ * daily pass. See Hooks/HistoryLeaderRanks.hpp.
+ */
+__declspec(dllexport) int activateHistoryLeaderRanks(lua_State* L)
+{
+    return reportInstall(L, "activateHistoryLeaderRanks",
+        Hooks::HistoryLeaderRanks::install(), Hooks::HistoryLeaderRanks::status());
+}
+
 /////////////////////////////////////
 //          UNIT FUNCTIONS         //
 /////////////////////////////////////
-void activateUnitAttachmentLimitHook()
-{
-    if (Hooks::CArmy::isUnitAttachmentLimitHookActive) {
-        return;
-    }
 
-    DWORD hookAddress = Hooks::MODULE_BASE + 0x1b9733;
-    Hooks::CArmy::jumpBack_unitAttachmentLimitHook = hookAddress + 5;
-
-    if (!Hooks::hook((void*)hookAddress, Hooks::CArmy::unitAttachmentLimitHook, 5, 0)) {
-        ERROR_OUT(printf("Hook 'activateUnitAttachmentLimitHook' failed \n"));
+namespace {
+    /**
+    @brief `set*UnitLimit(limit, tag)`: the default with the tag `---`, a country's own
+           otherwise; installs the hook on first use. See Hooks/UnitAttachmentLimit.hpp
+    */
+    int setUnitLimit(lua_State* L, Hooks::UnitAttachmentLimit::Level level) {
+        if (!Hooks::UnitAttachmentLimit::install()) {
+            return reportInstall(L, "UnitAttachmentLimit", false, Hooks::UnitAttachmentLimit::status());
+        }
+        const int limit = static_cast<int>(luaL_checkinteger(L, 1));
+        const std::string tag = luaL_checkstring(L, 2);
+        if (tag == "---") {
+            Hooks::UnitAttachmentLimit::setDefault(level, limit);
+            return 0;
+        }
+        const uintptr_t country = CCountry::findByTag(tag);
+        if (country != 0) {
+            Hooks::UnitAttachmentLimit::setForCountry(level,
+                Mem::readOr<int32_t>(country + CCountry::Offsets::tag + CCountryTag::Offsets::id, -1),
+                limit);
+        }
+        return 0;
     }
-    else {
-        INFO_OUT(printf("Hook 'activateUnitAttachmentLimitHook' succeeded \n"));
-        DEBUG_OUT(printf("jumpBack_unitAttachmentLimitHook: %#010x \n", Hooks::CArmy::jumpBack_unitAttachmentLimitHook));
-    }
-
-    Hooks::CArmy::isUnitAttachmentLimitHookActive = true;
-    return;
 }
 
 __declspec(dllexport) int setCorpsUnitLimit(lua_State* L)
 {
-    if (!Hooks::CArmy::isUnitAttachmentLimitHookActive) {
-        activateUnitAttachmentLimitHook();
-    }
-
-    int newLimit = luaL_checkinteger(L, 1);
-    std::string tag = luaL_checklstring(L, 2, NULL);
-
-    if (tag.compare("---") == 0) {
-        Hooks::CArmy::corpsUnitLimit = newLimit;
-        DEBUG_OUT(printf("Corps unit limit set to: %i \n", newLimit));
-    }
-    else {
-        auto ctr = CCountry::findByTag(tag);
-        if (ctr != 0) {
-            int tagId = *(DWORD*)(ctr + CCountry::Offsets::tag + CCountryTag::Offsets::id);
-            if (Hooks::CArmy::corpsUnitLimitPerCountry[tagId] != newLimit) {
-                Hooks::CArmy::corpsUnitLimitPerCountry[tagId] = newLimit;
-                DEBUG_OUT(printf("Corps unit limit set to: %i for %s \n", newLimit, tag.c_str()))
-            }
-        }
-    }
-    return 0;
+    return setUnitLimit(L, Hooks::UnitAttachmentLimit::Level::Corps);
 }
 
 __declspec(dllexport) int setArmyUnitLimit(lua_State* L)
 {
-    if (!Hooks::CArmy::isUnitAttachmentLimitHookActive) {
-        activateUnitAttachmentLimitHook();
-    }
-
-    int newLimit = luaL_checkinteger(L, 1);
-    std::string tag = luaL_checklstring(L, 2, NULL);
-    
-    if (tag.compare("---") == 0) {
-        Hooks::CArmy::armyUnitLimit = newLimit;
-        DEBUG_OUT(printf("Army unit limit set to: %i \n", newLimit));
-    }
-    else {
-        auto ctr = CCountry::findByTag(tag);
-        if (ctr != 0) {
-            int tagId = *(DWORD*)(ctr + CCountry::Offsets::tag + CCountryTag::Offsets::id);
-            if (Hooks::CArmy::armyUnitLimitPerCountry[tagId] != newLimit) {
-                Hooks::CArmy::armyUnitLimitPerCountry[tagId] = newLimit;
-                DEBUG_OUT(printf("Army unit limit set to: %i for %s \n", newLimit, tag.c_str()));
-            }
-        }
-    }
-    return 0;
+    return setUnitLimit(L, Hooks::UnitAttachmentLimit::Level::Army);
 }
 
 __declspec(dllexport) int setArmyGroupUnitLimit(lua_State* L)
 {
-    if (!Hooks::CArmy::isUnitAttachmentLimitHookActive) {
-        activateUnitAttachmentLimitHook();
-    }
-
-    int newLimit = luaL_checkinteger(L, 1);
-    std::string tag = luaL_checklstring(L, 2, NULL);
-
-    if (tag.compare("---") == 0) {
-        Hooks::CArmy::armyGroupUnitLimit = newLimit;
-        DEBUG_OUT(printf("Armygroup unit limit set to: %i \n", newLimit));
-    }
-    else {
-        auto ctr = CCountry::findByTag(tag);
-        if (ctr != 0) {
-            int tagId = *(DWORD*)(ctr + CCountry::Offsets::tag + CCountryTag::Offsets::id);
-            if (Hooks::CArmy::armyGroupUnitLimitPerCountry[tagId] != newLimit) {
-                Hooks::CArmy::armyGroupUnitLimitPerCountry[tagId] = newLimit;
-                DEBUG_OUT(printf("Armygroup unit limit set to: %i for %s \n", newLimit, tag.c_str()));
-            }
-        }
-    }
-    return 0;
+    return setUnitLimit(L, Hooks::UnitAttachmentLimit::Level::ArmyGroup);
 }
 
+/**@brief `addCommandLimitTrait(traitName, effect)`: what a leader with it adds to the limit*/
 __declspec(dllexport) int addCommandLimitTrait(lua_State* L)
 {
-    std::string traitName = luaL_checkstring(L, 1);
-    int effect = luaL_checkinteger(L, 2);
-
-    if (!Hooks::CArmy::isUnitAttachmentLimitHookActive) {
-        activateUnitAttachmentLimitHook();
+    const std::string traitName = luaL_checkstring(L, 1);
+    const int effect = static_cast<int>(luaL_checkinteger(L, 2));
+    if (!Hooks::UnitAttachmentLimit::install()) {
+        return reportInstall(L, "UnitAttachmentLimit", false, Hooks::UnitAttachmentLimit::status());
     }
-
-    if (Hooks::CArmy::commandLimitTraits->find(traitName) != Hooks::CArmy::commandLimitTraits->end()) {
-        DEBUG_OUT(printf("addCommandLimitTrait for: '%s' was already added \n", traitName.c_str()));
-        return 0;
-    }
-
-    INFO_OUT(printf("addCommandLimitTrait: '%s' - effect: %i \n", traitName.c_str(), effect));
-
-    Hooks::CArmy::CommandLimitTrait* clt = new Hooks::CArmy::CommandLimitTrait;
-    clt->traitName = traitName;
-    clt->limitEffect = effect;
-
-    Hooks::CArmy::commandLimitTraits->insert(std::make_pair(traitName, clt));
-
-    DEBUG_OUT(printf("Hooks::CArmy::commandLimitTraits->size(): %i \n", Hooks::CArmy::commandLimitTraits->size()));
-    DEBUG_OUT(printf("addCommandLimitTrait finished \n"));
+    Hooks::UnitAttachmentLimit::addCommandLimitTrait(traitName, effect);
     return 0;
 }
 
@@ -449,67 +406,25 @@ __declspec(dllexport) int addCommandLimitTrait(lua_State* L)
 /////////////////////////////////////
 //         NAVY FUNCTIONS          //
 /////////////////////////////////////
+// See Hooks/NavyScreenPenalty.hpp. Each figure is set once; later calls are ignored.
 
-void activateScreenPenaltyCalculationHook()
-{
-    if (Hooks::CNavy::isNavyScreenPenaltyHookActive) {
-        return;
-    }
-
-    DWORD hookAddress = Hooks::MODULE_BASE + 0x166560;
-    Hooks::CNavy::origJmp_screenPenaltyHook = Hooks::MODULE_BASE + 0x1665f6;
-
-    if (!Hooks::hook((void*)hookAddress, Hooks::CNavy::screenPenaltyCalulation, 5, 0)) {
-        ERROR_OUT(printf("Hook 'screenPenaltyCalulation' failed \n"));
-    }
-    else {
-        INFO_OUT(printf("Hook 'screenPenaltyCalulation' succeeded \n"));
-        DEBUG_OUT(printf("origJmp_screenPenaltyHook: %#010x \n", Hooks::CNavy::origJmp_screenPenaltyHook));
-    }
-
-    Hooks::CNavy::isNavyScreenPenaltyHookActive = true;
-    return;
-}
-
-bool screenPenaltySet = false;
 __declspec(dllexport) int setScreenPenalty(lua_State* L)
 {
-    if (screenPenaltySet) {
-        return 0;
+    const int penalty = static_cast<int>(luaL_checkinteger(L, 1));
+    if (!Hooks::NavyScreenPenalty::install()) {
+        return reportInstall(L, "setScreenPenalty", false, Hooks::NavyScreenPenalty::status());
     }
-
-    int screenPenalty = luaL_checkinteger(L, 1);
-
-    if (!Hooks::CNavy::isNavyScreenPenaltyHookActive) {
-        activateScreenPenaltyCalculationHook();
-    }
-
-    DEBUG_OUT(printf("Set screen penalty to %i\n", screenPenalty));
-    Hooks::CNavy::screenPenalty = screenPenalty;
-
-    screenPenaltySet = true;
-
+    Hooks::NavyScreenPenalty::setPenalty(penalty);
     return 0;
 }
 
-bool screenRatioSet = false;
 __declspec(dllexport) int setScreensPerCapitalRatio(lua_State* L)
 {
-    if (screenRatioSet) {
-        return 0;
+    const int ratio = static_cast<int>(luaL_checkinteger(L, 1));
+    if (!Hooks::NavyScreenPenalty::install()) {
+        return reportInstall(L, "setScreensPerCapitalRatio", false, Hooks::NavyScreenPenalty::status());
     }
-
-    int ratio = luaL_checkinteger(L, 1);
-
-    if (!Hooks::CNavy::isNavyScreenPenaltyHookActive) {
-        activateScreenPenaltyCalculationHook();
-    }
-
-    DEBUG_OUT(printf("Set screen to capital ratio to %i\n", ratio));
-    Hooks::CNavy::screensPerCapital = ratio;
-
-    screenRatioSet = true;
-
+    Hooks::NavyScreenPenalty::setScreensPerCapital(ratio);
     return 0;
 }
 
@@ -518,115 +433,26 @@ __declspec(dllexport) int setScreensPerCapitalRatio(lua_State* L)
 //        COMPLEX PATCHES          //
 /////////////////////////////////////
 
-BOOL fixOffMapICDone = false;
+/**@brief counts offmap IC once, whatever local_ic does; see Hooks/OffmapIc.hpp*/
 __declspec(dllexport) int fixOffMapIC(lua_State* L)
 {
-    if (fixOffMapICDone) {
-        return 0;
-    }
-
-    DWORD hookAddress1 = Hooks::MODULE_BASE + 0xf0f22;
-    Hooks::Patches::jumpback_fixOffmapIc_CountLocalIc = hookAddress1 + 6;
-
-    if (!Hooks::hook((void*)hookAddress1, Hooks::Patches::fixOffmapIc_CountLocalIc, 5, 1)) {
-        ERROR_OUT(std::cout << "Hook 'fixOffmapIc_CountLocalIc' failed" << std::endl);
-    }
-    else {
-        INFO_OUT(std::cout << "Hook 'fixOffmapIc_CountLocalIc' succeeded" << std::endl);
-        DEBUG_OUT(std::cout << "jumpback_fixOffmapIc_CountLocalIc: " << Mem::toHex(Hooks::Patches::jumpback_fixOffmapIc_CountLocalIc) << std::endl);
-    }
-
-    DWORD hookAddress2 = Hooks::MODULE_BASE + 0xf0f9d;
-    Hooks::Patches::jumpback_fixOffmapIc_SetBaseIc = hookAddress2 + 6;
-
-    if (!Hooks::hook((void*)hookAddress2, Hooks::Patches::fixOffmapIc_SetBaseIc, 5, 1)) {
-        ERROR_OUT(std::cout << "Hook 'fixOffmapIc_SetBaseIc' failed" << std::endl);
-    }
-    else {
-        INFO_OUT(std::cout << "Hook 'fixOffmapIc_SetBaseIc' succeeded" << std::endl);
-        DEBUG_OUT(std::cout << "jumpback_fixOffmapIc_SetBaseIc: " << Mem::toHex(Hooks::Patches::jumpback_fixOffmapIc_SetBaseIc) << std::endl);
-    }
-
-
-    fixOffMapICDone = true;
-    return 0;
+    return reportInstall(L, "fixOffMapIC", Hooks::OffmapIc::install(), Hooks::OffmapIc::status());
 }
 
-bool enablePlacingNonResearchedBuildingsDone = false;
+/**@brief lets a building be placed up to its max_level unresearched; see
+   Hooks/PlaceUnresearchedBuildings.hpp, which says what else it skips*/
 __declspec(dllexport) int enablePlacingNonResearchedBuildings(lua_State* L)
 {
-    if (enablePlacingNonResearchedBuildingsDone) {
-        return 0;
-    }
-
-    DWORD hookAddress = Hooks::MODULE_BASE + 0x17e4e5;
-    Hooks::Patches::jumpback_enablePlacingNonResearchedBuildings = hookAddress + 6;
-    Hooks::Patches::jumpback_enablePlacingNonResearchedBuildings_OriginalReturn = hookAddress + 210;
-
-    if (!Hooks::hook((void*)hookAddress, Hooks::Patches::enablePlacingNonResearchedBuildings, 5, 3)) {
-        ERROR_OUT(std::cout << "Hook 'enablePlacingNonResearchedBuildings' failed" << std::endl);
-    }
-    else {
-        INFO_OUT(std::cout << "Hook 'enablePlacingNonResearchedBuildings' succeeded" << std::endl);
-        DEBUG_OUT(std::cout << "jumpback_enablePlacingNonResearchedBuildings: " << Mem::toHex(Hooks::Patches::jumpback_enablePlacingNonResearchedBuildings) << std::endl);
-    }
-
-    enablePlacingNonResearchedBuildingsDone = true;
-    return 0;
+    return reportInstall(L, "enablePlacingNonResearchedBuildings",
+        Hooks::PlaceUnresearchedBuildings::install(), Hooks::PlaceUnresearchedBuildings::status());
 }
 
-/**
- * Makes `historical_model` on a queued line build every technology at the model's level.
- *
- * A brigade of a `military_construction` given `historical_model = N` has its model list
- * filled by walking the unit type's technologies and appending the level of each one the
- * model names - and **nothing for one it does not**. The list is later handed out by
- * position, so every level after a gap lands on the technology before the one meant, and
- * the type's last technologies get none. A model read from units/models names only what
- * its file names, so most of them have gaps. On the map the same model is applied by
- * technology, which is why the same model is right there and wrong in the queue.
- *
- * This appends a 0 for a technology the model does not name, which is what the map gives
- * it, so the list is as long as the type's technologies and every level is in its place.
- *
- * One five byte jump at 0x483020, over `cmp eax, [esi+0x18]; jae 0x482FF1`, to a stub
- * that does that test itself; nothing jumps into those five bytes, and the loop's exit
- * restores esi. reversing/findings/FINDINGS-buildqueue.md, section 10, has the reading.
- */
-bool fixQueuedHistoricalModelDone = false;
+/**@brief a queued brigade's historical_model gets a level for every technology; see
+   Hooks/QueuedHistoricalModel.hpp*/
 __declspec(dllexport) int fixQueuedHistoricalModel(lua_State* L)
 {
-    if (fixQueuedHistoricalModelDone) {
-        return 0;
-    }
-
-    // cmp eax, [esi+0x18]; jae 0x482FF1; mov esi, eax; add eax, 0xC; cmp [esi], edx -
-    // the test replaced and the search it ends, checked before anything is written
-    const DWORD hookAddress = Hooks::MODULE_BASE + 0x83020;
-    const unsigned char expected[12] = {
-        0x3B, 0x46, 0x18, 0x73, 0xCC, 0x8B, 0xF0, 0x83, 0xC0, 0x0C, 0x39, 0x16 };
-    // mov ebx, [edi+4]; push 0x10 - the append the stub jumps to
-    const unsigned char append[5] = { 0x8B, 0x5F, 0x04, 0x6A, 0x10 };
-    if (!Hooks::bytesAre(hookAddress, expected, 12)
-        || !Hooks::bytesAre(Hooks::MODULE_BASE + 0x8302E, append, 5)) {
-        ERROR_OUT(std::cout << "Hook 'fixQueuedHistoricalModel' failed: the historical_model "
-            "loop is not what this build expects" << std::endl);
-        fixQueuedHistoricalModelDone = true;
-        return 0;
-    }
-
-    Hooks::Patches::jumpback_fixQueuedHistoricalModel_Named = hookAddress + 5;
-    Hooks::Patches::jumpback_fixQueuedHistoricalModel_Append = Hooks::MODULE_BASE + 0x8302E;
-
-    if (!Hooks::hook((void*)hookAddress, Hooks::Patches::fixQueuedHistoricalModel, 5, 0)) {
-        ERROR_OUT(std::cout << "Hook 'fixQueuedHistoricalModel' failed" << std::endl);
-    }
-    else {
-        INFO_OUT(std::cout << "Hook 'fixQueuedHistoricalModel' succeeded" << std::endl);
-    }
-
-    fixQueuedHistoricalModelDone = true;
-    return 0;
+    return reportInstall(L, "fixQueuedHistoricalModel",
+        Hooks::QueuedHistoricalModel::install(), Hooks::QueuedHistoricalModel::status());
 }
 
 /**
@@ -638,16 +464,8 @@ __declspec(dllexport) int fixQueuedHistoricalModel(lua_State* L)
  */
 __declspec(dllexport) int fixMaxInfrastructure(lua_State* L)
 {
-    const bool ok = Hooks::MaxInfrastructure::install();
-    if (!ok) {
-        ERROR_OUT(printf("Hook 'fixMaxInfrastructure' failed: %s \n",
-            Hooks::MaxInfrastructure::status()));
-    }
-    else {
-        INFO_OUT(printf("Hook 'fixMaxInfrastructure' succeeded \n"));
-    }
-    lua_pushboolean(L, ok);
-    return 1;
+    return reportInstall(L, "fixMaxInfrastructure",
+        Hooks::MaxInfrastructure::install(), Hooks::MaxInfrastructure::status());
 }
 
 /**
@@ -659,115 +477,44 @@ __declspec(dllexport) int fixMaxInfrastructure(lua_State* L)
  */
 __declspec(dllexport) int customResourceConversion(lua_State* L)
 {
-    const bool ok = Hooks::ResourceConversion::install();
-    if (!ok) {
-        ERROR_OUT(printf("Hook 'customResourceConversion' failed: %s \n",
-            Hooks::ResourceConversion::status()));
-    }
-    else {
-        INFO_OUT(printf("Hook 'customResourceConversion' succeeded \n"));
-    }
-    lua_pushboolean(L, ok);
-    return 1;
+    return reportInstall(L, "customResourceConversion",
+        Hooks::ResourceConversion::install(), Hooks::ResourceConversion::status());
 }
 
 
 /////////////////////////////////////
 //          BYTE PATCHES           //
 /////////////////////////////////////
+// Each checks every byte it changes first and is safe to call again; see Patches.hpp.
 
-
-BOOL fixMinisterTechDecayDone = false;
 __declspec(dllexport) int fixMinisterTechDecay(lua_State* L)
 {
-    if (fixMinisterTechDecayDone) {
-        return 0;
-    }
-
-    if (!Patches::fixMinisterTechDecay(Hooks::MODULE_BASE)) {
-        ERROR_OUT(std::cout << "Patch 'fixMinisterTechDecay' failed" << std::endl);
-    }
-    else {
-        INFO_OUT(std::cout << "Patch 'fixMinisterTechDecay' succeeded" << std::endl);
-    }
-
-
-    fixMinisterTechDecayDone = true;
-    return 0;
+    return reportPatch(L, "fixMinisterTechDecay", &Patches::fixMinisterTechDecay);
 }
 
-
-BOOL disableWarExhaustionNeutralityResetDone = false;
 __declspec(dllexport) int disableWarExhaustionNeutralityReset(lua_State* L)
 {
-    if (disableWarExhaustionNeutralityResetDone) {
-        return 0;
-    }
-
-    if (!Patches::disableWarExhaustionNeutralityReset(Hooks::MODULE_BASE)) {
-        ERROR_OUT(std::cout << "Patch 'disableWarExhaustionNeutralityReset' failed" << std::endl);
-    }
-    else {
-        INFO_OUT(std::cout << "Patch 'disableWarExhaustionNeutralityReset' succeeded" << std::endl);
-    }
-
-    disableWarExhaustionNeutralityResetDone = true;
-    return 0;
+    return reportPatch(L, "disableWarExhaustionNeutralityReset",
+        &Patches::disableWarExhaustionNeutralityReset);
 }
 
-bool disableInterAiExpeditionariesDone = false;
 __declspec(dllexport) int disableInterAiExpeditionaries(lua_State* L)
 {
-    if (disableInterAiExpeditionariesDone) {
-        return 0;
-    }
-
-    if (!Patches::disableInterAiExpeditionaries(Hooks::MODULE_BASE)) {
-        ERROR_OUT(std::cout << "Patch 'disableInterAiExpeditionaries' failed" << std::endl);
-    }
-    else {
-        INFO_OUT(std::cout << "Patch 'disableInterAiExpeditionaries' succeeded" << std::endl);
-    }
-
-    disableInterAiExpeditionariesDone = true;
-    return 0;
+    return reportPatch(L, "disableInterAiExpeditionaries", &Patches::disableInterAiExpeditionaries);
 }
 
-bool historicalModelLogicFixDone = false;
 __declspec(dllexport) int historicalModelLogicFix(lua_State* L)
 {
-    if (historicalModelLogicFixDone) {
-        return 0;
-    }
-
-    if (!Patches::historicalModelLogicFix(Hooks::MODULE_BASE)) {
-        ERROR_OUT(std::cout << "Patch 'historicalModelLogicFix' failed" << std::endl);
-    }
-    else {
-        INFO_OUT(std::cout << "Patch 'historicalModelLogicFix' succeeded" << std::endl);
-    }
-
-    historicalModelLogicFixDone = true;
-    return 0;
+    return reportPatch(L, "historicalModelLogicFix", &Patches::historicalModelLogicFix);
 }
 
-bool seaTerrainColourInSimplifiedMapModeDone = false;
 __declspec(dllexport) int seaTerrainColourInSimplifiedMapMode(lua_State* L)
 {
-    if (seaTerrainColourInSimplifiedMapModeDone) {
-        return 0;
-    }
-
-    if (!Patches::seaTerrainColourInSimplifiedMapMode(Hooks::MODULE_BASE)) {
-        ERROR_OUT(std::cout << "Patch 'seaTerrainColourInSimplifiedMapMode' failed" << std::endl);
-    }
-    else {
-        INFO_OUT(std::cout << "Patch 'seaTerrainColourInSimplifiedMapMode' succeeded" << std::endl);
-    }
-
-    seaTerrainColourInSimplifiedMapModeDone = true;
-    return 0;
+    return reportPatch(L, "seaTerrainColourInSimplifiedMapMode",
+        &Patches::seaTerrainColourInSimplifiedMapMode);
 }
+
+
 /////////////////////////////////////
 //     EFFECT TEXT FUNCTIONS      //
 /////////////////////////////////////
@@ -782,16 +529,8 @@ __declspec(dllexport) int seaTerrainColourInSimplifiedMapMode(lua_State* L)
  */
 __declspec(dllexport) int activateKillLeaderVariables(lua_State* L)
 {
-    const bool ok = Hooks::EffectText::KillLeader::install();
-    if (!ok) {
-        ERROR_OUT(printf("Hook 'activateKillLeaderVariables' failed: %s \n",
-            Hooks::EffectText::KillLeader::status()));
-    }
-    else {
-        INFO_OUT(printf("Hook 'activateKillLeaderVariables' succeeded \n"));
-    }
-    lua_pushboolean(L, ok);
-    return 1;
+    return reportInstall(L, "activateKillLeaderVariables",
+        Hooks::EffectText::KillLeader::install(), Hooks::EffectText::KillLeader::status());
 }
 
 /**
@@ -804,16 +543,8 @@ __declspec(dllexport) int activateKillLeaderVariables(lua_State* L)
  */
 __declspec(dllexport) int activateLoadOobDetails(lua_State* L)
 {
-    const bool ok = Hooks::EffectText::LoadOob::install();
-    if (!ok) {
-        ERROR_OUT(printf("Hook 'activateLoadOobDetails' failed: %s \n",
-            Hooks::EffectText::LoadOob::status()));
-    }
-    else {
-        INFO_OUT(printf("Hook 'activateLoadOobDetails' succeeded \n"));
-    }
-    lua_pushboolean(L, ok);
-    return 1;
+    return reportInstall(L, "activateLoadOobDetails",
+        Hooks::EffectText::LoadOob::install(), Hooks::EffectText::LoadOob::status());
 }
 
 /**
@@ -826,16 +557,8 @@ __declspec(dllexport) int activateLoadOobDetails(lua_State* L)
  */
 __declspec(dllexport) int activateTriggerIndent(lua_State* L)
 {
-    const bool ok = Hooks::TriggerText::TriggerIndent::install();
-    if (!ok) {
-        ERROR_OUT(printf("Hook 'activateTriggerIndent' failed: %s \n",
-            Hooks::TriggerText::TriggerIndent::status()));
-    }
-    else {
-        INFO_OUT(printf("Hook 'activateTriggerIndent' succeeded \n"));
-    }
-    lua_pushboolean(L, ok);
-    return 1;
+    return reportInstall(L, "activateTriggerIndent",
+        Hooks::TriggerText::TriggerIndent::install(), Hooks::TriggerText::TriggerIndent::status());
 }
 
 /**
@@ -848,16 +571,8 @@ __declspec(dllexport) int activateTriggerIndent(lua_State* L)
  */
 __declspec(dllexport) int activateTriggerScroll(lua_State* L)
 {
-    const bool ok = Hooks::TriggerText::TriggerScroll::install();
-    if (!ok) {
-        ERROR_OUT(printf("Hook 'activateTriggerScroll' failed: %s \n",
-            Hooks::TriggerText::TriggerScroll::status()));
-    }
-    else {
-        INFO_OUT(printf("Hook 'activateTriggerScroll' succeeded \n"));
-    }
-    lua_pushboolean(L, ok);
-    return 1;
+    return reportInstall(L, "activateTriggerScroll",
+        Hooks::TriggerText::TriggerScroll::install(), Hooks::TriggerText::TriggerScroll::status());
 }
 
 /////////////////////////////////////
@@ -876,16 +591,12 @@ __declspec(dllexport) int activateTriggerScroll(lua_State* L)
 __declspec(dllexport) int activateCounters(lua_State* L)
 {
     const bool ok = Reversing::Counters::install();
-    if (!ok) {
-        ERROR_OUT(printf("Hook 'activateCounters' failed: %s \n",
-            Reversing::Counters::status()));
+    if (ok) {
+        INFO_OUT(printf("'activateCounters': %s \n", Reversing::Counters::status()));
+        lua_pushboolean(L, ok);
+        return 1;
     }
-    else {
-        INFO_OUT(printf("Hook 'activateCounters': %s \n",
-            Reversing::Counters::status()));
-    }
-    lua_pushboolean(L, ok);
-    return 1;
+    return reportInstall(L, "activateCounters", ok, Reversing::Counters::status());
 }
 
 /**
@@ -902,8 +613,7 @@ __declspec(dllexport) int watchCombatModifiers(lua_State* L)
         ? static_cast<uintptr_t>(lua_tonumber(L, 1)) : 0xDC;
     const bool ok = Reversing::WriteWatch::armCombatModifiers(offset);
     if (!ok) {
-        ERROR_OUT(printf("'watchCombatModifiers' failed: %s \n",
-            Reversing::WriteWatch::status()));
+        ERROR_OUT(printf("'watchCombatModifiers' failed: %s \n", Reversing::WriteWatch::status()));
     }
     lua_pushboolean(L, ok);
     return 1;
@@ -961,14 +671,12 @@ __declspec(dllexport) int stopWatching(lua_State* L)
 __declspec(dllexport) int activateWatch(lua_State* L)
 {
     const bool ok = Reversing::Watch::install();
-    if (!ok) {
-        ERROR_OUT(printf("'activateWatch' failed: %s \n", Reversing::Watch::status()));
-    }
-    else {
+    if (ok) {
         INFO_OUT(printf("'activateWatch': %s \n", Reversing::Watch::status()));
+        lua_pushboolean(L, ok);
+        return 1;
     }
-    lua_pushboolean(L, ok);
-    return 1;
+    return reportInstall(L, "activateWatch", ok, Reversing::Watch::status());
 }
 
 /////////////////////////////////////
@@ -985,16 +693,8 @@ __declspec(dllexport) int activateWatch(lua_State* L)
  */
 __declspec(dllexport) int activateManpowerBreakdown(lua_State* L)
 {
-    const bool ok = Hooks::Tooltips::Manpower::install();
-    if (!ok) {
-        ERROR_OUT(printf("Hook 'activateManpowerBreakdown' failed: %s \n",
-            Hooks::Tooltips::Manpower::status()));
-    }
-    else {
-        INFO_OUT(printf("Hook 'activateManpowerBreakdown' succeeded \n"));
-    }
-    lua_pushboolean(L, ok);
-    return 1;
+    return reportInstall(L, "activateManpowerBreakdown",
+        Hooks::Tooltips::Manpower::install(), Hooks::Tooltips::Manpower::status());
 }
 
 /**
@@ -1008,81 +708,13 @@ __declspec(dllexport) int activateManpowerBreakdown(lua_State* L)
  */
 __declspec(dllexport) int activateCombatUnitStats(lua_State* L)
 {
-    const bool ok = Hooks::Tooltips::CombatUnitStats::install();
-    if (!ok) {
-        ERROR_OUT(printf("Hook 'activateCombatUnitStats' failed: %s \n",
-            Hooks::Tooltips::CombatUnitStats::status()));
-    }
-    else {
-        INFO_OUT(printf("Hook 'activateCombatUnitStats' succeeded \n"));
-    }
-    lua_pushboolean(L, ok);
-    return 1;
+    return reportInstall(L, "activateCombatUnitStats",
+        Hooks::Tooltips::CombatUnitStats::install(), Hooks::Tooltips::CombatUnitStats::status());
 }
 
-/**
- * Makes holding Ctrl while confirming `CONFIRM_REMOVEAll` - the "unassign all leaders"
- * dialog - unassign only the leaders of the units that are currently selected.
- *
- * With Ctrl up the dialog does exactly what it always did. The hook sits on the skip
- * test the game's own unassign loop already makes per unit, so an unselected unit is
- * passed over by the same path that passes over a unit on loan to another country. See
- * Hooks/UnassignSelected.hpp.
- */
-__declspec(dllexport) int activateCtrlUnassignSelected(lua_State* L)
-{
-    const bool ok = Hooks::UnassignSelected::install();
-    if (!ok) {
-        ERROR_OUT(printf("Hook 'activateCtrlUnassignSelected' failed: %s \n",
-            Hooks::UnassignSelected::status()));
-    }
-    else {
-        Hooks::UnassignSelected::setActive(true);
-        INFO_OUT(printf("Hook 'activateCtrlUnassignSelected' succeeded \n"));
-    }
-    lua_pushboolean(L, ok);
-    return 1;
-}
-
-/**
- * Gives a leader an order of battle puts on a land unit the rank the game itself would
- * want for that unit - division 1, corps 2, army 3, army group and theatre 4 - raising or
- * lowering him, and puts him in service if he is not yet. Only while an order of battle
- * file is read (`load_oob`, a new game's history, the custom game setup), never a save;
- * another country's leader is left alone. See Hooks/OobLeaderRanks.hpp.
- */
-__declspec(dllexport) int activateOobLeaderRanks(lua_State* L)
-{
-    const bool ok = Hooks::OobLeaderRanks::install();
-    if (!ok) {
-        ERROR_OUT(printf("Hook 'activateOobLeaderRanks' failed: %s \n",
-            Hooks::OobLeaderRanks::status()));
-    }
-    else {
-        INFO_OUT(printf("Hook 'activateOobLeaderRanks' succeeded \n"));
-    }
-    lua_pushboolean(L, ok);
-    return 1;
-}
-
-/**
- * Brings a leader whose history dates his first rank after the start into service at the
- * rank that line names, where the game gives rank 1 whatever it says. One store in the
- * daily pass. See Hooks/HistoryLeaderRanks.hpp.
- */
-__declspec(dllexport) int activateHistoryLeaderRanks(lua_State* L)
-{
-    const bool ok = Hooks::HistoryLeaderRanks::install();
-    if (!ok) {
-        ERROR_OUT(printf("Hook 'activateHistoryLeaderRanks' failed: %s \n",
-            Hooks::HistoryLeaderRanks::status()));
-    }
-    else {
-        INFO_OUT(printf("Hook 'activateHistoryLeaderRanks' succeeded \n"));
-    }
-    lua_pushboolean(L, ok);
-    return 1;
-}
+/////////////////////////////////////
+//        MESSAGE FUNCTIONS        //
+/////////////////////////////////////
 
 /**
  * **The type a caller's own text is shown through.** Declared in
@@ -1179,94 +811,65 @@ __declspec(dllexport) int probeMessages(lua_State* L)
 //      INSPECTOR FUNCTIONS        //
 /////////////////////////////////////
 
-// The in game screen is read from the game state through CInGameIdler::current(),
-// not cached. It used to be found by scanning every committed page for its vftable
-// and kept in a static for the life of the process - which is wrong as well as slow:
-// the object belongs to the session, so loading another game left the pointer aimed
-// at freed memory.
+// The in game screen is read from the game state through CInGameIdler::current(), not
+// cached: the object belongs to the session.
 
 __declspec(dllexport) int getSelectedEntity(lua_State* L)
 {
     Diagnostics::LuaScope luaScope(L);
     const uintptr_t idler = CInGameIdler::current();
 
-    // Find CTerrains to get indices for each units CUnitAdjusterArray
+    // Each unit's terrain stats are indexed by the terrains, which the map holds
     CTerrain::CacheTerrains();
-
-    if (idler != 0 && !CTerrain::Terrains.empty()) {
-        lua_newtable(L); // Create the table which will hold the selected items
-        const uintptr_t selection = idler + CInGameIdler::Offsets::selection;
-        uintptr_t selectedThingsListStartPtr =
-            *(uintptr_t*)(selection + HDS::ListOffsets::first);
-        uintptr_t selectedThingsListEndPtr =
-            *(uintptr_t*)(selection + HDS::ListOffsets::last);
-        int8_t amountOfSelectedThings =
-            *(int8_t*)(selection + HDS::ListOffsets::count);
-        DEBUG_OUT(printf("selectedThingsListStartPtr: %#010x \n", selectedThingsListStartPtr));
-        DEBUG_OUT(printf("selectedThingsListEndPtr: %#010x \n", selectedThingsListEndPtr));
-        DEBUG_OUT(printf("amountOfSelectedThings: %i \n", amountOfSelectedThings));
-
-        HDS::LinkedListNodeSingle* currentNode = (HDS::LinkedListNodeSingle*)selectedThingsListStartPtr;
-
-        int i = 1; // Index for our table. Remember LUA starts at 1
-        while (currentNode != 0) {
-            uintptr_t CArmyVFTABLE = Hooks::MODULE_BASE + CUnit::VFTable::CArmy;
-            uintptr_t CNavyVFTABLE = Hooks::MODULE_BASE + CUnit::VFTable::CNavy;
-            uintptr_t CAirVFTABLE = Hooks::MODULE_BASE + CUnit::VFTable::CAir;
-            uintptr_t CMapProvinceVFTABLE = Hooks::MODULE_BASE + CMapProvince::VFTable::CMapProvince;
-
-            // DEBUG_OUT(printf("currentNode->data: %#010x \n", currentNode->data));
-            uintptr_t entityType = *((uintptr_t*)currentNode->data);
-            lua_pushinteger(L, i);
-            lua_newtable(L); // Create the table for the item
-            if (entityType == CArmyVFTABLE) {
-                DEBUG_OUT(printf("CArmy \n"));
-                lua_pushstring(L, "type");
-                lua_pushstring(L, "Army");
-                lua_settable(L, -3);
-                CUnit::pushCUnitToStack(L, currentNode->data);
-                CSubUnitDefinition::pushCSubUnitDefinitionToStack(L, currentNode->data);
-            } else if (entityType == CNavyVFTABLE) {
-                DEBUG_OUT(printf("CNavy \n"));
-                lua_pushstring(L, "type");
-                lua_pushstring(L, "Navy");
-                lua_settable(L, -3);
-                CUnit::pushCUnitToStack(L, currentNode->data);
-                CSubUnitDefinition::pushCSubUnitDefinitionToStack(L, currentNode->data);
-            } else if (entityType == CAirVFTABLE) {
-                DEBUG_OUT(printf("CAir \n"));
-                lua_pushstring(L, "type");
-                lua_pushstring(L, "Air");
-                lua_settable(L, -3);
-                CUnit::pushCUnitToStack(L, currentNode->data);
-                CSubUnitDefinition::pushCSubUnitDefinitionToStack(L, currentNode->data);
-            } else if (entityType == CMapProvinceVFTABLE) {
-                DEBUG_OUT(printf("CMapProvince \n"));
-                lua_pushstring(L, "type");
-                lua_pushstring(L, "Province");
-                lua_settable(L, -3);
-                // CUnit::pushCUnitToStack(L, currentNode->data);
-            } else {
-                DEBUG_OUT(printf("Unknown Type \n"));
-                lua_pushstring(L, "type");
-                lua_pushstring(L, "Unknown");
-                lua_settable(L, -3);
-            }
-            currentNode = currentNode->next;
-            i++;
-            lua_settable(L, -3);
-        }
-    }
-    else {
+    if (idler == 0 || CTerrain::Terrains.empty()) {
         lua_pushnil(L);
+        return 1;
     }
 
+    const uintptr_t base = Hooks::MODULE_BASE;
+    const uintptr_t army = base + CUnit::VFTable::CArmy;
+    const uintptr_t navy = base + CUnit::VFTable::CNavy;
+    const uintptr_t air = base + CUnit::VFTable::CAir;
+    const uintptr_t province = base + CMapProvince::VFTable::CMapProvince;
+
+    lua_newtable(L);
+    int index = 1;
+    for (uintptr_t entity : HDS::walkList(idler + CInGameIdler::Offsets::selection)) {
+        const uintptr_t vftable = Mem::readOr<uint32_t>(entity);
+        const char* type = "Unknown";
+        bool isUnit = false;
+        if (vftable == army) {
+            type = "Army";
+            isUnit = true;
+        }
+        else if (vftable == navy) {
+            type = "Navy";
+            isUnit = true;
+        }
+        else if (vftable == air) {
+            type = "Air";
+            isUnit = true;
+        }
+        else if (vftable == province) {
+            type = "Province";
+        }
+
+        lua_newtable(L);
+        lua_pushstring(L, type);
+        lua_setfield(L, -2, "type");
+        if (isUnit) {
+            CUnit::pushCUnitToStack(L, entity);
+            CSubUnitDefinition::pushCSubUnitDefinitionToStack(L, entity);
+        }
+        lua_rawseti(L, -2, index++);
+    }
     return 1;
 }
 
 /////////////////////////////////////
 //         MISC FUNCTIONS          //
 /////////////////////////////////////
+
 /**
  * Prints the module base. It used to set it, and every hook depended on this being called
  * first; Hooks::MODULE_BASE is now set as the DLL loads. Kept so a script that still calls
@@ -1274,7 +877,7 @@ __declspec(dllexport) int getSelectedEntity(lua_State* L)
  */
 __declspec(dllexport) int setModuleBase(lua_State* L)
 {
-    INFO_OUT(std::cout << "Hooks::MODULE_BASE at: " << Mem::toHex(Hooks::MODULE_BASE) << std::endl);
+    INFO_OUT(std::cout << "MODULE_BASE at: " << Mem::toHex(Hooks::MODULE_BASE) << std::endl);
     return 0;
 }
 
@@ -1288,9 +891,10 @@ __declspec(dllexport) int startConsole(lua_State* L)
     FILE* fp;
     freopen_s(&fp, "CONOUT$", "w", stdout); // output only
 
+    // Selecting text in the console freezes everything writing to it until the selection
+    // is cleared, so quick edit is switched off
     HANDLE handle = GetStdHandle(STD_INPUT_HANDLE);
-    SetConsoleMode(handle, ENABLE_EXTENDED_FLAGS);  // Set mode to this to prevent accidentially selecting something in the console
-    // because that will freeze the entire thing until it is unselected
+    SetConsoleMode(handle, ENABLE_EXTENDED_FLAGS);
 
     HWND window = GetConsoleWindow();
     RECT r;
@@ -1300,6 +904,7 @@ __declspec(dllexport) int startConsole(lua_State* L)
     consoleStarted = true;
     return 0;
 }
+
 __declspec(dllexport) int stopConsole(lua_State* L)
 {
     if (!consoleStarted) {
@@ -1327,7 +932,7 @@ __declspec(dllexport) int enableOverlay(lua_State* L)
     CrashReport::install();
     PureCall::install();
 
-    bool ok = Overlay::install();
+    const bool ok = Overlay::install();
     if (!ok) {
         ERROR_OUT(printf("Could not install the ImGui overlay\n"));
     }
@@ -1340,6 +945,17 @@ __declspec(dllexport) int enableOverlay(lua_State* L)
     lua_pushboolean(L, ok);
     return 1;
 }
+
+__declspec(dllexport) int toggleOverlay(lua_State* L)
+{
+    Overlay::toggle();
+    lua_pushboolean(L, Overlay::isVisible());
+    return 1;
+}
+
+/////////////////////////////////////
+//        COMMAND FUNCTIONS        //
+/////////////////////////////////////
 
 /**
  * Puts the one BiceCommand prototype in the game's persistent registry, and declares the
@@ -1361,23 +977,13 @@ __declspec(dllexport) int enableOverlay(lua_State* L)
  */
 __declspec(dllexport) int registerBiceCommands(lua_State* L)
 {
-    bool ok = CBiceCommands::Register();
-    if (!ok) {
-        ERROR_OUT(printf("'registerBiceCommands' failed: %s \n", CBiceCommands::status()));
+    if (!CBiceCommands::Register()) {
+        return reportInstall(L, "registerBiceCommands", false, CBiceCommands::status());
     }
-    else {
-        // The framework knows nothing about kinds until something declares one. The example
-        // is a kind like any other, which is the point of it.
-        ok = BiceCommandExample::install();
-        if (!ok) {
-            ERROR_OUT(printf("'registerBiceCommands': the example kind did not register \n"));
-        }
-        else {
-            INFO_OUT(printf("'registerBiceCommands' succeeded \n"));
-        }
-    }
-    lua_pushboolean(L, ok);
-    return 1;
+    // The framework knows nothing about kinds until something declares one. The example
+    // is a kind like any other, which is the point of it.
+    return reportInstall(L, "registerBiceCommands", BiceCommandExample::install(),
+        "the example kind did not register");
 }
 
 /**
@@ -1432,184 +1038,139 @@ __declspec(dllexport) int postExampleCommand(lua_State* L)
     return 1;
 }
 
-__declspec(dllexport) int toggleOverlay(lua_State* L)
+/////////////////////////////////////
+//         EVENT FUNCTIONS         //
+/////////////////////////////////////
+
+__declspec(dllexport) int rebuildEventCandidates(lua_State* L)
 {
-    Overlay::toggle();
-    lua_pushboolean(L, Overlay::isVisible());
+    lua_pushboolean(L, EventCandidates::rebuildNow() ? 1 : 0);
     return 1;
 }
 
+/////////////////////////////////////
+//          REGISTRATION           //
+/////////////////////////////////////
+
 __declspec(dllexport) luaL_Reg BiceLib[] = {
-    // Misc
     {"startConsole", startConsole},
     {"stopConsole", stopConsole},
     {"setModuleBase", setModuleBase},
     {NULL, NULL}
 };
 
-void registerFunction(lua_State* this_state, const char* name, lua_CFunction function) {
-    lua_pushstring(this_state, name);
-    lua_pushcfunction(this_state, function);
-    lua_settable(this_state, -3);
-    return;
-}
+namespace {
+    struct Function
+    {
+        const char* name;
+        lua_CFunction function;
+    };
 
-void registerGameInfoFunctions(lua_State* this_state) {
-    lua_pushstring(this_state, "GameInfo");
-    lua_newtable(this_state);
-    registerFunction(this_state, "getProvinceDetails", getProvinceDetails);
-    registerFunction(this_state, "getCountryFlags", getCountryFlags);
-    registerFunction(this_state, "getCountryVariables", getCountryVariables);
-    registerFunction(this_state, "getCountryOffmapIc", getCountryOffmapIc);
-    registerFunction(this_state, "getCountryResourceConversion", getCountryResourceConversion);
-    registerFunction(this_state, "getCountryActiveEventModifiers", getCountryActiveEventModifiers);
-    registerFunction(this_state, "getCountryGeneralModifiers", getCountryGeneralModifiers);
-    lua_settable(this_state, -3);
-    return;
-}
+    /**@brief `BiceLib.<table>` holding \p functions, on the module table at the top*/
+    template <size_t N>
+    void registerTable(lua_State* L, const char* table, const Function (&functions)[N]) {
+        lua_createtable(L, 0, static_cast<int>(N));
+        for (const Function& entry : functions) {
+            lua_pushcfunction(L, entry.function);
+            lua_setfield(L, -2, entry.name);
+        }
+        lua_setfield(L, -2, table);
+    }
 
-void registerLeaderFunctions(lua_State* this_state) {
-    lua_pushstring(this_state, "Leaders");
-    lua_newtable(this_state);
-    registerFunction(this_state, "addRankSpecificTrait", addRankSpecificTrait);
-    registerFunction(this_state, "activateRankSpecificTraits", activateRankSpecificTraits);
-    registerFunction(this_state, "checkRankSpecificTraitsConsistency", checkRankSpecificTraitsConsistency);
-    registerFunction(this_state, "activateLeaderListShowMaxSkill", activateLeaderListShowMaxSkill);
-    registerFunction(this_state, "activateLeaderListShowMaxSkillSelected", activateLeaderListShowMaxSkillSelected);
-    registerFunction(this_state, "activateCtrlUnassignSelected", activateCtrlUnassignSelected);
-    registerFunction(this_state, "activateOobLeaderRanks", activateOobLeaderRanks);
-    registerFunction(this_state, "activateHistoryLeaderRanks", activateHistoryLeaderRanks);
-    registerFunction(this_state, "addTraitToLeader", addTraitToLeader);
-    registerFunction(this_state, "getLeaderDetails", getLeaderDetails);
-    lua_settable(this_state, -3);
-    return;
-}
+    const Function GAME_INFO[] = {
+        {"getProvinceDetails", getProvinceDetails},
+        {"getCountryFlags", getCountryFlags},
+        {"getCountryVariables", getCountryVariables},
+        {"getCountryOffmapIc", getCountryOffmapIc},
+        {"getCountryResourceConversion", getCountryResourceConversion},
+        {"getCountryActiveEventModifiers", getCountryActiveEventModifiers},
+        {"getCountryGeneralModifiers", getCountryGeneralModifiers},
+    };
 
-void registerUnitFunctions(lua_State* this_state) {
-    lua_pushstring(this_state, "Units");
-    lua_newtable(this_state);
-    registerFunction(this_state, "setCorpsUnitLimit", setCorpsUnitLimit);
-    registerFunction(this_state, "setArmyUnitLimit", setArmyUnitLimit);
-    registerFunction(this_state, "setArmyGroupUnitLimit", setArmyGroupUnitLimit);
-    registerFunction(this_state, "addCommandLimitTrait", addCommandLimitTrait);
-    lua_settable(this_state, -3);
-    return;
-}
+    const Function LEADERS[] = {
+        {"addRankSpecificTrait", addRankSpecificTrait},
+        {"activateRankSpecificTraits", activateRankSpecificTraits},
+        {"checkRankSpecificTraitsConsistency", checkRankSpecificTraitsConsistency},
+        {"activateLeaderListShowMaxSkill", activateLeaderListShowMaxSkill},
+        {"activateLeaderListShowMaxSkillSelected", activateLeaderListShowMaxSkillSelected},
+        {"activateCtrlUnassignSelected", activateCtrlUnassignSelected},
+        {"activateOobLeaderRanks", activateOobLeaderRanks},
+        {"activateHistoryLeaderRanks", activateHistoryLeaderRanks},
+        {"addTraitToLeader", addTraitToLeader},
+        {"getLeaderDetails", getLeaderDetails},
+    };
 
-void registerNavyFunctions(lua_State* this_state) {
-    lua_pushstring(this_state, "Navy");
-    lua_newtable(this_state);
-    registerFunction(this_state, "setScreenPenalty", setScreenPenalty);
-    registerFunction(this_state, "setScreensPerCapitalRatio", setScreensPerCapitalRatio);
-    lua_settable(this_state, -3);
-    return;
-}
+    const Function UNITS[] = {
+        {"setCorpsUnitLimit", setCorpsUnitLimit},
+        {"setArmyUnitLimit", setArmyUnitLimit},
+        {"setArmyGroupUnitLimit", setArmyGroupUnitLimit},
+        {"addCommandLimitTrait", addCommandLimitTrait},
+    };
 
-void registerPatchFunctions(lua_State* this_state) {
-    lua_pushstring(this_state, "BytePatches");
-    lua_newtable(this_state);
-    registerFunction(this_state, "fixMinisterTechDecay", fixMinisterTechDecay);
-    registerFunction(this_state, "disableWarExhaustionNeutralityReset", disableWarExhaustionNeutralityReset);
-    registerFunction(this_state, "disableInterAiExpeditionaries", disableInterAiExpeditionaries);
-    registerFunction(this_state, "historicalModelLogicFix", historicalModelLogicFix);
-    registerFunction(this_state, "seaTerrainColourInSimplifiedMapMode", seaTerrainColourInSimplifiedMapMode);
-    lua_settable(this_state, -3);
-    return;
-}
+    const Function NAVY[] = {
+        {"setScreenPenalty", setScreenPenalty},
+        {"setScreensPerCapitalRatio", setScreensPerCapitalRatio},
+    };
 
-__declspec(dllexport) int rebuildEventCandidates(lua_State* L)
-{
-    const bool ok = EventCandidates::rebuildNow();
-    lua_pushboolean(L, ok ? 1 : 0);
-    return 1;
-}
+    const Function BYTE_PATCHES[] = {
+        {"fixMinisterTechDecay", fixMinisterTechDecay},
+        {"disableWarExhaustionNeutralityReset", disableWarExhaustionNeutralityReset},
+        {"disableInterAiExpeditionaries", disableInterAiExpeditionaries},
+        {"historicalModelLogicFix", historicalModelLogicFix},
+        {"seaTerrainColourInSimplifiedMapMode", seaTerrainColourInSimplifiedMapMode},
+    };
 
-void registerEventFunctions(lua_State* this_state) {
-    lua_pushstring(this_state, "Events");
-    lua_newtable(this_state);
-    registerFunction(this_state, "rebuildCandidates", rebuildEventCandidates);
-    lua_settable(this_state, -3);
-    return;
-}
+    const Function COMPLEX_PATCHES[] = {
+        {"fixOffMapIC", fixOffMapIC},
+        {"enablePlacingNonResearchedBuildings", enablePlacingNonResearchedBuildings},
+        {"fixQueuedHistoricalModel", fixQueuedHistoricalModel},
+        {"fixMaxInfrastructure", fixMaxInfrastructure},
+        {"customResourceConversion", customResourceConversion},
+    };
 
-void registerComplexPatchFunctions(lua_State* this_state) {
-    lua_pushstring(this_state, "ComplexPatches");
-    lua_newtable(this_state);
-    registerFunction(this_state, "fixOffMapIC", fixOffMapIC);
-    registerFunction(this_state, "enablePlacingNonResearchedBuildings", enablePlacingNonResearchedBuildings);
-    registerFunction(this_state, "fixQueuedHistoricalModel", fixQueuedHistoricalModel);
-    registerFunction(this_state, "fixMaxInfrastructure", fixMaxInfrastructure);
-    registerFunction(this_state, "customResourceConversion", customResourceConversion);
-    lua_settable(this_state, -3);
-    return;
-}
+    const Function EVENTS[] = {
+        {"rebuildCandidates", rebuildEventCandidates},
+    };
 
-void registerEffectTextFunctions(lua_State* this_state) {
-    lua_pushstring(this_state, "EffectTexts");
-    lua_newtable(this_state);
-    registerFunction(this_state, "activateKillLeaderVariables", activateKillLeaderVariables);
-    registerFunction(this_state, "activateLoadOobDetails", activateLoadOobDetails);
-    registerFunction(this_state, "activateTriggerIndent", activateTriggerIndent);
-    registerFunction(this_state, "activateTriggerScroll", activateTriggerScroll);
-    lua_settable(this_state, -3);
-    return;
-}
+    const Function EFFECT_TEXTS[] = {
+        {"activateKillLeaderVariables", activateKillLeaderVariables},
+        {"activateLoadOobDetails", activateLoadOobDetails},
+        {"activateTriggerIndent", activateTriggerIndent},
+        {"activateTriggerScroll", activateTriggerScroll},
+    };
 
-void registerTooltipFunctions(lua_State* this_state) {
-    lua_pushstring(this_state, "Tooltips");
-    lua_newtable(this_state);
-    registerFunction(this_state, "activateManpowerBreakdown", activateManpowerBreakdown);
-    registerFunction(this_state, "activateCombatUnitStats", activateCombatUnitStats);
-    lua_settable(this_state, -3);
-    return;
-}
+    const Function TOOLTIPS[] = {
+        {"activateManpowerBreakdown", activateManpowerBreakdown},
+        {"activateCombatUnitStats", activateCombatUnitStats},
+    };
 
-void registerMessageFunctions(lua_State* this_state) {
-    lua_pushstring(this_state, "Messages");
-    lua_newtable(this_state);
-    registerFunction(this_state, "show", showMessage);
-    lua_settable(this_state, -3);
-    return;
-}
+    const Function MESSAGES[] = {
+        {"show", showMessage},
+    };
 
-void registerReversingFunctions(lua_State* this_state) {
-    lua_pushstring(this_state, "Reversing");
-    lua_newtable(this_state);
-    registerFunction(this_state, "activateCounters", activateCounters);
-    registerFunction(this_state, "watchCombatModifiers", watchCombatModifiers);
-    registerFunction(this_state, "watchSubunit", watchSubunit);
-    registerFunction(this_state, "watchWrite", watchWrite);
-    registerFunction(this_state, "stopWatching", stopWatching);
-    registerFunction(this_state, "activateWatch", activateWatch);
-    registerFunction(this_state, "probeMessages", probeMessages);
-    lua_settable(this_state, -3);
-    return;
-}
+    const Function REVERSING[] = {
+        {"activateCounters", activateCounters},
+        {"watchCombatModifiers", watchCombatModifiers},
+        {"watchSubunit", watchSubunit},
+        {"watchWrite", watchWrite},
+        {"stopWatching", stopWatching},
+        {"activateWatch", activateWatch},
+        {"probeMessages", probeMessages},
+    };
 
-void registerCommandFunctions(lua_State* this_state) {
-    lua_pushstring(this_state, "Commands");
-    lua_newtable(this_state);
-    registerFunction(this_state, "registerBiceCommands", registerBiceCommands);
-    registerFunction(this_state, "postExampleCommand", postExampleCommand);
-    lua_settable(this_state, -3);
-    return;
-}
+    const Function COMMANDS[] = {
+        {"registerBiceCommands", registerBiceCommands},
+        {"postExampleCommand", postExampleCommand},
+    };
 
-void registerInspectorFunctions(lua_State* this_state) {
-    lua_pushstring(this_state, "Inspector");
-    lua_newtable(this_state);
-    registerFunction(this_state, "getSelectedEntity", getSelectedEntity);
-    lua_settable(this_state, -3);
-    return;
-}
+    const Function INSPECTOR[] = {
+        {"getSelectedEntity", getSelectedEntity},
+    };
 
-void registerOverlayFunctions(lua_State* this_state) {
-    lua_pushstring(this_state, "Overlay");
-    lua_newtable(this_state);
-    registerFunction(this_state, "enable", enableOverlay);
-    registerFunction(this_state, "toggle", toggleOverlay);
-    lua_settable(this_state, -3);
-    return;
+    const Function OVERLAY[] = {
+        {"enable", enableOverlay},
+        {"toggle", toggleOverlay},
+    };
 }
 
 extern "C"
@@ -1618,25 +1179,25 @@ __declspec(dllexport) int luaopen_BiceLib(lua_State* this_state)
     Diagnostics::LuaScope luaScope(this_state);
     DEBUG_OUT(printf("this_state: %#010x\n", (uintptr_t)this_state));
     LUA_STATES->push_back(this_state);
-    DEBUG_OUT(printf("LUA_STATES: %i\n", LUA_STATES->size()));
 
     // Leaves the module table on top, which is what require hands back
     luaL_register(this_state, "BiceLib", BiceLib);
     const int moduleTop = lua_gettop(this_state);
-    registerGameInfoFunctions(this_state);
-    registerLeaderFunctions(this_state);
-    registerUnitFunctions(this_state);
-    registerNavyFunctions(this_state);
-    registerPatchFunctions(this_state);
-    registerComplexPatchFunctions(this_state);
-    registerEventFunctions(this_state);
-    registerEffectTextFunctions(this_state);
-    registerTooltipFunctions(this_state);
-    registerMessageFunctions(this_state);
-    registerReversingFunctions(this_state);
-    registerCommandFunctions(this_state);
-    registerInspectorFunctions(this_state);
-    registerOverlayFunctions(this_state);
+
+    registerTable(this_state, "GameInfo", GAME_INFO);
+    registerTable(this_state, "Leaders", LEADERS);
+    registerTable(this_state, "Units", UNITS);
+    registerTable(this_state, "Navy", NAVY);
+    registerTable(this_state, "BytePatches", BYTE_PATCHES);
+    registerTable(this_state, "ComplexPatches", COMPLEX_PATCHES);
+    registerTable(this_state, "Events", EVENTS);
+    registerTable(this_state, "EffectTexts", EFFECT_TEXTS);
+    registerTable(this_state, "Tooltips", TOOLTIPS);
+    registerTable(this_state, "Messages", MESSAGES);
+    registerTable(this_state, "Reversing", REVERSING);
+    registerTable(this_state, "Commands", COMMANDS);
+    registerTable(this_state, "Inspector", INSPECTOR);
+    registerTable(this_state, "Overlay", OVERLAY);
 
     utils::logInLua(this_state, "Loaded BiceLib");
     char buf[100];

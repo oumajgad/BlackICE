@@ -5,13 +5,11 @@
 #include <GameClasses/CCurrentGameState.hpp>
 #include <Gui/LuaBridge.hpp>
 #include <HoiDataStructures.hpp>
+#include <Hooks/UnitAttachmentLimit.hpp>
 #include <MemScan.hpp>
 
 #include <Windows.h>
 #include <string>
-
-// Needs DWORD and std::string before it, and has no include guard of its own.
-#include <Hooks/CArmyHooks.hpp>
 
 namespace {
     const char* DAILY_PERIODICS = "BiceLibDailyPeriodics";
@@ -37,13 +35,14 @@ namespace {
         const uintptr_t country = CCountry::findByTag(current.playerTag);
         int32_t id = -1;
         if (country == 0 || !Mem::tryRead(country + CCountry::Offsets::tag + CCountryTag::Offsets::id, id)
-            || id < 0 || id >= 300) {
+            || id < 0) {
             return;
         }
+        using Hooks::UnitAttachmentLimit::Level;
         current.limitsKnown = true;
-        current.corpsLimit = Hooks::CArmy::corpsUnitLimitPerCountry[id];
-        current.armyLimit = Hooks::CArmy::armyUnitLimitPerCountry[id];
-        current.armyGroupLimit = Hooks::CArmy::armyGroupUnitLimitPerCountry[id];
+        current.corpsLimit = Hooks::UnitAttachmentLimit::countryLimit(Level::Corps, id);
+        current.armyLimit = Hooks::UnitAttachmentLimit::countryLimit(Level::Army, id);
+        current.armyGroupLimit = Hooks::UnitAttachmentLimit::countryLimit(Level::ArmyGroup, id);
     }
 }
 
