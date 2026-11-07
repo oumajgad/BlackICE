@@ -124,6 +124,11 @@ if mod then
     -- the end of it, below the armor line.
     BiceLib.Tooltips.activateCombatUnitStats()
 
+    -- The division designer never says whether a design can be paradropped. This
+    -- starts its terrain tooltip with whether it can, and if not, which brigades
+    -- stop it - every brigade needs can_paradrop = yes.
+    BiceLib.Tooltips.activateParadropLine()
+
     -- Reverse engineering. Both are workbench tools and both are off here. Each reads a
     -- file beside the DLL that the mod does not ship; the templates are in the BiceLib
     -- source under reversing/probes, and using one means copying it into this folder and

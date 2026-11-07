@@ -47,6 +47,7 @@
 #include <Hooks/ResourceConversion.hpp>
 #include <Hooks/Tooltips/CombatUnitStats.hpp>
 #include <Hooks/Tooltips/ManpowerText.hpp>
+#include <Hooks/Tooltips/ParadropLine.hpp>
 #include <Hooks/TriggerText/TriggerIndentText.hpp>
 #include <Hooks/TriggerText/TriggerScrollText.hpp>
 #include <Hooks/UnassignSelected.hpp>
@@ -712,6 +713,19 @@ __declspec(dllexport) int activateCombatUnitStats(lua_State* L)
         Hooks::Tooltips::CombatUnitStats::install(), Hooks::Tooltips::CombatUnitStats::status());
 }
 
+/**
+ * @brief starts the division designer's terrain tooltip with whether the design can be paradropped
+ *
+ * "This unit can be paradropped", or "can not" with the brigades that stop it listed under
+ * it - every brigade needs `can_paradrop`, as the game's own test for boarding a plane does.
+ * See Hooks/Tooltips/ParadropLine.hpp.
+ */
+__declspec(dllexport) int activateParadropLine(lua_State* L)
+{
+    return reportInstall(L, "activateParadropLine",
+        Hooks::Tooltips::ParadropLine::install(), Hooks::Tooltips::ParadropLine::status());
+}
+
 /////////////////////////////////////
 //        MESSAGE FUNCTIONS        //
 /////////////////////////////////////
@@ -1142,6 +1156,7 @@ namespace {
     const Function TOOLTIPS[] = {
         {"activateManpowerBreakdown", activateManpowerBreakdown},
         {"activateCombatUnitStats", activateCombatUnitStats},
+        {"activateParadropLine", activateParadropLine},
     };
 
     const Function MESSAGES[] = {
