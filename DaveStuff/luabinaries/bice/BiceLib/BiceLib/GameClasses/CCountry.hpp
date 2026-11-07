@@ -168,7 +168,7 @@ namespace CCountry {
          * HDS::walkList reads.
          *
          * Every leader in the game belongs to exactly one country's list, so walking
-         * all of them is how CLeader::CacheLeaders finds them. Confirmed live: the
+         * all of them is how CLeader::all finds them. Confirmed live: the
          * count field agrees with the walk, and the walk over all 108 countries
          * reaches 24,137 of the 24,138 objects a vftable scan turns up. The one it
          * leaves out has the null tag `---` and sits in the file parser's memory, so

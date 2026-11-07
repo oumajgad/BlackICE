@@ -50,4 +50,14 @@ namespace Mem {
     [[nodiscard]] bool tryRead(uintptr_t address, T& out) noexcept {
         return tryReadBytes(address, &out, sizeof(T));
     }
+
+    /**@brief the value at \p address, or \p fallback where it cannot be read*/
+    template <typename T>
+    [[nodiscard]] T readOr(uintptr_t address, T fallback = T()) noexcept {
+        T value = fallback;
+        if (!tryRead(address, value)) {
+            return fallback;
+        }
+        return value;
+    }
 }

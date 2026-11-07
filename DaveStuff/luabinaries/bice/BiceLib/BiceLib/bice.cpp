@@ -371,14 +371,14 @@ __declspec(dllexport) int checkRankSpecificTraitsConsistency(lua_State* L)
         return 0;
     }
 
-    CLeader::CacheLeaders();
-    if (CTrait::count() == 0 || CLeader::leaderCache->size() == 0) {
+    const std::vector<uintptr_t> leaders = CLeader::all();
+    if (CTrait::count() == 0 || leaders.empty()) {
         return 0;
     }
     INFO_OUT(printf("Checking rank specific traits consistency.\n"));
 
-    for (auto entry = CLeader::leaderCache->begin(); entry != CLeader::leaderCache->end(); ++entry) {
-        Hooks::CLeader::checkRankSpecificTraitsConsistency((DWORD*) entry->second, -1);
+    for (uintptr_t leader : leaders) {
+        Hooks::CLeader::checkRankSpecificTraitsConsistency((DWORD*) leader, -1);
     }
 
     checkRankSpecificTraitsConsistencyDone = true;

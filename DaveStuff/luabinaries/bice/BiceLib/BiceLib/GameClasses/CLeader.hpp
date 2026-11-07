@@ -1,7 +1,7 @@
 #pragma once
 #include <cstdint>
 #include <string>
-#include <unordered_map>
+#include <vector>
 #include <lua.hpp>
 
 /**
@@ -194,10 +194,33 @@ namespace CLeader {
         constexpr uintptr_t CLeader = 0x11C5220;   // module relative, RTTI, 10 slots
     }
 
-    extern std::unordered_map<unsigned int, uintptr_t>* leaderCache;
-
+    /**@brief the leader at \p addr, read through Mem::tryRead; zeros where a field is unreadable*/
     CLeader Make(uintptr_t addr);
-    void CacheLeaders();
+
+    /**
+    @brief every leader of the running game, walked from the countries' lists
+
+    Every leader belongs to exactly one country's list (CCountry::Offsets::leaders), so this
+    finds them all - about 24,000 in BlackICE, which is why GetLeaderById keeps a cache
+    rather than calling this.
+    */
+    std::vector<uintptr_t> all();
+
+    /**
+    @brief the leader with that id, or a CLeader whose `_address` is 0
+
+    **Cached, and the cache cannot outlive its game.** It is filled from all() and belongs to
+    the GameClock::session() it was filled in, so a load or a new game empties it. A hit is
+    also checked before it is used - the vftable and the id read back through Mem::tryRead -
+    and a hit that fails the check rebuilds the cache once. That second check is what covers
+    a load the clock has not seen yet: a Lua call made between the load and the next frame.
+
+    It used to be kept for the life of the process, so the second game loaded handed out the
+    first game's freed leaders - and addTraitToLeader passed one to CLeader::AddTrait.
+
+    All leaders exist from the start of a game, the inactive ones marked rather than made
+    later, so a miss against a cache of the current session is a real miss.
+    */
     CLeader GetLeaderById(unsigned int id);
     void PushCLeaderToStack(lua_State* L, CLeader leader);
 }
