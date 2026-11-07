@@ -30,7 +30,7 @@
 #include <GameClasses/CLeader.hpp>
 #include <GameClasses/CInGameIdler.hpp>
 #include <Hooks/Hooks.hpp>
-#include <Hooks/CLeaderHooks.hpp>
+#include <Hooks/RankSpecificTraits.hpp>
 #include <Hooks/CArmyHooks.hpp>
 #include <Hooks/CNavyHooks.hpp>
 #include <Hooks/HookedPatches.hpp>
@@ -261,170 +261,37 @@ __declspec(dllexport) int addTraitToLeader(lua_State* L){
     return 1;
 }
 
-void activateLeaderRankChangeHook() {
-    DWORD hookAddress = Hooks::MODULE_BASE + 0x1D7CDC;
-    Hooks::CLeader::jumpBack_leaderRankChangeHook = hookAddress + 6;
-    if (!Hooks::hook((void*)hookAddress, Hooks::CLeader::leaderRankChangeHook, 5, 1)) {
-        ERROR_OUT(printf("Hook 'activateLeaderRankChangeHook' failed \n"));
-    }
-    else {
-        INFO_OUT(printf("Hook 'activateLeaderRankChangeHook' succeeded \n"));
-        DEBUG_OUT(printf("jumpBack_leaderRankChangeHook: %#010x \n", Hooks::CLeader::jumpBack_leaderRankChangeHook));
-        Hooks::CLeader::isLeaderRankChangeHookActive = true;
-    }
-}
-
-void activateLeaderDontSaveRankSpecificTraitsHook() {
-    DWORD hookAddress = Hooks::MODULE_BASE + 0x17FF08;
-    Hooks::CLeader::jumpBack_leaderDontSaveRankSpecificTraitsHook = hookAddress + 7;
-    if (!Hooks::hook((void*)hookAddress, Hooks::CLeader::leaderDontSaveRankSpecificTraitsHook, 5, 2)) {
-        INFO_OUT(printf("Hook 'activateLeaderDontSaveRankSpecificTraitsHook' failed\n"));
-    }
-    else {
-        INFO_OUT(printf("Hook 'activateLeaderDontSaveRankSpecificTraitsHook' succeeded\n"));
-        DEBUG_OUT(printf("jumpBack_leaderDontSaveRankSpecificTraitsHook: %#010x \n", Hooks::CLeader::jumpBack_leaderDontSaveRankSpecificTraitsHook));
-    }
-}
-
+/**
+ * `addRankSpecificTrait(activeName, inactiveName, lowestRank, highestRank)` declares a pair;
+ * false until the traits are loaded, which a later Lua state answers. See
+ * Hooks/RankSpecificTraits.hpp.
+ */
 __declspec(dllexport) int addRankSpecificTrait(lua_State* L) {
-    DEBUG_OUT(printf("addRankSpecificTrait called\n"));
-
-    std::string activeName = luaL_checklstring(L, 1, NULL);
-    std::string inActiveName = luaL_checklstring(L, 2, NULL);
-    int lowerRank = luaL_checkinteger(L, 3);
-    int upperRank = luaL_checkinteger(L, 4);
-
-    if (CTrait::count() == 0) {
-        INFO_OUT(printf("addRankSpecificTrait for: '%s' deferred until save load \n", activeName.c_str()));
-        lua_pushboolean(L, false);
-        return 1;
-    }
-    if (Hooks::CLeader::rankSpecificTraitsActive->find(activeName) != Hooks::CLeader::rankSpecificTraitsActive->end()) {
-        DEBUG_OUT(printf("addRankSpecificTrait for: '%s' was already added \n", activeName.c_str()));
-        lua_pushboolean(L, true);
-        return 1;
-    }
-    const uintptr_t activeTrait = CTrait::findByName(activeName);
-    const uintptr_t inActiveTrait = CTrait::findByName(inActiveName);
-    if (activeTrait == 0 || inActiveTrait == 0) {
-        ERROR_OUT(printf("Trait for RankSpecificTrait '%s' not found!", activeName.c_str()));
-        lua_pushboolean(L, false);
-        return 1;
-    }
-
-    DEBUG_OUT(printf("activeName: %s \n", activeName.c_str()));
-    DEBUG_OUT(printf("inActiveName: %s \n", inActiveName.c_str()));
-    DEBUG_OUT(printf("lowerRank: %i \n", lowerRank));
-    DEBUG_OUT(printf("upperRank: %i \n", upperRank));
-
-    Hooks::CLeader::RankSpecificTrait* rst = new Hooks::CLeader::RankSpecificTrait;
-    rst->lowerRank = lowerRank;
-    rst->upperRank = upperRank;
-    rst->activeName = activeName;
-    rst->activeTraitPtr = 0;
-    rst->inActiveTraitPtr = 0;
-    rst->inactiveName = inActiveName;
-
-    rst->activeTraitPtr = activeTrait;
-    DEBUG_OUT(printf("rst->activeTraitPtr: %#010x \n", rst->activeTraitPtr));
-    rst->inActiveTraitPtr = inActiveTrait;
-    DEBUG_OUT(printf("rst->inActiveTraitPtr: %#010x \n", rst->inActiveTraitPtr));
-    
-    Hooks::CLeader::rankSpecificTraitsActive->insert(std::make_pair(activeName, rst));
-    Hooks::CLeader::rankSpecificTraitsInActive->insert(std::make_pair(inActiveName, rst));
-
-    DEBUG_OUT(printf("Hooks::CLeader::rankSpecificTraitsInActive->size(): %i \n", Hooks::CLeader::rankSpecificTraitsInActive->size()));
-
-    lua_pushboolean(L, true);
-    INFO_OUT(printf("addRankSpecificTrait for: '%s' done\n", activeName.c_str()));
-    DEBUG_OUT(printf("addRankSpecificTrait finished\n"));
+    const std::string activeName = luaL_checkstring(L, 1);
+    const std::string inactiveName = luaL_checkstring(L, 2);
+    const int lowestRank = static_cast<int>(luaL_checkinteger(L, 3));
+    const int highestRank = static_cast<int>(luaL_checkinteger(L, 4));
+    lua_pushboolean(L, Hooks::RankSpecificTraits::add(activeName, inactiveName, lowestRank, highestRank));
     return 1;
 }
 
-BOOL activateRankSpecificTraitsDone = false;
+/**@brief installs the two hooks and starts swapping once the traits are loaded*/
 __declspec(dllexport) int activateRankSpecificTraits(lua_State* L)
 {
-    if (activateRankSpecificTraitsDone) {
-        return 0;
+    if (!Hooks::RankSpecificTraits::install()) {
+        ERROR_OUT(printf("Hook 'activateRankSpecificTraits' failed: %s \n",
+            Hooks::RankSpecificTraits::status()));
+        lua_pushboolean(L, false);
+        return 1;
     }
-
-    if (!Hooks::CLeader::isLeaderRankChangeHookActive) {
-        activateLeaderRankChangeHook();
-        activateLeaderDontSaveRankSpecificTraitsHook();
-    }
-
-    if (CTrait::count() == 0) {
-        // Traits are not set up when the LUA is first run -> defer hooking until the LUA context is reloaded during save loading
-        INFO_OUT(printf("Hook 'activateRankSpecificTraits' deferred until save load \n"));
-        return 0;
-    }
-
-    Hooks::CLeader::isRankSpecificTraitsActive = true;
-    activateRankSpecificTraitsDone = true;
-    INFO_OUT(printf("Hook 'activateRankSpecificTraits' activated \n"));
-    return 0;
+    lua_pushboolean(L, Hooks::RankSpecificTraits::activate());
+    return 1;
 }
 
-BOOL checkRankSpecificTraitsConsistencyDone = false;
+/**@brief swaps every leader's pair to match his rank now*/
 __declspec(dllexport) int checkRankSpecificTraitsConsistency(lua_State* L)
 {
-    if (checkRankSpecificTraitsConsistencyDone) {
-        return 0;
-    }
-
-    const std::vector<uintptr_t> leaders = CLeader::all();
-    if (CTrait::count() == 0 || leaders.empty()) {
-        return 0;
-    }
-    INFO_OUT(printf("Checking rank specific traits consistency.\n"));
-
-    for (uintptr_t leader : leaders) {
-        Hooks::CLeader::checkRankSpecificTraitsConsistency((DWORD*) leader, -1);
-    }
-
-    checkRankSpecificTraitsConsistencyDone = true;
-    return 0;
-}
-
-
-BOOL activateLeaderPromotionSkillLossDone = false;
-__declspec(dllexport) int activateLeaderPromotionSkillLoss(lua_State* L)
-{
-    if (activateLeaderPromotionSkillLossDone) {
-        return 0;
-    }
-
-    if (!Hooks::CLeader::isLeaderRankChangeHookActive) {
-        activateLeaderRankChangeHook();
-    }
-
-    if (CTrait::count() == 0) {
-        // Traits are not set up when the LUA is first run -> defer hooking until the LUA context is reloaded during save loading
-        INFO_OUT(printf("Hook 'activateLeaderPromotionSkillLoss' deferred until save load \n"));
-        return 0;
-    }
-
-    auto tempSkillTraits = new std::vector<uintptr_t>; // unsorted vector of the traits which are used to track leader skill
-    Hooks::CLeader::skillTraits = new std::vector<DWORD>; // sorted vector of the traits
-    for (uintptr_t trait : CTrait::all()) {
-        std::string traitNameAsString = HDS::readString(trait + CTrait::Offsets::name);
-        if (traitNameAsString.find("pskill_") == 0) {
-            tempSkillTraits->push_back(trait);
-            Hooks::CLeader::skillTraits->push_back(trait); // also push back the Hooks::skillTraits vector so the indexes get filled
-        }
-    }
-
-    for (auto& trait : *tempSkillTraits) {
-        std::string traitNameAsString = HDS::readString(trait + CTrait::Offsets::name);
-        auto substr = traitNameAsString.substr(7);
-        auto index = std::stoi(substr, nullptr, 10);
-        Hooks::CLeader::skillTraits->at(index) = (DWORD) trait;
-    }
-
-    Hooks::CLeader::isLeaderSkillLossOnPromotionActive = true;
-    activateLeaderPromotionSkillLossDone = true;
-    delete tempSkillTraits;
-    INFO_OUT(printf("Hook 'activateLeaderPromotionSkillLoss' activated \n"));
+    Hooks::RankSpecificTraits::checkAllLeaders();
     return 0;
 }
 
@@ -1609,7 +1476,6 @@ void registerLeaderFunctions(lua_State* this_state) {
     registerFunction(this_state, "addRankSpecificTrait", addRankSpecificTrait);
     registerFunction(this_state, "activateRankSpecificTraits", activateRankSpecificTraits);
     registerFunction(this_state, "checkRankSpecificTraitsConsistency", checkRankSpecificTraitsConsistency);
-    // registerFunction(this_state, "activateLeaderPromotionSkillLoss", activateLeaderPromotionSkillLoss);
     registerFunction(this_state, "activateLeaderListShowMaxSkill", activateLeaderListShowMaxSkill);
     registerFunction(this_state, "activateLeaderListShowMaxSkillSelected", activateLeaderListShowMaxSkillSelected);
     registerFunction(this_state, "activateCtrlUnassignSelected", activateCtrlUnassignSelected);

@@ -44,7 +44,7 @@ namespace CLeader {
          *
          * **The high half can be reached.** The threshold table at `0x130AEE4` holds 1000,
          * 2000, 4000, 8000, 12000, 18000, 25000, 33000, 43000 and 60000 for skills 0 to 9 -
-         * the same figures as `Hooks/CLeaderHooks.cpp` once shifted by 15 - and then
+         * the same figures as the skill loss on promotion BiceLib once had - and then
          * **100000000 for skill 10**, which is 3276800000000 shifted and can never be
          * reached. So 10 is the real ceiling, not the `skill >= 12` guard at the top of
          * AddExperience. But that guard is the only thing that stops the adding, and it

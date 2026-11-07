@@ -21,7 +21,7 @@ if not ok then
 end
 if mod then
     BiceLib = mod
-    -- BiceLib.startConsole() -- Creates a console for debug information
+    BiceLib.startConsole() -- Creates a console for debug information
     BiceLib.setModuleBase()
 
     -- Commands
@@ -32,7 +32,6 @@ if mod then
     BiceLib.Commands.registerBiceCommands()
 
     -- Leaders
-    -- BiceLib.Leaders.activateLeaderPromotionSkillLoss()
     BiceLib.Leaders.activateLeaderListShowMaxSkill()
     BiceLib.Leaders.activateLeaderListShowMaxSkillSelected()
 
