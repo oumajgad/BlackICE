@@ -48,6 +48,7 @@
 #include <Hooks/Tooltips/CombatUnitStats.hpp>
 #include <Hooks/Tooltips/ManpowerText.hpp>
 #include <Hooks/HistoryLeaderRanks.hpp>
+#include <Hooks/LeaderListSkill.hpp>
 #include <Hooks/MaxInfrastructure.hpp>
 #include <Hooks/ResourceConversion.hpp>
 #include <Hooks/OobLeaderRanks.hpp>
@@ -428,47 +429,24 @@ __declspec(dllexport) int activateLeaderPromotionSkillLoss(lua_State* L)
 }
 
 
-BOOL activateLeaderListShowMaxSkillDone = false;
+/**
+ * Shows a leader's maximum skill beside his skill in the leader window, in the list and for
+ * the selected leader. Either name installs both; see Hooks/LeaderListSkill.hpp.
+ */
 __declspec(dllexport) int activateLeaderListShowMaxSkill(lua_State* L)
 {
-    if (activateLeaderListShowMaxSkillDone) {
-        return 0;
+    const bool ok = Hooks::LeaderListSkill::install();
+    if (!ok) {
+        ERROR_OUT(printf("Hook 'activateLeaderListShowMaxSkill' failed: %s \n",
+            Hooks::LeaderListSkill::status()));
     }
-
-    DWORD hookAddress = Hooks::MODULE_BASE + 0x365688;
-    Hooks::CLeader::jumpBack_patchLeaderListShowMaxSkill = hookAddress + 7;
-
-    if (!Hooks::hook((void*)hookAddress, Hooks::CLeader::patchLeaderListShowMaxSkill, 5, 2)) {
-        ERROR_OUT(printf("Hook 'activateLeaderListShowMaxSkill' failed \n"));
-    }
-    else {
-        INFO_OUT(printf("Hook 'activateLeaderListShowMaxSkill' succeeded \n"));
-        DEBUG_OUT(printf("jumpBack_patchLeaderListShowMaxSkill: %#010x \n", Hooks::CLeader::jumpBack_patchLeaderListShowMaxSkill));
-    }
-    activateLeaderListShowMaxSkillDone = true;
-    return 0;
+    lua_pushboolean(L, ok);
+    return 1;
 }
 
-
-BOOL activateLeaderListShowMaxSkillSelectedDone = false;
 __declspec(dllexport) int activateLeaderListShowMaxSkillSelected(lua_State* L)
 {
-    if (activateLeaderListShowMaxSkillSelectedDone) {
-        return 0;
-    }
-
-    DWORD hookAddress = Hooks::MODULE_BASE + 0x3679d4;
-    Hooks::CLeader::jumpBack_patchLeaderListShowMaxSkillSelected = hookAddress + 7;
-
-    if (!Hooks::hook((void*)hookAddress, Hooks::CLeader::patchLeaderListShowMaxSkillSelected, 5, 2)) {
-        ERROR_OUT(printf("Hook 'activateLeaderListShowMaxSkillSelected' failed \n"));
-    }
-    else {
-        INFO_OUT(printf("Hook 'activateLeaderListShowMaxSkillSelected' succeeded \n"));
-        DEBUG_OUT(printf("jumpBack_patchLeaderListShowMaxSkillSelected: %#010x \n", Hooks::CLeader::jumpBack_patchLeaderListShowMaxSkillSelected));
-    }
-    activateLeaderListShowMaxSkillSelectedDone = true;
-    return 0;
+    return activateLeaderListShowMaxSkill(L);
 }
 
 /////////////////////////////////////
