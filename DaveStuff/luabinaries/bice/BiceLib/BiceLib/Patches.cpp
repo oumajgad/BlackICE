@@ -96,9 +96,9 @@ bool Patches::fixMinisterTechDecay(uintptr_t moduleBase) {
  *
  * **A third site was dropped on 2026-11-07.** The patch also wrote `0x01` to the ModRM byte
  * at `0xDCC12`, making the hand-over's `mov [ecx], ?` read `eax` - which is the byte vanilla
- * already holds there, so the write never changed anything. The installed exe holds `0x19`
- * (`ebx`) at that byte, written by whatever patched it on disk; that one is unreachable too,
- * because the first site leaves nothing above 0 to hand over.
+ * already holds there, so the write never changed anything. An exe patched on disk was once
+ * found holding `0x19` (`ebx`) at that byte; that is unreachable too, because the first site
+ * leaves nothing above 0 to hand over.
  */
 bool Patches::disableWarExhaustionNeutralityReset(uintptr_t moduleBase) {
     // add [esi+0xAD0], eax; jns +6; mov [esi+0xAD0], ebx

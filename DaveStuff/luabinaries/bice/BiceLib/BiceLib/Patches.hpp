@@ -11,7 +11,8 @@
  * one of its sites holds one or the other - so a build that is not this one is left alone
  * rather than corrupted, and a patch is never left half written. A site already holding
  * the patched bytes counts as done: the installed exe may have had the same change made
- * to it on disk (the tech decay and war exhaustion patches both are, as of 2026-11-07).
+ * to it on disk, as the maintainer's had for the tech decay and war exhaustion patches
+ * until the vanilla exe was put back on 2026-11-07.
  *
  * The vanilla bytes were read from an untouched copy of the executable, not the installed
  * one - reversing/findings/FINDINGS-bicelibsites.md, sections 1, 4, 5 and 9. Only valid
