@@ -59,10 +59,6 @@
 #include <Reversing/Watch.hpp>
 #include <Patches.hpp>
 
-int DATA_SECTION_START = 0x12F5000;
-DWORD MODULE_BASE;
-
-lua_State* LUA_STATE = nullptr;
 std::vector<lua_State*> *LUA_STATES = new std::vector<lua_State*>;
 
 /////////////////////////////////////
@@ -265,7 +261,7 @@ __declspec(dllexport) int addTraitToLeader(lua_State* L){
 }
 
 void activateLeaderRankChangeHook() {
-    DWORD hookAddress = MODULE_BASE + 0x1D7CDC;
+    DWORD hookAddress = Hooks::MODULE_BASE + 0x1D7CDC;
     Hooks::CLeader::jumpBack_leaderRankChangeHook = hookAddress + 6;
     if (!Hooks::hook((void*)hookAddress, Hooks::CLeader::leaderRankChangeHook, 5, 1)) {
         ERROR_OUT(printf("Hook 'activateLeaderRankChangeHook' failed \n"));
@@ -278,7 +274,7 @@ void activateLeaderRankChangeHook() {
 }
 
 void activateLeaderDontSaveRankSpecificTraitsHook() {
-    DWORD hookAddress = MODULE_BASE + 0x17FF08;
+    DWORD hookAddress = Hooks::MODULE_BASE + 0x17FF08;
     Hooks::CLeader::jumpBack_leaderDontSaveRankSpecificTraitsHook = hookAddress + 7;
     if (!Hooks::hook((void*)hookAddress, Hooks::CLeader::leaderDontSaveRankSpecificTraitsHook, 5, 2)) {
         INFO_OUT(printf("Hook 'activateLeaderDontSaveRankSpecificTraitsHook' failed\n"));
@@ -439,7 +435,7 @@ __declspec(dllexport) int activateLeaderListShowMaxSkill(lua_State* L)
         return 0;
     }
 
-    DWORD hookAddress = MODULE_BASE + 0x365688;
+    DWORD hookAddress = Hooks::MODULE_BASE + 0x365688;
     Hooks::CLeader::jumpBack_patchLeaderListShowMaxSkill = hookAddress + 7;
 
     if (!Hooks::hook((void*)hookAddress, Hooks::CLeader::patchLeaderListShowMaxSkill, 5, 2)) {
@@ -461,7 +457,7 @@ __declspec(dllexport) int activateLeaderListShowMaxSkillSelected(lua_State* L)
         return 0;
     }
 
-    DWORD hookAddress = MODULE_BASE + 0x3679d4;
+    DWORD hookAddress = Hooks::MODULE_BASE + 0x3679d4;
     Hooks::CLeader::jumpBack_patchLeaderListShowMaxSkillSelected = hookAddress + 7;
 
     if (!Hooks::hook((void*)hookAddress, Hooks::CLeader::patchLeaderListShowMaxSkillSelected, 5, 2)) {
@@ -484,7 +480,7 @@ void activateUnitAttachmentLimitHook()
         return;
     }
 
-    DWORD hookAddress = MODULE_BASE + 0x1b9733;
+    DWORD hookAddress = Hooks::MODULE_BASE + 0x1b9733;
     Hooks::CArmy::jumpBack_unitAttachmentLimitHook = hookAddress + 5;
 
     if (!Hooks::hook((void*)hookAddress, Hooks::CArmy::unitAttachmentLimitHook, 5, 0)) {
@@ -615,8 +611,8 @@ void activateScreenPenaltyCalculationHook()
         return;
     }
 
-    DWORD hookAddress = MODULE_BASE + 0x166560;
-    Hooks::CNavy::origJmp_screenPenaltyHook = MODULE_BASE + 0x1665f6;
+    DWORD hookAddress = Hooks::MODULE_BASE + 0x166560;
+    Hooks::CNavy::origJmp_screenPenaltyHook = Hooks::MODULE_BASE + 0x1665f6;
 
     if (!Hooks::hook((void*)hookAddress, Hooks::CNavy::screenPenaltyCalulation, 5, 0)) {
         ERROR_OUT(printf("Hook 'screenPenaltyCalulation' failed \n"));
@@ -684,7 +680,7 @@ __declspec(dllexport) int fixOffMapIC(lua_State* L)
         return 0;
     }
 
-    DWORD hookAddress1 = MODULE_BASE + 0xf0f22;
+    DWORD hookAddress1 = Hooks::MODULE_BASE + 0xf0f22;
     Hooks::Patches::jumpback_fixOffmapIc_CountLocalIc = hookAddress1 + 6;
 
     if (!Hooks::hook((void*)hookAddress1, Hooks::Patches::fixOffmapIc_CountLocalIc, 5, 1)) {
@@ -695,7 +691,7 @@ __declspec(dllexport) int fixOffMapIC(lua_State* L)
         DEBUG_OUT(std::cout << "jumpback_fixOffmapIc_CountLocalIc: " << Mem::toHex(Hooks::Patches::jumpback_fixOffmapIc_CountLocalIc) << std::endl);
     }
 
-    DWORD hookAddress2 = MODULE_BASE + 0xf0f9d;
+    DWORD hookAddress2 = Hooks::MODULE_BASE + 0xf0f9d;
     Hooks::Patches::jumpback_fixOffmapIc_SetBaseIc = hookAddress2 + 6;
 
     if (!Hooks::hook((void*)hookAddress2, Hooks::Patches::fixOffmapIc_SetBaseIc, 5, 1)) {
@@ -718,7 +714,7 @@ __declspec(dllexport) int enablePlacingNonResearchedBuildings(lua_State* L)
         return 0;
     }
 
-    DWORD hookAddress = MODULE_BASE + 0x17e4e5;
+    DWORD hookAddress = Hooks::MODULE_BASE + 0x17e4e5;
     Hooks::Patches::jumpback_enablePlacingNonResearchedBuildings = hookAddress + 6;
     Hooks::Patches::jumpback_enablePlacingNonResearchedBuildings_OriginalReturn = hookAddress + 210;
 
@@ -761,13 +757,13 @@ __declspec(dllexport) int fixQueuedHistoricalModel(lua_State* L)
 
     // cmp eax, [esi+0x18]; jae 0x482FF1; mov esi, eax; add eax, 0xC; cmp [esi], edx -
     // the test replaced and the search it ends, checked before anything is written
-    const DWORD hookAddress = MODULE_BASE + 0x83020;
+    const DWORD hookAddress = Hooks::MODULE_BASE + 0x83020;
     const unsigned char expected[12] = {
         0x3B, 0x46, 0x18, 0x73, 0xCC, 0x8B, 0xF0, 0x83, 0xC0, 0x0C, 0x39, 0x16 };
     // mov ebx, [edi+4]; push 0x10 - the append the stub jumps to
     const unsigned char append[5] = { 0x8B, 0x5F, 0x04, 0x6A, 0x10 };
     if (!Hooks::bytesAre(hookAddress, expected, 12)
-        || !Hooks::bytesAre(MODULE_BASE + 0x8302E, append, 5)) {
+        || !Hooks::bytesAre(Hooks::MODULE_BASE + 0x8302E, append, 5)) {
         ERROR_OUT(std::cout << "Hook 'fixQueuedHistoricalModel' failed: the historical_model "
             "loop is not what this build expects" << std::endl);
         fixQueuedHistoricalModelDone = true;
@@ -775,7 +771,7 @@ __declspec(dllexport) int fixQueuedHistoricalModel(lua_State* L)
     }
 
     Hooks::Patches::jumpback_fixQueuedHistoricalModel_Named = hookAddress + 5;
-    Hooks::Patches::jumpback_fixQueuedHistoricalModel_Append = MODULE_BASE + 0x8302E;
+    Hooks::Patches::jumpback_fixQueuedHistoricalModel_Append = Hooks::MODULE_BASE + 0x8302E;
 
     if (!Hooks::hook((void*)hookAddress, Hooks::Patches::fixQueuedHistoricalModel, 5, 0)) {
         ERROR_OUT(std::cout << "Hook 'fixQueuedHistoricalModel' failed" << std::endl);
@@ -843,7 +839,7 @@ __declspec(dllexport) int fixMinisterTechDecay(lua_State* L)
         return 0;
     }
 
-    if (!Patches::fixMinisterTechDecay(MODULE_BASE)) {
+    if (!Patches::fixMinisterTechDecay(Hooks::MODULE_BASE)) {
         ERROR_OUT(std::cout << "Patch 'fixMinisterTechDecay' failed" << std::endl);
     }
     else {
@@ -863,7 +859,7 @@ __declspec(dllexport) int disableWarExhaustionNeutralityReset(lua_State* L)
         return 0;
     }
 
-    if (!Patches::disableWarExhaustionNeutralityReset(MODULE_BASE)) {
+    if (!Patches::disableWarExhaustionNeutralityReset(Hooks::MODULE_BASE)) {
         ERROR_OUT(std::cout << "Patch 'disableWarExhaustionNeutralityReset' failed" << std::endl);
     }
     else {
@@ -881,7 +877,7 @@ __declspec(dllexport) int disableInterAiExpeditionaries(lua_State* L)
         return 0;
     }
 
-    if (!Patches::disableInterAiExpeditionaries(MODULE_BASE)) {
+    if (!Patches::disableInterAiExpeditionaries(Hooks::MODULE_BASE)) {
         ERROR_OUT(std::cout << "Patch 'disableInterAiExpeditionaries' failed" << std::endl);
     }
     else {
@@ -899,7 +895,7 @@ __declspec(dllexport) int historicalModelLogicFix(lua_State* L)
         return 0;
     }
 
-    if (!Patches::historicalModelLogicFix(MODULE_BASE)) {
+    if (!Patches::historicalModelLogicFix(Hooks::MODULE_BASE)) {
         ERROR_OUT(std::cout << "Patch 'historicalModelLogicFix' failed" << std::endl);
     }
     else {
@@ -917,7 +913,7 @@ __declspec(dllexport) int seaTerrainColourInSimplifiedMapMode(lua_State* L)
         return 0;
     }
 
-    if (!Patches::seaTerrainColourInSimplifiedMapMode(MODULE_BASE)) {
+    if (!Patches::seaTerrainColourInSimplifiedMapMode(Hooks::MODULE_BASE)) {
         ERROR_OUT(std::cout << "Patch 'seaTerrainColourInSimplifiedMapMode' failed" << std::endl);
     }
     else {
@@ -1371,10 +1367,10 @@ __declspec(dllexport) int getSelectedEntity(lua_State* L)
 
         int i = 1; // Index for our table. Remember LUA starts at 1
         while (currentNode != 0) {
-            uintptr_t CArmyVFTABLE = MODULE_BASE + CUnit::VFTable::CArmy;
-            uintptr_t CNavyVFTABLE = MODULE_BASE + CUnit::VFTable::CNavy;
-            uintptr_t CAirVFTABLE = MODULE_BASE + CUnit::VFTable::CAir;
-            uintptr_t CMapProvinceVFTABLE = MODULE_BASE + CMapProvince::VFTable::CMapProvince;
+            uintptr_t CArmyVFTABLE = Hooks::MODULE_BASE + CUnit::VFTable::CArmy;
+            uintptr_t CNavyVFTABLE = Hooks::MODULE_BASE + CUnit::VFTable::CNavy;
+            uintptr_t CAirVFTABLE = Hooks::MODULE_BASE + CUnit::VFTable::CAir;
+            uintptr_t CMapProvinceVFTABLE = Hooks::MODULE_BASE + CMapProvince::VFTable::CMapProvince;
 
             // DEBUG_OUT(printf("currentNode->data: %#010x \n", currentNode->data));
             uintptr_t entityType = *((uintptr_t*)currentNode->data);
@@ -1428,16 +1424,14 @@ __declspec(dllexport) int getSelectedEntity(lua_State* L)
 /////////////////////////////////////
 //         MISC FUNCTIONS          //
 /////////////////////////////////////
-bool moduleBaseAlreadySet = false;
+/**
+ * Prints the module base. It used to set it, and every hook depended on this being called
+ * first; Hooks::MODULE_BASE is now set as the DLL loads. Kept so a script that still calls
+ * it keeps working.
+ */
 __declspec(dllexport) int setModuleBase(lua_State* L)
 {
-    if (moduleBaseAlreadySet) {
-        return 0;
-    }
-    MODULE_BASE = Mem::moduleBase("hoi3_tfh.exe");
-    Hooks::MODULE_BASE = MODULE_BASE;
-    INFO_OUT(std::cout << "MODULE_BASE at: " << Mem::toHex(MODULE_BASE) << std::endl);
-    moduleBaseAlreadySet = true;
+    INFO_OUT(std::cout << "Hooks::MODULE_BASE at: " << Mem::toHex(Hooks::MODULE_BASE) << std::endl);
     return 0;
 }
 
@@ -1472,29 +1466,6 @@ __declspec(dllexport) int stopConsole(lua_State* L)
     FreeConsole();
 
     consoleStarted = false;
-    return 0;
-}
-
-#include <chrono>
-#include <thread>
-bool periodicsJobStarted = false;
-DWORD WINAPI periodicsJob(void* data) {
-    if (periodicsJobStarted) {
-        return 0;
-    }
-    periodicsJobStarted = true;
-    DEBUG_OUT(printf("periodicsJob started\n"));
-    while (true) {
-        DEBUG_OUT(printf("periodicsJob loop\n"));
-        // Only once the game has countries, which is what says a session is
-        // really up. This used to gate on the country cache having been filled.
-        if (!CCountry::all().empty()) {
-            lua_getglobal(LUA_STATE, "CheckOobUnitLimitTechnologyStatus");
-            lua_pcall(LUA_STATE, 0, 0, 0);
-        }
-
-        std::this_thread::sleep_for(std::chrono::seconds(60));
-    }
     return 0;
 }
 
@@ -1803,17 +1774,13 @@ extern "C"
 __declspec(dllexport) int luaopen_BiceLib(lua_State* this_state)
 {
     Diagnostics::LuaScope luaScope(this_state);
-    if (LUA_STATE == nullptr) {
-        // Set main lua state
-        LUA_STATE = this_state;
-        utils::LUA_STATE = this_state;
-    }
     DEBUG_OUT(printf("this_state: %#010x\n", (uintptr_t)this_state));
     LUA_STATES->push_back(this_state);
     DEBUG_OUT(printf("LUA_STATES: %i\n", LUA_STATES->size()));
 
-    lua_newtable(this_state);
+    // Leaves the module table on top, which is what require hands back
     luaL_register(this_state, "BiceLib", BiceLib);
+    const int moduleTop = lua_gettop(this_state);
     registerGameInfoFunctions(this_state);
     registerLeaderFunctions(this_state);
     registerUnitFunctions(this_state);
@@ -1829,9 +1796,12 @@ __declspec(dllexport) int luaopen_BiceLib(lua_State* this_state)
     registerInspectorFunctions(this_state);
     registerOverlayFunctions(this_state);
 
-    utils::logInLua(this_state,"Loaded BiceLib");
+    utils::logInLua(this_state, "Loaded BiceLib");
     char buf[100];
-    snprintf(buf, 100, "LUA_STATES: %i", LUA_STATES->size());
+    snprintf(buf, sizeof(buf), "LUA_STATES: %u", static_cast<unsigned>(LUA_STATES->size()));
     utils::logInLua(this_state, buf);
+
+    // Whatever else happened, the module is what is returned
+    lua_settop(this_state, moduleTop);
     return 1;
 }

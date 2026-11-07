@@ -15,7 +15,7 @@
 #define ERROR_OUT(x) {printf("[ERROR] ") ; x;}
 
 namespace utils {
-	extern lua_State* LUA_STATE;
+	/**@brief calls the script's BiceLibLuaLog with \p toLog, if it has one; the stack is left as it was*/
 	void logInLua(lua_State* state, const char* toLog);
 	std::string gameTickToDate(int gameTick);
 

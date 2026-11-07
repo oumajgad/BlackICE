@@ -4,12 +4,18 @@
 #include <Hooks/Hooks.hpp>
 #include <format>
 
-lua_State* utils::LUA_STATE;
 void utils::logInLua(lua_State* state, const char* toLog) {
+    // Leaves the stack as it found it, error or not: a failed pcall pushes its message
+    const int top = lua_gettop(state);
     lua_getglobal(state, "BiceLibLuaLog");
-    lua_pushstring(state, toLog);
-    lua_pcall(state, 1, 0, 0);
-    return;
+    if (lua_isfunction(state, -1)) {
+        lua_pushstring(state, toLog);
+        if (lua_pcall(state, 1, 0, 0) != 0) {
+            const char* message = lua_tostring(state, -1);
+            ERROR_OUT(printf("BiceLibLuaLog failed: %s\n", message != nullptr ? message : "?"));
+        }
+    }
+    lua_settop(state, top);
 }
 utils::GameDate utils::gameTickToParts(int gameTick) {
     const int daysPerMonth[12] = {31,28,31,30,31,30,31,31,30,31,30,31};

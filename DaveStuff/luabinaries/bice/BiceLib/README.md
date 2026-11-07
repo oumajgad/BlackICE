@@ -28,12 +28,13 @@ switched on from `script/bicelib_lua.lua`, which runs once per session.
 ## Loading it
 
 * **BiceLib.setModuleBase()**
-    * Finds `hoi3_tfh.exe` in memory and stores its base. **Everything else needs this**, so
-      it is the first call `bicelib_lua.lua` makes.
+    * Prints the base of `hoi3_tfh.exe` to the console, and nothing else.
     * **Params**: /
     * **Return values**: /
     * **Notes**:
-        * Does nothing if called twice.
+        * It used to store the base, and every hook needed it to have been called first. The
+          base is now found as the DLL loads, so the order no longer matters; the function
+          is kept so scripts that call it keep working.
 * **BiceLib.startConsole()**
     * Opens a console window for the module's own logging - every `INFO`, `WARNING` and
       `ERROR` line in this document's functions goes there.
@@ -474,8 +475,7 @@ See `BiceLib/Commands/CBiceCommands.hpp` for the design,
           session.** It is once per *process*, not once per game: the registry is built before
           any game code runs and cleared only when the process exits. Registering early also
           closes a window - a command arriving from a peer before we have registered is
-          silently dropped - and it does not wait for `setModuleBase`, because it resolves the
-          game module itself.
+          silently dropped.
         * Idempotent, and there is deliberately no unregister: the registry outlives any one
           game and holds a pointer into this DLL.
         * `script/bicelib_lua.lua` already calls this in its top-level block.
