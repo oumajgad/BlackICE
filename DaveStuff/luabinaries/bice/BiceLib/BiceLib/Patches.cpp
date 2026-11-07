@@ -1,89 +1,138 @@
-#include <Windows.h>
-#include <iostream>
 #include <Patches.hpp>
 
+#include <Hooks/Hooks.hpp>
+#include <utils.hpp>
 
-bool Patches::patchBytes(void* address, BYTE values[], int len) {
-    //std::cout << "patchBytes" << std::endl;
-    DWORD protection;
-    auto vp1 = VirtualProtect(address, len, PAGE_EXECUTE_READWRITE, &protection);
-    if (!vp1) {
-        std::cout << "Changing protection failed" << std::endl;
-        return 0;
+#include <cstdio>
+
+namespace {
+    /**@brief one run of bytes a patch changes: what vanilla holds there and what it becomes*/
+    struct Site
+    {
+        uintptr_t rva;
+        const BYTE* vanilla;
+        const BYTE* patched;
+        int length;
+    };
+
+    /**
+    @brief applies every site of one patch, or none of them
+
+    Each site has to hold its vanilla or its patched bytes before anything is written; the
+    sites still vanilla are then written. See Patches.hpp.
+    */
+    bool apply(uintptr_t base, const char* name, const Site* sites, int count) {
+        if (base == 0) {
+            ERROR_OUT(printf("%s: hoi3_tfh.exe is not loaded\n", name));
+            return false;
+        }
+        for (int i = 0; i < count; i++) {
+            const uintptr_t at = base + sites[i].rva;
+            if (!Hooks::bytesAre(at, sites[i].vanilla, sites[i].length)
+                && !Hooks::bytesAre(at, sites[i].patched, sites[i].length)) {
+                ERROR_OUT(printf("%s: rva %#08x is not what this build holds there\n",
+                    name, static_cast<unsigned>(sites[i].rva)));
+                return false;
+            }
+        }
+        for (int i = 0; i < count; i++) {
+            const uintptr_t at = base + sites[i].rva;
+            if (Hooks::bytesAre(at, sites[i].patched, sites[i].length)) {
+                continue;
+            }
+            if (!Patches::patchBytes(reinterpret_cast<void*>(at), sites[i].patched, sites[i].length)) {
+                ERROR_OUT(printf("%s: could not make rva %#08x writable\n",
+                    name, static_cast<unsigned>(sites[i].rva)));
+                return false;
+            }
+        }
+        return true;
     }
+}
+
+bool Patches::patchBytes(void* address, const BYTE values[], int len) {
+    if (address == nullptr || len <= 0) {
+        return false;
+    }
+    DWORD protection = 0;
+    if (!VirtualProtect(address, len, PAGE_EXECUTE_READWRITE, &protection)) {
+        return false;
+    }
+    BYTE* const target = static_cast<BYTE*>(address);
     for (int i = 0; i < len; i++) {
-        //std::cout << "i: " << i << " address: " << (int)((DWORD)address + i) << " value: " << (int)(values[i]) << std::endl;
-        *(BYTE*)((DWORD)address + i) = values[i];
+        target[i] = values[i];
     }
-
-    DWORD trash;
-    auto vp2 = VirtualProtect(address, len, protection, &trash);
-    if (!vp2) {
-        std::cout << "Resetting protection failed" << std::endl;
-        return 0;
-    }
-    return 1;
+    DWORD unused = 0;
+    VirtualProtect(address, len, protection, &unused);
+    FlushInstructionCache(GetCurrentProcess(), address, len);
+    return true;
 }
 
-bool Patches::fixOffMapIC(uintptr_t moduleBase) {
-    BYTE one[3] = { 0xf7, 0x69, 0x78 };
-    DWORD address1 = moduleBase + 0xf0f90;
-    if (!patchBytes((void*)address1, one, 3)) {
-        return 0;
-    }
-
-    BYTE two[6] = { 0x8b, 0x41, 0x78, 0x90, 0x90, 0x90 };
-    DWORD address2 = moduleBase + 0xf0fa9;
-    if (!patchBytes((void*)address2, two, 6)) {
-        return 0;
-    }
-    return 1;
-}
-
+/**
+ * Keeps the ministers' share of each category's technology decay modifier.
+ *
+ * `CCountry::RebuildStaticModifiers` (`0xDDD80`) zeroes `CCountry +0x1174[category]`
+ * (`0xDDFBA`), adds every minister's figure for each category into it (`0xDE37B`), and then
+ * walks the categories once more and **stores** the technology's own figure over the top -
+ * `mov [ecx+esi], eax` at `0xDE3ED`. So the ministers' figures never survived the rebuild.
+ * This makes that last write `add [ecx+esi], eax` - one byte, the opcode - so the total is
+ * the ministers' plus the technology's. The zeroing at the top is why it cannot accumulate
+ * from one rebuild to the next.
+ */
 bool Patches::fixMinisterTechDecay(uintptr_t moduleBase) {
-    BYTE one[1] = { 0x01 };
-    DWORD address1 = moduleBase + 0xde3ed;
-    if (!patchBytes((void*)address1, one, 1)) {
-        return 0;
-    }
-    return 1;
+    static const BYTE vanilla[3] = { 0x89, 0x04, 0x31 };   // mov [ecx+esi], eax
+    static const BYTE patched[3] = { 0x01, 0x04, 0x31 };   // add [ecx+esi], eax
+    const Site sites[] = { { 0xDE3ED, vanilla, patched, 3 } };
+    return apply(moduleBase, "fixMinisterTechDecay", sites, 1);
 }
 
+/**
+ * Stops war exhaustion being paid out into neutrality and reset.
+ *
+ * Vanilla adds the month's war exhaustion to `CCountry +0xAD0`, floors it at 0, caps it, and
+ * when it is above 0 hands it to `0x4FBF80` and zeroes it. The first site stores 0 instead
+ * of adding, so the hand-over at `0x4DCC09` never has anything to hand over; the second
+ * nops the reset after it.
+ *
+ * **A third site was dropped on 2026-11-07.** The patch also wrote `0x01` to the ModRM byte
+ * at `0xDCC12`, making the hand-over's `mov [ecx], ?` read `eax` - which is the byte vanilla
+ * already holds there, so the write never changed anything. The installed exe holds `0x19`
+ * (`ebx`) at that byte, written by whatever patched it on disk; that one is unreachable too,
+ * because the first site leaves nothing above 0 to hand over.
+ */
 bool Patches::disableWarExhaustionNeutralityReset(uintptr_t moduleBase) {
-    BYTE one[1] = { 0x01 };
-    DWORD address1 = moduleBase + 0xdcc12;
-    if (!patchBytes((void*)address1, one, 1)) {
-        return 0;
-    }
-
-    BYTE two[6] = { 0x90, 0x90, 0x90, 0x90, 0x90, 0x90 };
-    DWORD address2 = moduleBase + 0xdcc18;
-    if (!patchBytes((void*)address2, two, 6)) {
-        return 0;
-    }
- 
-    BYTE three[14] = { 0xC7, 0x86, 0xD0, 0x0A, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x90, 0x90, 0x90, 0x90 };
-    DWORD address3 = moduleBase + 0xdcbd3;
-    if (!patchBytes((void*)address3, three, 14)) {
-        return 0;
-    }
-  
-    return 1;
+    // add [esi+0xAD0], eax; jns +6; mov [esi+0xAD0], ebx
+    static const BYTE storeVanilla[14] = {
+        0x01, 0x86, 0xD0, 0x0A, 0x00, 0x00, 0x79, 0x06, 0x89, 0x9E, 0xD0, 0x0A, 0x00, 0x00 };
+    // mov dword ptr [esi+0xAD0], 0; four nops
+    static const BYTE storePatched[14] = {
+        0xC7, 0x86, 0xD0, 0x0A, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x90, 0x90, 0x90, 0x90 };
+    // mov [esi+0xAD0], ebx
+    static const BYTE resetVanilla[6] = { 0x89, 0x9E, 0xD0, 0x0A, 0x00, 0x00 };
+    static const BYTE resetPatched[6] = { 0x90, 0x90, 0x90, 0x90, 0x90, 0x90 };
+    const Site sites[] = {
+        { 0xDCBD3, storeVanilla, storePatched, 14 },
+        { 0xDCC18, resetVanilla, resetPatched, 6 },
+    };
+    return apply(moduleBase, "disableWarExhaustionNeutralityReset", sites, 2);
 }
 
+/**
+ * Turns two conditional jumps in the AI's expeditionary force logic into plain ones.
+ *
+ * `0F 85`/`0F 84 rel32` (jne/je) become `90 E9 rel32` - a nop and a jmp with the same
+ * displacement, which lands on the same target since both end at the same byte.
+ */
 bool Patches::disableInterAiExpeditionaries(uintptr_t moduleBase) {
-    BYTE one[2] = { 0x90, 0xE9 };
-    DWORD address1 = moduleBase + 0x4b348a;
-    if (!patchBytes((void*)address1, one, 2)) {
-        return 0;
-    }
-
-    BYTE two[2] = { 0x90, 0xE9 };
-    DWORD address2 = moduleBase + 0x4b37e5;
-    if (!patchBytes((void*)address2, two, 2)) {
-        return 0;
-    }
-    return 1;
+    static const BYTE firstVanilla[6] = { 0x0F, 0x85, 0x91, 0x05, 0x00, 0x00 };   // jne
+    static const BYTE firstPatched[6] = { 0x90, 0xE9, 0x91, 0x05, 0x00, 0x00 };
+    static const BYTE secondVanilla[6] = { 0x0F, 0x84, 0x32, 0x02, 0x00, 0x00 };  // je
+    static const BYTE secondPatched[6] = { 0x90, 0xE9, 0x32, 0x02, 0x00, 0x00 };
+    const Site sites[] = {
+        { 0x4B348A, firstVanilla, firstPatched, 6 },
+        { 0x4B37E5, secondVanilla, secondPatched, 6 },
+    };
+    return apply(moduleBase, "disableInterAiExpeditionaries", sites, 2);
 }
 
 /**
@@ -101,8 +150,6 @@ bool Patches::disableInterAiExpeditionaries(uintptr_t moduleBase) {
  * and two more jump back. So **a model that asks for more than is researched takes a
  * fixed, enormous penalty** instead of a small one, and loses to any model that does not.
  *
- * Three writes, all inside that one function and its padding:
- *
  * | | |
  * | --- | --- |
  * | `0x1832A8` | `neg ecx` becomes `jmp +0x2A`, into the padding |
@@ -112,24 +159,17 @@ bool Patches::disableInterAiExpeditionaries(uintptr_t moduleBase) {
  * See GameClasses/CHistoricalModel.hpp for the class and the picker.
  */
 bool Patches::historicalModelLogicFix(uintptr_t moduleBase) {
-    BYTE one[2] = { 0xEB, 0x2A };
-    DWORD address1 = moduleBase + 0x1832A8;
-    if (!patchBytes((void*)address1, one, 2)) {
-        return 0;
-    }
-
-    BYTE two[6] = { 0xC7, 0xC1, 0x00, 0x00, 0x10, 0x00 };
-    DWORD address2 = moduleBase + 0x1832D4;
-    if (!patchBytes((void*)address2, two, 6)) {
-        return 0;
-    }
-
-    BYTE three[2] = { 0xEB, 0xCE };
-    DWORD address3 = moduleBase + 0x1832DA;
-    if (!patchBytes((void*)address3, three, 2)) {
-        return 0;
-    }
-    return 1;
+    static const BYTE negVanilla[2] = { 0xF7, 0xD9 };                     // neg ecx
+    static const BYTE negPatched[2] = { 0xEB, 0x2A };                     // jmp 0x1832D4
+    static const BYTE padVanilla[8] = { 0xCC, 0xCC, 0xCC, 0xCC, 0xCC, 0xCC, 0xCC, 0xCC };
+    static const BYTE padPatched[8] = {
+        0xC7, 0xC1, 0x00, 0x00, 0x10, 0x00,                               // mov ecx, 0x100000
+        0xEB, 0xCE };                                                     // jmp 0x1832AA
+    const Site sites[] = {
+        { 0x1832A8, negVanilla, negPatched, 2 },
+        { 0x1832D4, padVanilla, padPatched, 8 },
+    };
+    return apply(moduleBase, "historicalModelLogicFix", sites, 2);
 }
 
 /**
@@ -156,22 +196,11 @@ bool Patches::historicalModelLogicFix(uintptr_t moduleBase) {
  */
 bool Patches::seaTerrainColourInSimplifiedMapMode(uintptr_t moduleBase) {
     // mov dword ptr [eax+0xF4], 8 - the last of three settings the Simplified Terrain
-    // setter writes, at the point where it has the settings object in eax. The field
-    // is GameSettings::Offsets::map_style; it is a literal here because this is the
-    // game's own instruction being matched byte for byte, not a read of ours.
-    const DWORD address = moduleBase + 0x266E74;
-    const BYTE expected[10] = { 0xC7, 0x80, 0xF4, 0x00, 0x00, 0x00, 0x08, 0x00, 0x00, 0x00 };
-
-    // The whole instruction is verified before any of it is changed, so a build that
-    // does not carry it at this address is left alone rather than corrupted.
-    for (int i = 0; i < 10; i++) {
-        if (*(BYTE*)(address + i) != expected[i]) {
-            std::cout << "seaTerrainColourInSimplifiedMapMode: the map mode setter is "
-                "not what this build expects" << std::endl;
-            return 0;
-        }
-    }
-
-    BYTE style[1] = { 0x12 };   // 18, the number the air map mode uses
-    return patchBytes((void*)(address + 6), style, 1);
+    // setter writes. The field is GameSettings::Offsets::map_style; it is a literal here
+    // because this is the game's own instruction being matched byte for byte.
+    static const BYTE vanilla[10] = { 0xC7, 0x80, 0xF4, 0x00, 0x00, 0x00, 0x08, 0x00, 0x00, 0x00 };
+    // the same with 18, the number the air map mode uses
+    static const BYTE patched[10] = { 0xC7, 0x80, 0xF4, 0x00, 0x00, 0x00, 0x12, 0x00, 0x00, 0x00 };
+    const Site sites[] = { { 0x266E74, vanilla, patched, 10 } };
+    return apply(moduleBase, "seaTerrainColourInSimplifiedMapMode", sites, 1);
 }
