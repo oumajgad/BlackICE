@@ -54,18 +54,23 @@ namespace CTerrain {
     }
     struct CTerrain
     {
-        int id;
+        int id = 0;
         std::string name;
-        bool is_water;
-        int defence;
-        int attack;
-        int attrition;
-        // int movement_cost;
-        // int temperature;
-        // int humidity;
-        // int precipitation;
+        bool is_water = false;
+        int defence = 0;
+        int attack = 0;
+        int attrition = 0;
     };
-    extern std::vector<CTerrain*>* Terrains;
+
+    /**@brief the map's terrains, in the map's order; empty until CacheTerrains has run*/
+    extern std::vector<CTerrain> Terrains;
+
+    /**
+    @brief fills Terrains from the map, if it is empty
+
+    The map is loaded once per process and never replaced, so neither is this.
+    */
     void CacheTerrains();
-    CTerrain* Make(uintptr_t addr);
+
+    CTerrain Make(uintptr_t addr);
 }

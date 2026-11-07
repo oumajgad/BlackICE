@@ -1191,11 +1191,9 @@ __declspec(dllexport) int getSelectedEntity(lua_State* L)
     const uintptr_t idler = CInGameIdler::current();
 
     // Find CTerrains to get indices for each units CUnitAdjusterArray
-    if (CTerrain::Terrains->size() == 0) {
-        CTerrain::CacheTerrains();
-    }
+    CTerrain::CacheTerrains();
 
-    if (idler != 0 && CTerrain::Terrains->size() != 0) {
+    if (idler != 0 && !CTerrain::Terrains.empty()) {
         lua_newtable(L); // Create the table which will hold the selected items
         const uintptr_t selection = idler + CInGameIdler::Offsets::selection;
         uintptr_t selectedThingsListStartPtr =

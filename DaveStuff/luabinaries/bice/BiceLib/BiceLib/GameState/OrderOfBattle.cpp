@@ -8,6 +8,7 @@
 #include <GameClasses/CUnit.hpp>
 #include <HoiDataStructures.hpp>
 #include <MemScan.hpp>
+#include <Hooks/Hooks.hpp>
 #include <TextEncoding.hpp>
 
 #include <Windows.h>
@@ -26,20 +27,7 @@ namespace {
     const int MAX_UNITS = 20000;
 
     uintptr_t moduleBase() {
-        static uintptr_t base = 0;
-        if (base == 0) {
-            base = Mem::moduleBase("hoi3_tfh.exe");
-        }
-        return base;
-    }
-
-    template <typename T>
-    T readValue(uintptr_t address, T fallback = T()) {
-        T value = fallback;
-        if (!Mem::tryRead(address, value)) {
-            return fallback;
-        }
-        return value;
+        return Hooks::MODULE_BASE;
     }
 
     Oob::Branch branchOf(uintptr_t unit) {
@@ -70,8 +58,8 @@ namespace {
             return;
         }
         unit.leaderName = HDS::readString(leader + CLeader::Offsets::name);
-        unit.leaderSkill = readValue<int32_t>(leader + CLeader::Offsets::skill);
-        unit.leaderMaxSkill = readValue<int32_t>(leader + CLeader::Offsets::max_skill);
+        unit.leaderSkill = Mem::readOr<int32_t>(leader + CLeader::Offsets::skill);
+        unit.leaderMaxSkill = Mem::readOr<int32_t>(leader + CLeader::Offsets::max_skill);
 
         // An unled unit still has something in the leader slot; the game calls it
         // "(no leader)". So a pointer is not enough to go on.
@@ -84,23 +72,23 @@ namespace {
         unit.address = address;
         unit.branch = branch;
         unit.name = HDS::readString(address + CUnit::Offsets::name);
-        unit.id = readValue<int32_t>(address + CUnit::Offsets::id);
-        unit.type = readValue<int32_t>(address + CUnit::Offsets::type);
-        unit.level = readValue<int32_t>(address + CUnit::Offsets::oob_level);
-        unit.selected = readValue<uint8_t>(address + CUnit::Offsets::is_selected) != 0;
+        unit.id = Mem::readOr<int32_t>(address + CUnit::Offsets::id);
+        unit.type = Mem::readOr<int32_t>(address + CUnit::Offsets::type);
+        unit.level = Mem::readOr<int32_t>(address + CUnit::Offsets::oob_level);
+        unit.selected = Mem::readOr<uint8_t>(address + CUnit::Offsets::is_selected) != 0;
 
-        unit.supplyPercent = readValue<int32_t>(address + CUnit::Offsets::supply_received_percentage);
-        unit.fuelPercent = readValue<int32_t>(address + CUnit::Offsets::fuel_received_percentage);
-        unit.digIn = readValue<int32_t>(address + CUnit::Offsets::dig_in_level);
-        unit.combatArmsBonus = readValue<int32_t>(address + CUnit::Offsets::base_ca_bonus);
-        unit.combatCooldown = readValue<int32_t>(address + CUnit::Offsets::combat_cooldown);
+        unit.supplyPercent = Mem::readOr<int32_t>(address + CUnit::Offsets::supply_received_percentage);
+        unit.fuelPercent = Mem::readOr<int32_t>(address + CUnit::Offsets::fuel_received_percentage);
+        unit.digIn = Mem::readOr<int32_t>(address + CUnit::Offsets::dig_in_level);
+        unit.combatArmsBonus = Mem::readOr<int32_t>(address + CUnit::Offsets::base_ca_bonus);
+        unit.combatCooldown = Mem::readOr<int32_t>(address + CUnit::Offsets::combat_cooldown);
 
-        unit.upgradePriority = readValue<uint8_t>(address + CUnit::Offsets::upgrade_prio) != 0;
-        unit.upgradeActive = readValue<uint8_t>(address + CUnit::Offsets::upgrade_active) != 0;
+        unit.upgradePriority = Mem::readOr<uint8_t>(address + CUnit::Offsets::upgrade_prio) != 0;
+        unit.upgradeActive = Mem::readOr<uint8_t>(address + CUnit::Offsets::upgrade_active) != 0;
         unit.reinforcementsActive =
-            readValue<uint8_t>(address + CUnit::Offsets::reinforcements_active) != 0;
+            Mem::readOr<uint8_t>(address + CUnit::Offsets::reinforcements_active) != 0;
 
-        unit.regimentCount = readValue<int32_t>(address + CUnit::Offsets::regiments + HDS::ListOffsets::count);
+        unit.regimentCount = Mem::readOr<int32_t>(address + CUnit::Offsets::regiments + HDS::ListOffsets::count);
         if (unit.regimentCount < 0 || unit.regimentCount > 1000) {
             unit.regimentCount = 0;
         }
@@ -113,12 +101,12 @@ namespace {
             unit.fuelConsumption = CUnit::fuelConsumption(address);
         }
 
-        unit.leader = readValue<uint32_t>(address + CUnit::Offsets::leader_ptr);
+        unit.leader = Mem::readOr<uint32_t>(address + CUnit::Offsets::leader_ptr);
         readLeader(unit.leader, unit);
 
-        unit.province = readValue<uint32_t>(address + CUnit::Offsets::current_province_ptr);
+        unit.province = Mem::readOr<uint32_t>(address + CUnit::Offsets::current_province_ptr);
         if (unit.province != 0) {
-            unit.provinceId = readValue<int32_t>(unit.province + CMapProvince::Offsets::id);
+            unit.provinceId = Mem::readOr<int32_t>(unit.province + CMapProvince::Offsets::id);
         }
 
         // A division made of a single brigade takes no commander, so it is not
@@ -347,7 +335,7 @@ Oob::Tree Oob::read(uintptr_t country) {
         Unit& unit = tree.units[i];
         int parent = foundUnder[i];
 
-        const uintptr_t higher = readValue<uint32_t>(unit.address + CUnit::Offsets::higher_oob_unit_ptr);
+        const uintptr_t higher = Mem::readOr<uint32_t>(unit.address + CUnit::Offsets::higher_oob_unit_ptr);
         const std::map<uintptr_t, int>::const_iterator found = indexOf.find(higher);
         if (higher != 0 && found != indexOf.end() && found->second != static_cast<int>(i)) {
             parent = found->second;
@@ -429,7 +417,7 @@ std::vector<Oob::Regiment> Oob::regiments(uintptr_t unit) {
         // definition holding its own stats, and only the key inside it says which
         // kind of regiment this is.
         const uintptr_t definition =
-            readValue<uint32_t>(addresses[i] + CRegiment::Offsets::sub_unit_definition_ptr);
+            Mem::readOr<uint32_t>(addresses[i] + CRegiment::Offsets::sub_unit_definition_ptr);
         if (definition != 0) {
             regiment.type = HDS::readString(definition + CSubUnitDefinition::Offsets::key);
         }
@@ -437,8 +425,8 @@ std::vector<Oob::Regiment> Oob::regiments(uintptr_t unit) {
         // Left as the game holds it. What that number means depends on the branch,
         // which a regiment does not know on its own, so the scaling is strengthOf()'s
         // job and not this one's.
-        regiment.strength = readValue<int32_t>(addresses[i] + CRegiment::Offsets::strength);
-        regiment.organisation = readValue<int32_t>(addresses[i] + CRegiment::Offsets::organisation);
+        regiment.strength = Mem::readOr<int32_t>(addresses[i] + CRegiment::Offsets::strength);
+        regiment.organisation = Mem::readOr<int32_t>(addresses[i] + CRegiment::Offsets::organisation);
         found.push_back(regiment);
     }
     return found;

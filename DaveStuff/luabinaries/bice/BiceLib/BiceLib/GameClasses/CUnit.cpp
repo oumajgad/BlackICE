@@ -1,15 +1,12 @@
 #include <GameClasses/CUnit.hpp>
 #include <HoiDataStructures.hpp>
 #include <MemScan.hpp>
+#include <Hooks/Hooks.hpp>
 #include <utils.hpp>
 
 namespace {
     uintptr_t moduleBase() {
-        static uintptr_t base = 0;
-        if (base == 0) {
-            base = Mem::moduleBase("hoi3_tfh.exe");
-        }
-        return base;
+        return Hooks::MODULE_BASE;
     }
 
     /**
@@ -82,13 +79,7 @@ namespace CUnit {
     }
 
     void pushCUnitToStack(lua_State* L, uintptr_t unitPtr) {
-        DEBUG_OUT(printf("unitPtr: %#010x\n", unitPtr));
-        DEBUG_OUT(printf("nameOffset: %#010x\n", unitPtr + CUnit::Offsets::name));
-
-        const std::string name = HDS::readString(unitPtr + CUnit::Offsets::name);
-        lua_pushstring(L, "name");
-        lua_pushstring(L, name.c_str());
-        lua_settable(L, -3);
-	    return;
+        lua_pushstring(L, HDS::readString(unitPtr + CUnit::Offsets::name).c_str());
+        lua_setfield(L, -2, "name");
     }
 }

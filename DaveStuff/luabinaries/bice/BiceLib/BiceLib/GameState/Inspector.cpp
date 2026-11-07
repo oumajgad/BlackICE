@@ -3,6 +3,7 @@
 #include <GameClasses/CInGameIdler.hpp>
 
 #include <MemScan.hpp>
+#include <Hooks/Hooks.hpp>
 #include <TextEncoding.hpp>
 #include <utils.hpp>
 #include <HoiDataStructures.hpp>
@@ -229,38 +230,33 @@ namespace {
             return;
         }
 
-        int maxSpeed = 0;
-        Mem::tryRead(subUnitDefinitionPtr + CSubUnitDefinition::Offsets::max_speed, maxSpeed);
+        const int maxSpeed =
+            Mem::readOr<int32_t>(subUnitDefinitionPtr + CSubUnitDefinition::Offsets::max_speed);
 
         // Read on first use. The definitions come off the map in one pass now, so
         // there is nothing to defer behind a button the way there was while this
         // meant walking the heap.
-        if (CTerrain::Terrains->empty()) {
-            CTerrain::CacheTerrains();
-        }
+        CTerrain::CacheTerrains();
 
-        for (CTerrain::CTerrain* terrain : *CTerrain::Terrains) {
-            if (terrain == nullptr) {
-                continue;
-            }
+        for (const CTerrain::CTerrain& terrain : CTerrain::Terrains) {
             // Armies only care about land, navies only about water.
             const bool wantWater = (typeMask == MASK_NAVY);
-            if (terrain->is_water != wantWater) {
+            if (terrain.is_water != wantWater) {
                 continue;
             }
 
             CUnitAdjuster::CUnitAdjuster adjuster;
-            if (!Mem::tryRead(adjusterArrayPtr + (terrain->id * CUnitAdjuster::SIZE), adjuster)) {
+            if (!Mem::tryRead(adjusterArrayPtr + (terrain.id * CUnitAdjuster::SIZE), adjuster)) {
                 entity.terrain.clear();
                 return;
             }
 
             TerrainStat stat;
-            stat.name = terrain->name;
-            stat.isWater = terrain->is_water;
-            stat.attack = adjuster.attack + terrain->attack;
-            stat.defence = adjuster.defence + terrain->defence;
-            stat.attrition = adjuster.attrition + terrain->attrition;
+            stat.name = terrain.name;
+            stat.isWater = terrain.is_water;
+            stat.attack = adjuster.attack + terrain.attack;
+            stat.defence = adjuster.defence + terrain.defence;
+            stat.attrition = adjuster.attrition + terrain.attrition;
             stat.movement = adjuster.movement;
             stat.speed = speedIn(maxSpeed, adjuster.movement);
             entity.terrain.push_back(stat);
@@ -282,7 +278,7 @@ std::vector<Entity> Inspector::getSelection() {
         return selection;
     }
 
-    const uintptr_t moduleBase = Mem::moduleBase("hoi3_tfh.exe");
+    const uintptr_t moduleBase = static_cast<uintptr_t>(Hooks::MODULE_BASE);
     const uintptr_t CArmyVFTable = moduleBase + 0x11BDE0C;
     const uintptr_t CNavyVFTable = moduleBase + 0x11C869C;
     const uintptr_t CAirVFTable = moduleBase + 0x011C8774;

@@ -76,15 +76,6 @@ namespace {
     // is about 200 KB of stack at full depth, against the 1 MB a thread gets by default.
     const int MAX_TREE_DEPTH = 2048;
 
-    template <typename T>
-    T readValue(uintptr_t address, T fallback = T()) {
-        T value = fallback;
-        if (!Mem::tryRead(address, value)) {
-            return fallback;
-        }
-        return value;
-    }
-
     void traverse(std::vector<std::uintptr_t>& res, uintptr_t nodePtr, int depth) {
         if (nodePtr == 0 || depth > MAX_TREE_DEPTH) {
             return;
@@ -102,10 +93,10 @@ namespace {
         // comes out alphabetical - so this produces the keys in the same order the game
         // writes them, rather than in a shape that only happens to be complete.
         namespace Node = CTernary::NodeOffsets;
-        const uintptr_t element = readValue<uint32_t>(nodePtr + Node::element);
-        const uintptr_t lowNode = readValue<uint32_t>(nodePtr + Node::low);
-        const uintptr_t equalNode = readValue<uint32_t>(nodePtr + Node::equal);
-        const uintptr_t highNode = readValue<uint32_t>(nodePtr + Node::high);
+        const uintptr_t element = Mem::readOr<uint32_t>(nodePtr + Node::element);
+        const uintptr_t lowNode = Mem::readOr<uint32_t>(nodePtr + Node::low);
+        const uintptr_t equalNode = Mem::readOr<uint32_t>(nodePtr + Node::equal);
+        const uintptr_t highNode = Mem::readOr<uint32_t>(nodePtr + Node::high);
 
         if (lowNode != 0) {
             traverse(res, lowNode, depth + 1);
@@ -134,12 +125,12 @@ std::vector<std::pair<std::string, std::string>> CCountry::getActiveEventModifie
 
     for (size_t i = 0; i < modifiers.size(); i++) {
         const uintptr_t definition =
-            readValue<uint32_t>(modifiers[i] + ActiveModifierOffsets::definition_ptr);
+            Mem::readOr<uint32_t>(modifiers[i] + ActiveModifierOffsets::definition_ptr);
         const std::string name =
             HDS::readString(definition + ActiveModifierOffsets::definition_name);
 
         const int expiryDateTick =
-            readValue<int32_t>(modifiers[i] + ActiveModifierOffsets::expiry_tick);
+            Mem::readOr<int32_t>(modifiers[i] + ActiveModifierOffsets::expiry_tick);
 
         res.push_back(std::make_pair(name, utils::gameTickToDate(expiryDateTick)));
     }
@@ -149,7 +140,7 @@ std::vector<std::pair<std::string, std::string>> CCountry::getActiveEventModifie
 std::vector<std::pair<std::string, int>> CCountry::getGeneralModifiers(uintptr_t countryPtr) {
     std::vector<std::pair<std::string, int>> res;
 
-    const uintptr_t values = readValue<uint32_t>(
+    const uintptr_t values = Mem::readOr<uint32_t>(
         countryPtr + Offsets::global_modifier + CModifier::Offsets::values);
     if (values == 0) {
         return res;
@@ -158,11 +149,11 @@ std::vector<std::pair<std::string, int>> CCountry::getGeneralModifiers(uintptr_t
     for (int i = 0; i < CModifier::COUNT; i++) {
         const uintptr_t entry = values + CModifier::entryOffset(i);
         const uintptr_t definition =
-            readValue<uint32_t>(entry + CModifier::Entry::definition_ptr);
+            Mem::readOr<uint32_t>(entry + CModifier::Entry::definition_ptr);
 
         const std::string modifierName =
             HDS::readString(definition + CModifierDefinition::Offsets::name);
-        const int modifierValue = readValue<int32_t>(entry + CModifier::Entry::value);
+        const int modifierValue = Mem::readOr<int32_t>(entry + CModifier::Entry::value);
 
         res.push_back(std::make_pair(modifierName, modifierValue));
     }
@@ -173,7 +164,7 @@ std::vector<std::string> CCountry::getFlags(uintptr_t countryPtr) {
     std::vector<std::uintptr_t> ptrs;
 
     const uintptr_t flagsPtr =
-        readValue<uint32_t>(countryPtr + Offsets::flags + CTernary::Offsets::root);
+        Mem::readOr<uint32_t>(countryPtr + Offsets::flags + CTernary::Offsets::root);
     CCountry::traverseFlagsAndVarTreeDepthFirst(ptrs, flagsPtr);
 
     std::vector<std::string> res;
@@ -188,14 +179,14 @@ std::vector<HDS::CVariable> CCountry::getVars(uintptr_t countryPtr) {
     std::vector<std::uintptr_t> ptrs;
 
     const uintptr_t varsPtr =
-        readValue<uint32_t>(countryPtr + Offsets::variables + CTernary::Offsets::root);
+        Mem::readOr<uint32_t>(countryPtr + Offsets::variables + CTernary::Offsets::root);
     CCountry::traverseFlagsAndVarTreeDepthFirst(ptrs, varsPtr);
 
     std::vector<HDS::CVariable> res;
     for (auto& i : ptrs) {
         HDS::CVariable x;
         x.name = HDS::readString(i + CVariables::ElementOffsets::name);
-        x.value = readValue<int32_t>(i + CVariables::ElementOffsets::value);
+        x.value = Mem::readOr<int32_t>(i + CVariables::ElementOffsets::value);
         if (x.value != 0) {
             res.push_back(x);
         }
@@ -209,7 +200,7 @@ int32_t CCountry::variableValue(uintptr_t countryPtr, const char* name) {
         return 0;
     }
 
-    uintptr_t node = readValue<uint32_t>(countryPtr + Offsets::variables + CTernary::Offsets::root);
+    uintptr_t node = Mem::readOr<uint32_t>(countryPtr + Offsets::variables + CTernary::Offsets::root);
     const char* key = name;
     for (int steps = 0; node != 0 && steps < MAX_TREE_DEPTH; steps++) {
         char wanted = *key;
@@ -218,17 +209,17 @@ int32_t CCountry::variableValue(uintptr_t countryPtr, const char* name) {
         }
         const int difference =
             static_cast<int>(static_cast<signed char>(wanted))
-            - static_cast<int>(readValue<int8_t>(node + Node::character));
+            - static_cast<int>(Mem::readOr<int8_t>(node + Node::character));
         if (difference == 0) {
             if (key[1] == '\0') {
-                const uintptr_t element = readValue<uint32_t>(node + Node::element);
-                return element == 0 ? 0 : readValue<int32_t>(element + CVariables::ElementOffsets::value);
+                const uintptr_t element = Mem::readOr<uint32_t>(node + Node::element);
+                return element == 0 ? 0 : Mem::readOr<int32_t>(element + CVariables::ElementOffsets::value);
             }
             key++;
-            node = readValue<uint32_t>(node + Node::equal);
+            node = Mem::readOr<uint32_t>(node + Node::equal);
         }
         else {
-            node = readValue<uint32_t>(node + (difference > 0 ? Node::high : Node::low));
+            node = Mem::readOr<uint32_t>(node + (difference > 0 ? Node::high : Node::low));
         }
     }
     return 0;

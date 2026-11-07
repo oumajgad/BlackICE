@@ -12,24 +12,20 @@ namespace CMapProvince {
         CMapProvince res = CMapProvince{};
         res.modifier = addr + Offsets::modifier;
         res.CProvinceBuilding_array_ptr = addr + Offsets::CProvinceBuilding_array_ptr;
-        res.id = *(int*)(addr + Offsets::id);
+        res.id = Mem::readOr<int32_t>(addr + Offsets::id);
 
         const uintptr_t pool = addr + Offsets::pool;
-        res.supply_pool = *(int*)(pool + CGoodsPool::Goods::supplies);
-        res.fuel_pool = *(int*)(pool + CGoodsPool::Goods::fuel);
+        res.supply_pool = Mem::readOr<int32_t>(pool + CGoodsPool::Goods::supplies);
+        res.fuel_pool = Mem::readOr<int32_t>(pool + CGoodsPool::Goods::fuel);
 
         const uintptr_t producing = addr + Offsets::current_producing;
-        res.oil = *(int*)(producing + CGoodsPool::Goods::crude_oil);
-        res.metal = *(int*)(producing + CGoodsPool::Goods::metal);
-        res.energy = *(int*)(producing + CGoodsPool::Goods::energy);
-        res.rares = *(int*)(producing + CGoodsPool::Goods::rare_materials);
+        res.oil = Mem::readOr<int32_t>(producing + CGoodsPool::Goods::crude_oil);
+        res.metal = Mem::readOr<int32_t>(producing + CGoodsPool::Goods::metal);
+        res.energy = Mem::readOr<int32_t>(producing + CGoodsPool::Goods::energy);
+        res.rares = Mem::readOr<int32_t>(producing + CGoodsPool::Goods::rare_materials);
 
-        res.manpower = *(int*)(addr + Offsets::manpower);
-        res.leadership = *(int*)(addr + Offsets::leadership);
-        //res.owner_tag = HDS::readTag(addr + Offsets::owner);
-        //res.owner_id = *(int*)(addr + Offsets::owner + CCountryTag::Offsets::id);
-        //res.controller_tag = HDS::readTag(addr + Offsets::controller);
-        //res.controller_id = *(int*)(addr + Offsets::controller + CCountryTag::Offsets::id);
+        res.manpower = Mem::readOr<int32_t>(addr + Offsets::manpower);
+        res.leadership = Mem::readOr<int32_t>(addr + Offsets::leadership);
         return res;
     }
 
@@ -44,17 +40,16 @@ namespace CMapProvince {
 
     /**@brief one value of the province's modifier, pushed into the table on top of the stack*/
     void pushModifierValue(lua_State* L, uintptr_t values, const char* key, int type) {
-        const int value = *(int*)(values + CModifier::entryOffset(type) + CModifier::Entry::value);
-        lua_pushstring(L, key);
-        lua_pushinteger(L, value);
-        lua_settable(L, -3);
+        lua_pushinteger(L, values == 0 ? 0
+            : Mem::readOr<int32_t>(values + CModifier::entryOffset(type) + CModifier::Entry::value));
+        lua_setfield(L, -2, key);
     }
 
     void pushModifiers(lua_State* L, CMapProvince province) {
         lua_pushstring(L, "modifiers");
         lua_newtable(L);
 
-        const uintptr_t values = *(uintptr_t*)(province.modifier + CModifier::Offsets::values);
+        const uintptr_t values = Mem::readOr<uint32_t>(province.modifier + CModifier::Offsets::values);
 
         pushModifierValue(L, values, "local_ic", CModifier::LOCAL_IC);
         pushModifierValue(L, values, "local_oil", CModifier::LOCAL_CRUDE_OIL);
@@ -67,9 +62,6 @@ namespace CMapProvince {
     }
 
     void PushCMapProvinceToStack(lua_State* L, CMapProvince province) {
-        DEBUG_OUT(printf("province.id: %i \n", province.id));
-        //DEBUG_OUT(printf("province.owner_tag: %s \n", province.owner_tag));
-
         lua_newtable(L);
 
         lua_pushstring(L, "id");
@@ -101,11 +93,6 @@ namespace CMapProvince {
         lua_settable(L, -3);
 
         pushModifiers(L, province);
-
-        //lua_pushstring(L, "owner_tag");
-        //lua_pushstring(L, province.owner_tag);
-        //lua_settable(L, -3);
-        return;
     }
 
     std::string name(uintptr_t province) {
