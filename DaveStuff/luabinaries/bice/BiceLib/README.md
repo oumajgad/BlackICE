@@ -297,6 +297,9 @@ Patches which require some extra logic and hooking.
 * **enablePlacingNonResearchedBuildings()**
     * This enables the placement of buildings by the player for which he has not researched the technology yet.
     * This is needed for when an event gives the player buildings which he should place manually.
+    * Only research is waived, and only when placing a finished building: the province still has to
+      be under the country's control, below `max_level` counting queued levels, and have a port and
+      the prerequisites where the building wants them.
     * **Params**: /
     * **Return values**: /
 * **fixQueuedHistoricalModel()**

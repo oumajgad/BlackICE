@@ -1,61 +1,63 @@
 #include <Hooks/PlaceUnresearchedBuildings.hpp>
 
-#include <GameClasses/CMapProvince.hpp>
-#include <GameClasses/CProvinceBuilding.hpp>
 #include <Hooks/Hooks.hpp>
-#include <MemScan.hpp>
 #include <utils.hpp>
 
 #include <Windows.h>
 #include <cstdint>
 
 namespace {
-    // test al, al; je 0x17E5B7
-    const uintptr_t SITE = 0x17E4E5;
-    const unsigned char SITE_BYTES[8] = { 0x84, 0xC0, 0x0F, 0x84, 0xCA, 0x00, 0x00, 0x00 };
-    const uintptr_t REFUSED = 0x17E5B7;
+    // CCountry::IsBuildingAllowed
+    const uintptr_t IS_BUILDING_ALLOWED = 0xDFFC0;
+
+    // call 0xDFFC0, in CBuildingDeployment::CanDeployIn
+    const uintptr_t CALL_SITE = 0x17E4E0;
+    const int CALL_LENGTH = 5;
+
+    // cmp byte ptr [eax+edx], 0; jne 0xE000B - the research test, first in IsBuildingAllowed
+    const uintptr_t RESEARCH_SITE = 0xDFFF0;
+    const unsigned char RESEARCH_BYTES[6] = { 0x80, 0x3C, 0x10, 0x00, 0x75, 0x15 };
+    const uintptr_t RESEARCH_PASSED = 0xE000B;
+    const uintptr_t RESEARCH_FAILED = 0xDFFF6;
 
     bool installedFlag = false;
     const char* statusText = "not installed yet";
 
-    // Read by the naked stub, which is why they are plain words.
-    DWORD allowedResume = 0;
-    DWORD refusedResume = 0;
+    // Read by the naked stubs, which is why they are plain words.
+    DWORD isBuildingAllowed = 0;
+    DWORD callResume = 0;
+    DWORD researchPassed = 0;
+    DWORD researchFailed = 0;
 
-    /**@brief whether the province has room for one more level of the building*/
-    bool __stdcall roomFor(uintptr_t deployment, uintptr_t province) {
-        const uintptr_t building =
-            Mem::readOr<uint32_t>(deployment + CBuildingDeployment::Offsets::building);
-        if (building == 0) {
-            return false;
+    // Up only while CanDeployIn's own call to IsBuildingAllowed runs.
+    volatile BYTE deploying = 0;
+
+    /**
+    @brief CanDeployIn's call, made with the flag up
+
+    The arguments are on the stack and the country in ECX exactly as the replaced `call`
+    left them; IsBuildingAllowed takes them off (`ret 8`) and answers in AL, which is what
+    the `test al, al` after the five bytes reads.
+    */
+    __declspec(naked) void callStub() {
+        __asm {
+            mov byte ptr [deploying], 1
+            call dword ptr [isBuildingAllowed]
+            mov byte ptr [deploying], 0
+            jmp [callResume]
         }
-        const int index = Mem::readOr<int32_t>(building + CBuilding::Offsets::index, -1);
-        const int maxLevel = Mem::readOr<int32_t>(building + CBuilding::Offsets::max_allowed_level);
-        const uintptr_t buildings =
-            Mem::readOr<uint32_t>(province + CMapProvince::Offsets::CProvinceBuilding_array_ptr);
-        if (index < 0 || buildings == 0) {
-            return false;
-        }
-        const uintptr_t inProvince = Mem::readOr<uint32_t>(buildings + index * sizeof(uint32_t));
-        if (inProvince == 0) {
-            return false;
-        }
-        const int levels = Mem::readOr<int32_t>(inProvince + CProvinceBuilding::Offsets::level_max);
-        return levels < maxLevel * 1000;
     }
 
-    __declspec(naked) void testStub() {
+    /**@brief the research test, passed while CanDeployIn is asking; EAX the index, EDX the array*/
+    __declspec(naked) void researchStub() {
         __asm {
-            pushad
-            push ebx                        // the province
-            push edi                        // the deployment
-            call roomFor
-            test al, al
-            popad                           // leaves the flags alone
-            jz refused
-            jmp [allowedResume]
-        refused:
-            jmp [refusedResume]
+            cmp byte ptr [deploying], 0
+            jne passed
+            cmp byte ptr [eax + edx], 0     // the test replaced
+            jne passed
+            jmp [researchFailed]
+        passed:
+            jmp [researchPassed]
         }
     }
 }
@@ -69,14 +71,24 @@ bool Hooks::PlaceUnresearchedBuildings::install() {
         statusText = "hoi3_tfh.exe is not loaded";
         return false;
     }
-    allowedResume = static_cast<DWORD>(base + SITE + sizeof(SITE_BYTES));
-    refusedResume = static_cast<DWORD>(base + REFUSED);
-    if (!Hooks::hookAt(base + SITE, &testStub, SITE_BYTES, sizeof(SITE_BYTES))) {
-        statusText = Hooks::bytesAre(base + SITE, SITE_BYTES, sizeof(SITE_BYTES))
-            ? "could not make the code writable"
-            : "the deploy test is not what this build expects";
+    if (!Hooks::isCallTo(base + CALL_SITE, base + IS_BUILDING_ALLOWED)
+        || !Hooks::bytesAre(base + RESEARCH_SITE, RESEARCH_BYTES, sizeof(RESEARCH_BYTES))) {
+        statusText = "CanDeployIn or IsBuildingAllowed is not what this build expects";
         return false;
     }
+
+    isBuildingAllowed = static_cast<DWORD>(base + IS_BUILDING_ALLOWED);
+    callResume = static_cast<DWORD>(base + CALL_SITE + CALL_LENGTH);
+    researchPassed = static_cast<DWORD>(base + RESEARCH_PASSED);
+    researchFailed = static_cast<DWORD>(base + RESEARCH_FAILED);
+
+    // The research test first: hooked alone it changes nothing, as the flag is down
+    if (!Hooks::hookAt(base + RESEARCH_SITE, &researchStub, RESEARCH_BYTES, sizeof(RESEARCH_BYTES))
+        || !Hooks::hook(reinterpret_cast<void*>(base + CALL_SITE), &callStub, CALL_LENGTH, 0)) {
+        statusText = "could not make the code writable";
+        return false;
+    }
+
     installedFlag = true;
     statusText = "installed";
     return true;

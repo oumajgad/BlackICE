@@ -439,8 +439,8 @@ __declspec(dllexport) int fixOffMapIC(lua_State* L)
     return reportInstall(L, "fixOffMapIC", Hooks::OffmapIc::install(), Hooks::OffmapIc::status());
 }
 
-/**@brief lets a building be placed up to its max_level unresearched; see
-   Hooks/PlaceUnresearchedBuildings.hpp, which says what else it skips*/
+/**@brief lets a finished building be placed whether or not it is researched, every other
+   check the game makes still made; see Hooks/PlaceUnresearchedBuildings.hpp*/
 __declspec(dllexport) int enablePlacingNonResearchedBuildings(lua_State* L)
 {
     return reportInstall(L, "enablePlacingNonResearchedBuildings",
