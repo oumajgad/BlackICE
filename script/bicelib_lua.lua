@@ -129,6 +129,11 @@ if mod then
     -- stop it - every brigade needs can_paradrop = yes.
     BiceLib.Tooltips.activateParadropLine()
 
+    -- The division designer's combined arms icons give only the group's name. This
+    -- adds the bonus the group gives, research included, and whether it is a base
+    -- group - without a brigade of one, no group counts.
+    BiceLib.Tooltips.activateCombinedArmsLine()
+
     -- Reverse engineering. Both are workbench tools and both are off here. Each reads a
     -- file beside the DLL that the mod does not ship; the templates are in the BiceLib
     -- source under reversing/probes, and using one means copying it into this folder and

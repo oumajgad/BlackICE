@@ -48,6 +48,7 @@
 #include <Hooks/Tooltips/CombatUnitStats.hpp>
 #include <Hooks/Tooltips/ManpowerText.hpp>
 #include <Hooks/Tooltips/ParadropLine.hpp>
+#include <Hooks/Tooltips/CombinedArmsLine.hpp>
 #include <Hooks/TriggerText/TriggerIndentText.hpp>
 #include <Hooks/TriggerText/TriggerScrollText.hpp>
 #include <Hooks/UnassignSelected.hpp>
@@ -726,6 +727,18 @@ __declspec(dllexport) int activateParadropLine(lua_State* L)
         Hooks::Tooltips::ParadropLine::install(), Hooks::Tooltips::ParadropLine::status());
 }
 
+/**
+ * @brief says on each combined arms indicator what its group gives and whether it is a base one
+ *
+ * Under the group's name: its bonus, research included, and whether it is a base group -
+ * without a brigade of one, no group counts. See Hooks/Tooltips/CombinedArmsLine.hpp.
+ */
+__declspec(dllexport) int activateCombinedArmsLine(lua_State* L)
+{
+    return reportInstall(L, "activateCombinedArmsLine",
+        Hooks::Tooltips::CombinedArmsLine::install(), Hooks::Tooltips::CombinedArmsLine::status());
+}
+
 /////////////////////////////////////
 //        MESSAGE FUNCTIONS        //
 /////////////////////////////////////
@@ -1157,6 +1170,7 @@ namespace {
         {"activateManpowerBreakdown", activateManpowerBreakdown},
         {"activateCombatUnitStats", activateCombatUnitStats},
         {"activateParadropLine", activateParadropLine},
+        {"activateCombinedArmsLine", activateCombinedArmsLine},
     };
 
     const Function MESSAGES[] = {
