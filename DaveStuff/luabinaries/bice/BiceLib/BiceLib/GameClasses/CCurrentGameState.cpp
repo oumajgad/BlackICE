@@ -1,17 +1,10 @@
 #include <GameClasses/CCurrentGameState.hpp>
 
 #include <MemScan.hpp>
+#include <Hooks/Hooks.hpp>
 
 uintptr_t CCurrentGameState::current() {
-    // Mem::moduleBase is GetModuleHandleA, which takes the loader lock, and this runs
-    // from Present more than once a frame. A module's base cannot move while we are
-    // inside it, so it is asked for once. Zero is not cached: at the first call the
-    // module may simply not be there yet.
-    static uintptr_t cachedBase = 0;
-    if (cachedBase == 0) {
-        cachedBase = Mem::moduleBase("hoi3_tfh.exe");
-    }
-    const uintptr_t base = cachedBase;
+    const uintptr_t base = Hooks::MODULE_BASE;
     if (base == 0) {
         return 0;
     }

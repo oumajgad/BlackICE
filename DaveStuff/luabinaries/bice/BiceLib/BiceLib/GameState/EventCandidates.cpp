@@ -4,6 +4,7 @@
 #include <GameClasses/CCurrentGameState.hpp>
 #include <HoiDataStructures.hpp>
 #include <MemScan.hpp>
+#include <Hooks/Hooks.hpp>
 #include <utils.hpp>
 
 #include <Windows.h>
@@ -90,7 +91,7 @@ bool EventCandidates::rebuildNow() {
         return refuse("no game is on screen");
     }
 
-    const uintptr_t base = Mem::moduleBase("hoi3_tfh.exe");
+    const uintptr_t base = static_cast<uintptr_t>(Hooks::MODULE_BASE);
     if (base == 0) {
         return refuse("the game module could not be found");
     }

@@ -3,6 +3,7 @@
 #include <GameClasses/CInGameIdler.hpp>
 #include <Hooks/AutoSaveHooks.hpp>
 #include <MemScan.hpp>
+#include <Hooks/Hooks.hpp>
 #include <Overlay.hpp>
 
 #include <Windows.h>
@@ -267,7 +268,7 @@ void CrashSave::saveNowAndClose(const char* why, const char* caveat) {
         return;
     }
 
-    const uintptr_t base = Mem::moduleBase("hoi3_tfh.exe");
+    const uintptr_t base = static_cast<uintptr_t>(Hooks::MODULE_BASE);
     uint32_t scope = 0;
     const unsigned char* writer =
         reinterpret_cast<const unsigned char*>(base + AUTOSAVE_WRITE);

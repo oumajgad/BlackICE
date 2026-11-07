@@ -9,6 +9,7 @@
 #include <HoiDataStructures.hpp>
 #include <Hooks/MapModeHooks.hpp>
 #include <MemScan.hpp>
+#include <Hooks/Hooks.hpp>
 #include <Settings.hpp>
 
 #include <algorithm>
@@ -303,7 +304,7 @@ namespace {
     }
 
     uintptr_t gameState() {
-        const uintptr_t base = Mem::moduleBase("hoi3_tfh.exe");
+        const uintptr_t base = static_cast<uintptr_t>(Hooks::MODULE_BASE);
         if (base == 0) {
             return 0;
         }
@@ -454,7 +455,7 @@ namespace {
     /**@brief fills capacities for every province, by calling the game's function*/
     void refreshCapacities() {
         capacityCount = 0;
-        const uintptr_t base = Mem::moduleBase("hoi3_tfh.exe");
+        const uintptr_t base = static_cast<uintptr_t>(Hooks::MODULE_BASE);
         uint32_t array = 0;
         const int count = provinceVector(array);
         if (base == 0 || count == 0 || count > MAX_PROVINCES) {
@@ -534,7 +535,7 @@ namespace {
     /**@brief fills taxes for every province, by calling the game's function*/
     void refreshTaxes() {
         taxCount = 0;
-        const uintptr_t base = Mem::moduleBase("hoi3_tfh.exe");
+        const uintptr_t base = static_cast<uintptr_t>(Hooks::MODULE_BASE);
         uint32_t array = 0;
         const int count = provinceVector(array);
         if (base == 0 || count == 0 || count > MAX_PROVINCES) {

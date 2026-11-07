@@ -8,6 +8,7 @@
 #include <GameClasses/GameString.hpp>
 #include <GameState/Localisation.hpp>
 #include <MemScan.hpp>
+#include <Hooks/Hooks.hpp>
 
 #include <Windows.h>
 
@@ -32,7 +33,7 @@ bool Hooks::EffectText::ready() {
         return replaceVariableAddress != 0;
     }
     looked = true;
-    const uintptr_t base = Mem::moduleBase("hoi3_tfh.exe");
+    const uintptr_t base = static_cast<uintptr_t>(Hooks::MODULE_BASE);
     if (base == 0) {
         return false;
     }
@@ -73,7 +74,7 @@ uintptr_t Hooks::EffectText::countryOfScope(uintptr_t scope) {
         || !Mem::tryRead(scope + SCOPE_COUNTRY_TAG + CCountryTag::Offsets::id, id) || id <= 0) {
         return 0;
     }
-    const uintptr_t base = Mem::moduleBase("hoi3_tfh.exe");
+    const uintptr_t base = static_cast<uintptr_t>(Hooks::MODULE_BASE);
     uintptr_t database = 0;
     uintptr_t first = 0;
     uintptr_t last = 0;

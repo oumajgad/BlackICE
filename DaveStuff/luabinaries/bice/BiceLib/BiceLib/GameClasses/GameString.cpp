@@ -2,6 +2,7 @@
 
 #include <HoiDataStructures.hpp>
 #include <MemScan.hpp>
+#include <Hooks/Hooks.hpp>
 
 #include <cstring>
 
@@ -25,7 +26,7 @@ namespace {
             return;
         }
         looked = true;
-        const uintptr_t base = Mem::moduleBase("hoi3_tfh.exe");
+        const uintptr_t base = static_cast<uintptr_t>(Hooks::MODULE_BASE);
         if (base == 0) {
             return;
         }

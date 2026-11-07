@@ -5,6 +5,7 @@
 #include <Overlay.hpp>
 #include <Hooks/Tooltips/CombatUnitStats.hpp>
 #include <MemScan.hpp>
+#include <Hooks/Hooks.hpp>
 #include <utils.hpp>
 
 #include <Windows.h>
@@ -226,7 +227,7 @@ bool Reversing::WriteWatch::arm(uintptr_t address, int size, const char* label) 
         return false;
     }
 
-    base = Mem::moduleBase("hoi3_tfh.exe");
+    base = static_cast<uintptr_t>(Hooks::MODULE_BASE);
     if (base == 0) {
         message = "hoi3_tfh.exe is not loaded";
         return false;

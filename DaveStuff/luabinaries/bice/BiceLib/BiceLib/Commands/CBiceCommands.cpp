@@ -78,24 +78,9 @@ namespace {
     bool registeredFlag = false;
     const char* statusText = "not registered yet";
 
-    /**
-    @brief the game module, resolved here rather than taken on trust
-
-    `Hooks::MODULE_BASE` is a hint: it is set when Lua calls `setModuleBase` and zero until
-    then, so a registration ahead of that would fail for a reason that has nothing to do with
-    the registry. `CCurrentGameState::current` does the same thing and for the same reason,
-    including the part worth repeating - **zero is never cached**, because a first call can
-    precede the module and must not poison later ones.
-    */
+    /**@brief the game module; Hooks::MODULE_BASE is set as the DLL loads*/
     uintptr_t moduleBase() {
-        if (Hooks::MODULE_BASE != 0) {
-            return Hooks::MODULE_BASE;
-        }
-        static uintptr_t cached = 0;
-        if (cached == 0) {
-            cached = Mem::moduleBase("hoi3_tfh.exe");
-        }
-        return cached;
+        return Hooks::MODULE_BASE;
     }
 
     // ------------------------------------------------------------------ kinds

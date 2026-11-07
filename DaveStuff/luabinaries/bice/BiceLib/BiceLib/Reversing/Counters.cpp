@@ -267,7 +267,7 @@ bool Reversing::Counters::install() {
         return true;
     }
 
-    const uintptr_t base = Mem::moduleBase("hoi3_tfh.exe");
+    const uintptr_t base = static_cast<uintptr_t>(Hooks::MODULE_BASE);
     if (base == 0) {
         message = "the game module was not found";
         return false;

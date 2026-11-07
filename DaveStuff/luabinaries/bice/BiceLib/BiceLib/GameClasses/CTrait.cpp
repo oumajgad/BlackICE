@@ -2,6 +2,7 @@
 
 #include <HoiDataStructures.hpp>
 #include <MemScan.hpp>
+#include <Hooks/Hooks.hpp>
 
 namespace {
     /**
@@ -15,7 +16,7 @@ namespace {
         begin = 0;
         count = 0;
 
-        const uintptr_t base = Mem::moduleBase("hoi3_tfh.exe");
+        const uintptr_t base = static_cast<uintptr_t>(Hooks::MODULE_BASE);
         if (base == 0) {
             return false;
         }
@@ -45,7 +46,7 @@ namespace {
 
     /**@brief whether this is a CTrait rather than the CNullTrait the list starts with*/
     bool isTrait(uintptr_t candidate) {
-        const uintptr_t base = Mem::moduleBase("hoi3_tfh.exe");
+        const uintptr_t base = static_cast<uintptr_t>(Hooks::MODULE_BASE);
         uint32_t vftable = 0;
         return base != 0
             && Mem::tryRead(candidate, vftable)

@@ -178,13 +178,7 @@ namespace {
 
     FormatNumber formatNumber = nullptr;
 
-    /**
-     * Where the game loaded, kept rather than asked for.
-     *
-     * `Mem::moduleBase` is `GetModuleHandleA`, which takes the loader lock and walks
-     * the module list - fine once, but the country lookup below runs for every subunit
-     * of every land unit twice a day, once for rotation and once for attrition.
-     */
+    /**@brief where the game loaded, Hooks::MODULE_BASE as it was at install*/
     uintptr_t gameBase = 0;
 
     bool installedFlag = false;
@@ -772,7 +766,7 @@ bool Hooks::Tooltips::Manpower::install() {
         return true;
     }
 
-    const uintptr_t base = Mem::moduleBase("hoi3_tfh.exe");
+    const uintptr_t base = static_cast<uintptr_t>(Hooks::MODULE_BASE);
     if (base == 0) {
         statusText = "hoi3_tfh.exe is not loaded";
         return false;

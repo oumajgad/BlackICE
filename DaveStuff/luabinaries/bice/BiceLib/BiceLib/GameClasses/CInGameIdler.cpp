@@ -2,6 +2,7 @@
 
 #include <GameClasses/CCurrentGameState.hpp>
 #include <MemScan.hpp>
+#include <Hooks/Hooks.hpp>
 
 /**
 @brief the live CInGameIdler, checked against its own vftable
@@ -11,7 +12,7 @@ object there carries this class's vftable. That check is what makes calling a sl
 index safe: it says the table being indexed is the one the index was taken from.
 */
 uintptr_t CInGameIdler::current() {
-    const uintptr_t base = Mem::moduleBase("hoi3_tfh.exe");
+    const uintptr_t base = static_cast<uintptr_t>(Hooks::MODULE_BASE);
     const uintptr_t state = CCurrentGameState::current();
     if (base == 0 || state == 0) {
         return 0;

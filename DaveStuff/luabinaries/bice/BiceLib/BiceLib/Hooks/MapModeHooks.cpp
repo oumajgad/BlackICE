@@ -4,6 +4,7 @@
 #include <GameClasses/CCurrentGameState.hpp>
 #include <GameClasses/CInGameIdler.hpp>
 #include <MemScan.hpp>
+#include <Hooks/Hooks.hpp>
 #include <utils.hpp>
 
 #include <Windows.h>
@@ -218,7 +219,7 @@ bool Hooks::MapMode::install() {
         return true;
     }
 
-    const uintptr_t base = Mem::moduleBase("hoi3_tfh.exe");
+    const uintptr_t base = static_cast<uintptr_t>(Hooks::MODULE_BASE);
     if (base == 0) {
         statusText = "hoi3_tfh.exe is not loaded";
         return false;
@@ -291,7 +292,7 @@ bool Hooks::MapMode::onScreen() {
 }
 
 bool Hooks::MapMode::repaint() {
-    const uintptr_t base = Mem::moduleBase("hoi3_tfh.exe");
+    const uintptr_t base = static_cast<uintptr_t>(Hooks::MODULE_BASE);
     if (base == 0 || !installedFlag) {
         return false;
     }

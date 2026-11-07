@@ -87,7 +87,7 @@ namespace CUnit {
     /**
      * What a unit is, by the vftable at the start of it.
      *
-     * Module relative, so add Mem::moduleBase("hoi3_tfh.exe") before comparing. A
+     * Module relative, so add Hooks::MODULE_BASE before comparing. A
      * pointer whose vftable is none of these is not a unit at all, which is the check
      * that keeps a stale pointer from being read as though it were one.
      *

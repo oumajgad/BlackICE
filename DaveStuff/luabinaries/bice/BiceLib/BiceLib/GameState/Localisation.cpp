@@ -3,6 +3,7 @@
 #include <GameClasses/GameString.hpp>
 #include <GameClasses/GameSettings.hpp>
 #include <MemScan.hpp>
+#include <Hooks/Hooks.hpp>
 #include <utils.hpp>
 
 #include <Windows.h>
@@ -55,7 +56,7 @@ namespace {
             return ready;
         }
         looked = true;
-        const uintptr_t base = Mem::moduleBase("hoi3_tfh.exe");
+        const uintptr_t base = static_cast<uintptr_t>(Hooks::MODULE_BASE);
         if (base == 0) {
             return false;
         }
@@ -126,7 +127,7 @@ namespace {
     void readColours(unsigned char* into) {
         memset(into, 0, 16);
         uintptr_t settings = 0;
-        const uintptr_t base = Mem::moduleBase("hoi3_tfh.exe");
+        const uintptr_t base = static_cast<uintptr_t>(Hooks::MODULE_BASE);
         if (base == 0 || !Mem::tryRead(base + GameSettings::GLOBAL_POINTER, settings) || settings == 0) {
             return;
         }

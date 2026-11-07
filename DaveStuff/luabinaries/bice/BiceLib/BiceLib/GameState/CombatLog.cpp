@@ -7,6 +7,7 @@
 
 #include <Hooks/CCombatHooks.hpp>
 #include <MemScan.hpp>
+#include <Hooks/Hooks.hpp>
 
 #include <Windows.h>
 #include <cstring>
@@ -40,11 +41,7 @@ namespace {
     }
 
     uintptr_t moduleBase() {
-        static uintptr_t base = 0;
-        if (base == 0) {
-            base = Mem::moduleBase("hoi3_tfh.exe");
-        }
-        return base;
+        return Hooks::MODULE_BASE;
     }
 
     unsigned int currentTick() {

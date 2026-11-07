@@ -1,8 +1,10 @@
+#pragma once
 #include <Windows.h>
 
 #include <cstdint>
 
 namespace Hooks {
+    /**@brief where hoi3_tfh.exe is loaded; set as the DLL loads, the one copy everything uses*/
     extern DWORD MODULE_BASE;
     bool hook(void* hookAddress, void* hookFunc, int len, int NOPs);
 

@@ -62,7 +62,7 @@ bool Hooks::MessageQueue::install() {
         return true;
     }
 
-    base = Mem::moduleBase("hoi3_tfh.exe");
+    base = static_cast<uintptr_t>(Hooks::MODULE_BASE);
     if (base == 0) {
         statusText = "hoi3_tfh.exe is not loaded";
         return false;

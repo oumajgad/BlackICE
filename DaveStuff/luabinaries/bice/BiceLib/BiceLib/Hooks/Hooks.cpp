@@ -6,7 +6,11 @@
 #include <Hooks/Hooks.hpp>
 #include <MemScan.hpp>
 
-DWORD Hooks::MODULE_BASE;
+// Set as the DLL is loaded, so nothing can use it before it is right. It was set by a Lua
+// call, setModuleBase, and every hook installed before that call wrote to the bare rva.
+// The loader lock this runs under is the loader's own and is re-entrant, so asking for a
+// module that is already loaded is safe here.
+DWORD Hooks::MODULE_BASE = static_cast<DWORD>(Mem::moduleBase("hoi3_tfh.exe"));
 
 bool Hooks::hook(void* hookAddress, void* hookFunc, int len, int NOPs) {
     if (len < 5) {
