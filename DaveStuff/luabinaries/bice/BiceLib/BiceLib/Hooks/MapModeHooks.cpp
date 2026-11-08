@@ -1,13 +1,19 @@
 #include <Hooks/MapModeHooks.hpp>
 
 #include <GameState/CustomMapMode.hpp>
+#include <GameState/Localisation.hpp>
+#include <GameClasses/CCountryTag.hpp>
 #include <GameClasses/CCurrentGameState.hpp>
 #include <GameClasses/CInGameIdler.hpp>
+#include <GameClasses/CMapProvince.hpp>
+#include <GameClasses/GameString.hpp>
 #include <MemScan.hpp>
 #include <Hooks/Hooks.hpp>
 #include <utils.hpp>
 
 #include <Windows.h>
+#include <cstdio>
+#include <string>
 
 namespace {
     // Two places inside the VP map mode's colouring loop.
@@ -36,12 +42,21 @@ namespace {
     // changing the answer here changes which tooltip is shown and nothing else.
     const uintptr_t TOOLTIP_MODE_SITE = 0x98422;
 
+    // In the same function, where the resources branch has finished with the four goods
+    // and is about to ask for the strategic resource. Every way through the branch comes
+    // here, the one for a province the player knows nothing of among them, and nothing
+    // but that branch does.
+    const uintptr_t TOOLTIP_RESOURCES_SITE = 0x9C2EC;
+
     // mov ecx, [esi+0x34] / test ecx, ecx - five bytes, so a call fits exactly.
     const unsigned char EXPECTED_VICTORY_POINTS[5] = { 0x8B, 0x4E, 0x34, 0x85, 0xC9 };
     const unsigned char EXPECTED_COLOUR_CALL[5] = { 0xE8, 0xFA, 0xC1, 0x1F, 0x00 };
 
     // mov eax, [edx+0x164] / call eax - eight bytes, a call and three nops.
     const unsigned char EXPECTED_TOOLTIP_MODE[8] = { 0x8B, 0x82, 0x64, 0x01, 0x00, 0x00, 0xFF, 0xD0 };
+
+    // mov ecx, [edi+0x10] / mov edx, [ecx] - five bytes, so a call fits exactly.
+    const unsigned char EXPECTED_TOOLTIP_RESOURCES[5] = { 0x8B, 0x4F, 0x10, 0x8B, 0x11 };
 
     bool installedFlag = false;
     const char* statusText = "not installed yet";
@@ -67,6 +82,57 @@ namespace {
     /**@brief the map mode whose tooltip the game should build*/
     int __cdecl tooltipMode(int mode) {
         return CustomMapMode::tooltipModeFor(mode);
+    }
+
+    /**@brief the player's intelligence on the province is at least the goods lines' 1*/
+    bool playerKnows(uintptr_t province) {
+        const uintptr_t state = CCurrentGameState::current();
+        int32_t player = -1;
+        int32_t count = 0;
+        uint32_t intelArray = 0;
+        uint8_t known = 0;
+        return state != 0
+            && Mem::tryRead(state + CCurrentGameState::Offsets::player_tag
+                + CCountryTag::Offsets::id, player)
+            && player >= 0
+            && Mem::tryRead(province + CMapProvince::Offsets::intel_country_count, count)
+            && count > player
+            && Mem::tryRead(province + CMapProvince::Offsets::intel_by_country_ptr, intelArray)
+            && intelArray != 0
+            && Mem::tryRead(intelArray + player, known)
+            && known >= 1;
+    }
+
+    /**
+    @brief "\nLabel: 1.25" for one of the province's figures, or nothing where it has none
+
+    Two decimals, where the goods have one, because leadership runs in steps as small as
+    0.05. Worked in whole numbers from the thousandths the province holds.
+    */
+    std::string figureLine(uintptr_t province, uintptr_t field, const char* labelKey) {
+        int value = 0;
+        if (!Mem::tryRead(province + field, value) || value <= 0) {
+            return "";
+        }
+        const int hundredths = (value + 5) / 10;
+        char figure[32];
+        sprintf_s(figure, "%d.%02d", hundredths / 100, hundredths % 100);
+        return "\n" + Localisation::text(labelKey) + ": " + figure;
+    }
+
+    /**@brief puts the manpower and leadership lines after the goods in \p text*/
+    void __cdecl addManpowerAndLeadership(uintptr_t province, uintptr_t text) {
+        if (!playerKnows(province)) {
+            return;
+        }
+        const std::string lines =
+            figureLine(province, CMapProvince::Offsets::manpower, "MANPOWER_IRO")
+            + figureLine(province, CMapProvince::Offsets::leadership, "PV_LEADERSHIP");
+        if (lines.empty()) {
+            return;
+        }
+        const std::string whole = Game::rawChars(text) + lines;
+        Game::assignTo(reinterpret_cast<void*>(text), whole.c_str());
     }
 
     /**
@@ -181,6 +247,33 @@ namespace {
         }
     }
 
+    /**
+    @brief adds to the resources tooltip, then does the two loads it replaced
+
+    edi is the province's +8 subobject throughout the branch, and the text being built is
+    the string at `[esp+0xB8]`, the 0xE0 here being that past the return address, pushad
+    and pushfd. Unlike the others this one has no off state: it does nothing to the
+    game's data, and it serves the game's own resources mode as well as the custom one.
+    */
+    __declspec(naked) void hookedTooltipResources() {
+        __asm {
+            pushad
+            pushfd
+            lea eax, [esp + 0xE0]       // the tooltip's text
+            lea ecx, [edi - 8]          // the province
+            push eax
+            push ecx
+            call addManpowerAndLeadership
+            add esp, 8
+            popfd
+            popad
+
+            mov ecx, [edi + 0x10]       // exactly the instructions this replaced
+            mov edx, [ecx]
+            ret
+        }
+    }
+
     /**@brief refuses unless the bytes are exactly what this build should have there*/
     bool bytesMatch(unsigned char* site, const unsigned char* expected, int length = 5) {
         for (int i = 0; i < length; i++) {
@@ -228,12 +321,14 @@ bool Hooks::MapMode::install() {
     unsigned char* victoryPoints = reinterpret_cast<unsigned char*>(base + VICTORY_POINT_SITE);
     unsigned char* colourCall = reinterpret_cast<unsigned char*>(base + COLOUR_CALL_SITE);
     unsigned char* tooltipSite = reinterpret_cast<unsigned char*>(base + TOOLTIP_MODE_SITE);
+    unsigned char* resourcesSite = reinterpret_cast<unsigned char*>(base + TOOLTIP_RESOURCES_SITE);
 
     // All are checked before any is written, so a build this does not fit leaves the
     // game untouched rather than half patched.
     if (!bytesMatch(victoryPoints, EXPECTED_VICTORY_POINTS)
         || !bytesMatch(colourCall, EXPECTED_COLOUR_CALL)
-        || !bytesMatch(tooltipSite, EXPECTED_TOOLTIP_MODE, sizeof(EXPECTED_TOOLTIP_MODE))) {
+        || !bytesMatch(tooltipSite, EXPECTED_TOOLTIP_MODE, sizeof(EXPECTED_TOOLTIP_MODE))
+        || !bytesMatch(resourcesSite, EXPECTED_TOOLTIP_RESOURCES)) {
         statusText = "the code is not what this build expects";
         ERROR_OUT(printf("MapMode hook: the map mode code at %#010x is not what was "
             "expected\n", static_cast<unsigned>(base + VICTORY_POINT_SITE)));
@@ -246,17 +341,19 @@ bool Hooks::MapMode::install() {
     // and neither write lands inside the other.
     if (!writeCall(colourCall, &hookedPackColour)
         || !writeCall(victoryPoints, &hookedVictoryPoints)
-        || !writeCall(tooltipSite, &hookedTooltipMode, sizeof(EXPECTED_TOOLTIP_MODE))) {
+        || !writeCall(tooltipSite, &hookedTooltipMode, sizeof(EXPECTED_TOOLTIP_MODE))
+        || !writeCall(resourcesSite, &hookedTooltipResources)) {
         statusText = "could not make the code writable";
         return false;
     }
 
     installedFlag = true;
     statusText = "installed";
-    INFO_OUT(printf("MapMode hooks installed at %#010x, %#010x and %#010x\n",
+    INFO_OUT(printf("MapMode hooks installed at %#010x, %#010x, %#010x and %#010x\n",
         static_cast<unsigned>(base + VICTORY_POINT_SITE),
         static_cast<unsigned>(base + COLOUR_CALL_SITE),
-        static_cast<unsigned>(base + TOOLTIP_MODE_SITE)));
+        static_cast<unsigned>(base + TOOLTIP_MODE_SITE),
+        static_cast<unsigned>(base + TOOLTIP_RESOURCES_SITE)));
     return true;
 }
 

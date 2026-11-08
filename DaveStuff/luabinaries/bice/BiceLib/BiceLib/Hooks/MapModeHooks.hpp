@@ -10,7 +10,10 @@
  * is off.
  *
  * A third hook changes which map mode the province tooltip is built for, so the tooltip
- * can follow what the map shows rather than always being the VP one.
+ * can follow what the map shows rather than always being the VP one, and a fourth adds
+ * the province's manpower and leadership to the resources tooltip, which the game's own
+ * lines leave out. That one serves the game's own resources mode as well, from the
+ * first time the hooks are installed, and is not switched off with the others.
  *
  * Nothing is written to the game's data, so the VP map mode behaves normally the
  * moment the mode is switched off. The patch is written once and left in place:
