@@ -4,6 +4,7 @@
 # other province within N provinces of it, counting adjacency steps. The range only runs
 # through provinces the terminus' controller controls, so it stops at the border.
 # Termini stack: a province in range of three termini gets +3.
+# A province with infra 0 or 1, or the impassable_terrain modifier, never keeps any.
 #
 # OMG recalculates the whole map once a week: every extra_infra level is stripped, then
 # handed out again terminus by terminus. Nothing smaller would do - a province changing
@@ -1507,6 +1508,108 @@ diplomatic_decisions = {
 							}
 						}
 					}
+				}
+				# take it back where it may not stand: infra 0 or 1, or impassable terrain. The range
+				# still runs through these provinces, they just keep none of it.
+				any_controlled = {
+					limit = {
+						extra_infra = 1
+						or = {
+							not = { infra = 2 }
+							has_province_modifier = impassable_terrain
+						}
+					}
+					extra_infra = -1
+				}
+				any_controlled = {
+					limit = {
+						extra_infra = 1
+						or = {
+							not = { infra = 2 }
+							has_province_modifier = impassable_terrain
+						}
+					}
+					extra_infra = -1
+				}
+				any_controlled = {
+					limit = {
+						extra_infra = 1
+						or = {
+							not = { infra = 2 }
+							has_province_modifier = impassable_terrain
+						}
+					}
+					extra_infra = -1
+				}
+				any_controlled = {
+					limit = {
+						extra_infra = 1
+						or = {
+							not = { infra = 2 }
+							has_province_modifier = impassable_terrain
+						}
+					}
+					extra_infra = -1
+				}
+				any_controlled = {
+					limit = {
+						extra_infra = 1
+						or = {
+							not = { infra = 2 }
+							has_province_modifier = impassable_terrain
+						}
+					}
+					extra_infra = -1
+				}
+				any_controlled = {
+					limit = {
+						extra_infra = 1
+						or = {
+							not = { infra = 2 }
+							has_province_modifier = impassable_terrain
+						}
+					}
+					extra_infra = -1
+				}
+				any_controlled = {
+					limit = {
+						extra_infra = 1
+						or = {
+							not = { infra = 2 }
+							has_province_modifier = impassable_terrain
+						}
+					}
+					extra_infra = -1
+				}
+				any_controlled = {
+					limit = {
+						extra_infra = 1
+						or = {
+							not = { infra = 2 }
+							has_province_modifier = impassable_terrain
+						}
+					}
+					extra_infra = -1
+				}
+				any_controlled = {
+					limit = {
+						extra_infra = 1
+						or = {
+							not = { infra = 2 }
+							has_province_modifier = impassable_terrain
+						}
+					}
+					extra_infra = -1
+				}
+				any_controlled = {
+					limit = {
+						extra_infra = 1
+						or = {
+							not = { infra = 2 }
+							has_province_modifier = impassable_terrain
+						}
+					}
+					extra_infra = -1
 				}
 				clr_country_flag = extra_infra_walker
 			}
