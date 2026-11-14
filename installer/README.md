@@ -128,6 +128,16 @@ own setup is told apart from ours without storing a marker anywhere. One of ours
 to whichever type the player picks on a reinstall, so an older install's mini dumps become
 full ones unless the box is unticked.
 
+### Antivirus
+
+`script/BiceLib.dll` hooks the game's own functions, which a third party antivirus has
+flagged at least twice (Windows Defender does not). `antivirus.iss` warns about it where
+it will be read: the system check page names the mod folder to exclude, the finished
+page repeats it in one line (`[Messages]` in `BlackICE.iss`), and after the install
+steps the installer checks the DLL is still there. One deleted the moment it was
+written gets an error box naming the file and the folder, so the player hears it from
+the installer rather than from a mod that quietly does not work.
+
 ### The uninstaller's name
 
 Inno hardcodes it as `unins000.exe` and has no directive to change it. Renaming
@@ -301,6 +311,7 @@ installer/
     oldversions.iss   finding and removing older BlackICE versions
     uninstallpick.iss which versions to remove, asked on the way out
     redist.iss        runtime detection and silent install
+    antivirus.iss     the antivirus warning, and the check BiceLib.dll survived
   fetchRedists.py     downloads the Microsoft runtimes
   buildInstaller.py   stamps the version, runs ISCC
   redist/             gitignored, filled by fetchRedists.py

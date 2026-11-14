@@ -15,7 +15,7 @@ end
 
 local ok, mod = pcall(require, "BiceLib")
 if not ok then
-    Utils.LUA_DEBUGOUT("Failed to load BiceLib.dll. Some features are not available")
+    Utils.LUA_DEBUGOUT("Failed to load BiceLib.dll. BlackICE will not work correctly - check your Anti-Virus program")
     Utils.LUA_DEBUGOUT(mod)
     mod = nil
 end

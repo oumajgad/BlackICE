@@ -115,6 +115,12 @@ UninstallDisplayIcon={app}\hoi3_tfh.exe
 [Languages]
 Name: "english"; MessagesFile: "compiler:Default.isl"
 
+[Messages]
+; The finished page's text, with the antivirus line added. inc\antivirus.iss
+; has why; the system check page carries the full path.
+FinishedLabel=Setup has finished installing [name] on your computer. The mod may be launched by selecting the installed shortcuts.%n%nIf your antivirus program blocks the game or removes BiceLib.dll, add an exception for the mod folder, tfh\mod\{#ModFolder}.
+FinishedLabelNoIcons=Setup has finished installing [name] on your computer.%n%nIf your antivirus program blocks the game or removes BiceLib.dll, add an exception for the mod folder, tfh\mod\{#ModFolder}.
+
 [Types]
 Name: "full";   Description: "Recommended - everything the mod needs"
 Name: "custom"; Description: "Custom"; Flags: iscustom
@@ -213,6 +219,7 @@ Type: files;          Name: "{app}\tfh\mod\{#ModFolder}.mod"
 #include "inc\oldversions.iss"
 #include "inc\uninstallpick.iss"
 #include "inc\redist.iss"
+#include "inc\antivirus.iss"
 
 [Code]
 
@@ -282,6 +289,9 @@ begin
 
   Report := Report + 'Windows crash dumps' + #13#10;
   Report := Report + '   ' + DescribeCrashDumps() + #13#10 + #13#10;
+
+  Report := Report + 'Antivirus' + #13#10;
+  Report := Report + DescribeAntivirus(WizardDirValue, '{#ModFolder}') + #13#10;
 
   Report := Report + 'Runtimes' + #13#10;
   Report := Report + RuntimeReport();
@@ -409,6 +419,12 @@ begin
   if Removed > 0 then
     Summary := Summary + 'Older versions' + #13#10 +
                Format('  Removed %d, freeing %s.', [Removed, DescribeSize(Reclaimed)]) + #13#10 + #13#10;
+
+  // At the very end, so an antivirus that scans the new files has had all the
+  // steps above to act before we look.
+  WizardForm.StatusLabel.Caption := 'Checking BiceLib.dll...';
+  if not CheckBiceLibPresent(WizardDirValue, '{#ModFolder}') then
+    Summary := Summary + 'BiceLib.dll' + #13#10 + '  Missing after the install - removed by an antivirus program?' + #13#10 + #13#10;
 
   Log('Summary:' + #13#10 + Summary);
 end;
