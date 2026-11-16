@@ -828,7 +828,7 @@ local UnitTypes = {
 		Type = "Air",
 		SubType = "Fighter"},
 
-	gliders = {
+	glider = {
 		Index = 109,
 		Serial = 1,
 		Type = "Air",
@@ -2123,13 +2123,13 @@ function HandleProductionMinister_Tick(minister)
 
 			if liTotalAirInf > 0 then
 			--Utils.LUA_DEBUGOUT("Country: " .. tostring(ProductionData.ministerTag))
-				local liTotalAirTrans = ProductionData.TotalCounts[UnitTypes.gliders.Index]
+				local liTotalAirTrans = ProductionData.TotalCounts[UnitTypes.glider.Index]
 				local liTotalAirTransNeeded = math.floor(liTotalAirInf / 12)
 
 				if liTotalAirTransNeeded > liTotalAirTrans then
 				--Utils.LUA_DEBUGOUT("Country1: " .. tostring(ProductionData.ministerTag))
-					ProductionData.UnitNeeds[UnitTypes.gliders.Index] = liTotalAirTransNeeded - liTotalAirTrans
-					laAirUnitRatio["gliders"] = 0
+					ProductionData.UnitNeeds[UnitTypes.glider.Index] = liTotalAirTransNeeded - liTotalAirTrans
+					laAirUnitRatio["glider"] = 0
 				end
 			end
 --old
@@ -2343,7 +2343,7 @@ function BuildUnit(vIC, vsType, vaFirePower)
 	-- if (vsType == "Flying_boat" and not(ProductionData.TechStatus:IsUnitAvailable(CSubUnitDataBase.GetSubUnit("Flying_boat")))) then
 		-- vsType = "naval_bomber"
 	-- end
-	-- if (vsType == "gliders" and not(ProductionData.TechStatus:IsUnitAvailable(CSubUnitDataBase.GetSubUnit("gliders")))) then
+	-- if (vsType == "glider" and not(ProductionData.TechStatus:IsUnitAvailable(CSubUnitDataBase.GetSubUnit("glider")))) then
 		-- vsType = "transport_plane"
 	-- end
 

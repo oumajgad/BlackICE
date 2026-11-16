@@ -260,7 +260,7 @@ units = {
     "rocket_interceptor": "rocket fighter squadron",
     "naval_bomber": "naval bomber squadron",
     #"jet_fighter": "jet fighter squadron",
-    "gliders": "glider squadron",
+    "glider": "glider squadron",
     "flying_rocket": "flying rocket",
     "flying_bomb": "flying bomb",
     "Flying_boat": "flying boat squadron",
