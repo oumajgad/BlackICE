@@ -1,4 +1,8 @@
-require("lfs")
+-- OpenHOI3, the new engine, sets the global OpenHOI3 and cannot load the native lfs; it gives a folder's
+-- files through OpenHOI3.Files instead (GetFilesFromPath below). The original engine has no such global.
+if OpenHOI3 == nil then
+    require("lfs")
+end
 
 function ReadFileAsArray(path, delimiter)
     local f_open, err = io.open(path, "r")
@@ -108,6 +112,10 @@ function ReplaceLineAtCommentMark(filename, commentMark, newLine)
 end
 
 function GetFilesFromPath(path)
+    if OpenHOI3 ~= nil then
+        -- The folder's file names, subfolders left out, as the loop below gives them; nil for no such folder.
+        return OpenHOI3.Files[path] or {}
+    end
     local res = {}
     for entry in lfs.dir(path) do
         if entry ~= "." and entry ~= ".." then
