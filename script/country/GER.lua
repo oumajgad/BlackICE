@@ -768,7 +768,7 @@ function P.Build_armor_brigade(vIC, viManpowerTotal, voType, voProductionData, v
 		voType.TertiaryMain = "division_hq_standard"
 		voType.first = "mechanized_brigade"
 		voType.SecondaryMain = "sp_artillery_brigade"
-		voType.third = "armored_engineers_brigade"
+		voType.third = "armored_engineer_brigade"
 		voType.fifth = "medium_tank_destroyer_brigade"
 
 		voType.Support = 0
@@ -814,7 +814,7 @@ function P.Build_heavy_armor_brigade(vIC, viManpowerTotal, voType, voProductionD
 		voType.TertiaryMain = "division_hq_veteran"
 		voType.second = "sp_artillery_brigade"
 		voType.third = "medium_tank_destroyer_brigade"
-		voType.fourth = "armored_engineers_brigade"
+		voType.fourth = "armored_engineer_brigade"
 		voType.Support = 0
 		voType.SupportVariation = 0
 
@@ -824,7 +824,7 @@ function P.Build_heavy_armor_brigade(vIC, viManpowerTotal, voType, voProductionD
 		voType.TertiaryMain = "division_hq_veteran"
 		voType.second = "sp_artillery_brigade"
 		voType.third = "heavy_tank_destroyer_brigade"
-		voType.fourth = "armored_engineers_brigade"
+		voType.fourth = "armored_engineer_brigade"
 		voType.Support = 0
 		voType.SupportVariation = 0
 	end
@@ -886,11 +886,11 @@ function P.Build_ss_infantry_brigade(vIC, viManpowerTotal, voType, voProductionD
 	if (math.random(100) < 33) then
 		voType.SecondaryMain = "ss_heavy_armor_brigade"
 		voType.TransportMain = "horse_transport"
-		voType.TertiaryMain = "division_hq_SS_standard"
+		voType.TertiaryMain = "division_hq_ss_standard"
 	else
 		voType.SecondaryMain = "ss_anti_tank_brigade"
 		voType.TransportMain = "horse_transport"
-		voType.TertiaryMain = "division_hq_SS_standard"
+		voType.TertiaryMain = "division_hq_ss_standard"
 	end
 
 		voType.Support = 3

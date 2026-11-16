@@ -722,7 +722,7 @@ local UnitTypes = {
 		SubType = "Support",
 		SupportType = Utils.Set {
 			"Airborne"}},
-	armored_engineers_brigade = {
+	armored_engineer_brigade = {
 		Index = 93,
 		Type = "Land",
 		SubType = "Support",
@@ -970,7 +970,7 @@ local UnitTypes = {
 		SupportType = Utils.Set {
 			"ssinf"}},
 
-	ss_armored_engineers_brigade = {
+	ss_armored_engineer_brigade = {
 		Index = 130,
 		Type = "Land",
 		SubType = "Support",

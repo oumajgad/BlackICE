@@ -767,7 +767,7 @@ function P.Build_armor_brigade(vIC, viManpowerTotal, voType, voProductionData, v
 		voType.TertiaryMain = "division_hq_veteran"
 		voType.SecondaryMain = "mechanized_infantry_bat"
 		voType.first = "sp_artillery_brigade"
-		voType.second = "armored_engineers_brigade"
+		voType.second = "armored_engineer_brigade"
 		voType.third = "medium_tank_destroyer_brigade"
 		voType.Support = 0
 		voType.SupportVariation = 0
@@ -791,7 +791,7 @@ function P.Build_armor_brigade(vIC, viManpowerTotal, voType, voProductionData, v
 		voType.TertiaryMain = "division_hq_standard"
 		voType.first = "mechanized_infantry_bat"
 		voType.second = "sp_artillery_brigade"
-		voType.SecondaryMain = "armored_engineers_brigade"
+		voType.SecondaryMain = "armored_engineer_brigade"
 		voType.third = "medium_tank_destroyer_brigade"
 		voType.Support = 0
 		voType.SupportVariation = 0
@@ -803,7 +803,7 @@ end
 
 function P.Build_heavy_armor_brigade(vIC, viManpowerTotal, voType, voProductionData, viUnitQuantity)
 	local sovTag = CCountryDataBase.GetTag("GER")
-	--local check1 = voProductionData.TechStatus:IsUnitAvailable(CSubUnitDataBase.GetSubUnit("armored_engineers_brigade"))
+	--local check1 = voProductionData.TechStatus:IsUnitAvailable(CSubUnitDataBase.GetSubUnit("armored_engineer_brigade"))
 	--local check2 = voProductionData.TechStatus:IsUnitAvailable(CSubUnitDataBase.GetSubUnit("sp_artillery_brigade"))
 
 	if voProductionData.humanTag == sovTag then
@@ -812,7 +812,7 @@ function P.Build_heavy_armor_brigade(vIC, viManpowerTotal, voType, voProductionD
 		voType.TertiaryMain = "division_hq_guard_veteran"
 		voType.second = "sp_artillery_brigade"
 		voType.third = "assault_gun_brigade"
-		voType.fourth = "armored_engineers_brigade"
+		voType.fourth = "armored_engineer_brigade"
 		voType.Support = 0
 		voType.SupportVariation = 0
 
@@ -821,7 +821,7 @@ function P.Build_heavy_armor_brigade(vIC, viManpowerTotal, voType, voProductionD
 		voType.TransportMain = "hftrack_transport"
 		voType.TertiaryMain = "division_hq_standard"
 		voType.second = "sp_artillery_brigade"
-		voType.third = "armored_engineers_brigade"
+		voType.third = "armored_engineer_brigade"
 		voType.fourth = "assault_gun_brigade"
 		voType.Support = 0
 		voType.SupportVariation = 0
@@ -834,7 +834,7 @@ end
 function P.Build_light_armor_brigade(vIC, viManpowerTotal, voType, voProductionData, viUnitQuantity)
 
 
-		voType.SecondaryMain = "armored_engineers_brigade"
+		voType.SecondaryMain = "armored_engineer_brigade"
 		voType.TransportMain = "truck_transport"
 		voType.TertiaryMain = "division_hq_standard"
 		voType.first = "motorized_infantry_bat"

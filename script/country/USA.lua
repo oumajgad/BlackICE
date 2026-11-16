@@ -161,7 +161,7 @@ function P.LandTechs(voTechnologyData)
 		"armor_thickness",
 		"cast_armour",
 		"amph_armour_brigade_activation",
-		"armored_engineers_brigade_activation",
+		"armored_engineer_brigade_activation",
 		"Panzerfaust_Bazooka_AT_Tech",
 		"armor_plate_design",
 		"medium_tank_destroyer_brigade_activation"};
@@ -718,7 +718,7 @@ function P.Build_mechanized_brigade(vIC, viManpowerTotal, voType, voProductionDa
 		voType.first = "medium_tank_destroyer_brigade"
 		voType.second = "sp_artillery_brigade"
 		voType.third = "armored_car_brigade"
-		voType.fourth = "armored_engineers_brigade"
+		voType.fourth = "armored_engineer_brigade"
 		voType.Support = 0
 		voType.SupportVariation = 0
 
@@ -730,7 +730,7 @@ function P.Build_mechanized_brigade(vIC, viManpowerTotal, voType, voProductionDa
 		voType.first = "medium_tank_destroyer_brigade"
 		voType.second = "medium_artillery_brigade"
 		voType.third = "armored_car_brigade"
-		voType.fourth = "armored_engineers_brigade"
+		voType.fourth = "armored_engineer_brigade"
 		voType.Support = 0
 		voType.SupportVariation = 0
 	end
@@ -749,7 +749,7 @@ function P.Build_armor_brigade(vIC, viManpowerTotal, voType, voProductionData, v
 		voType.SecondaryMain = "mechanized_infantry_bat"
 		voType.first = "sp_artillery_brigade"
 		voType.second = "medium_tank_destroyer_brigade"
-		voType.third = "armored_engineers_brigade"
+		voType.third = "armored_engineer_brigade"
 		voType.Support = 0
 		voType.SupportVariation = 0
 
@@ -772,7 +772,7 @@ function P.Build_armor_brigade(vIC, viManpowerTotal, voType, voProductionData, v
 		voType.TertiaryMain = "division_hq_standard"
 		voType.SecondaryMain = "mechanized_infantry_bat"
 		voType.first = "sp_artillery_brigade"
-		voType.second = "armored_engineers_brigade"
+		voType.second = "armored_engineer_brigade"
 		voType.third = "medium_tank_destroyer_brigade"
 		voType.Support = 0
 		voType.SupportVariation = 0
@@ -792,7 +792,7 @@ function P.Build_heavy_armor_brigade(vIC, viManpowerTotal, voType, voProductionD
 		voType.TertiaryMain = "division_hq_standard"
 		voType.second = "sp_artillery_brigade"
 		voType.third = "medium_tank_destroyer_brigade"
-		voType.fourth = "armored_engineers_brigade"
+		voType.fourth = "armored_engineer_brigade"
 		voType.Support = 0
 		voType.SupportVariation = 0
 
@@ -802,7 +802,7 @@ function P.Build_heavy_armor_brigade(vIC, viManpowerTotal, voType, voProductionD
 		voType.TertiaryMain = "division_hq_standard"
 		voType.second = "sp_artillery_brigade"
 		voType.third = "medium_tank_destroyer_brigade"
-		voType.fourth = "armored_engineers_brigade"
+		voType.fourth = "armored_engineer_brigade"
 		voType.Support = 0
 		voType.SupportVariation = 0
 	end
@@ -814,7 +814,7 @@ end
 function P.Build_light_armor_brigade(vIC, viManpowerTotal, voType, voProductionData, viUnitQuantity)
 
 
-	voType.SecondaryMain = "armored_engineers_brigade"
+	voType.SecondaryMain = "armored_engineer_brigade"
 	voType.TransportMain = "truck_transport"
 	voType.TertiaryMain = "division_hq_standard"
 	voType.first = "motorized_infantry_bat"
@@ -878,7 +878,7 @@ end
 
 function P.Build_semi_motorized_brigade(vIC, viManpowerTotal, voType, voProductionData, viUnitQuantity)
 
-	local check1 = voProductionData.TechStatus:IsUnitAvailable(CSubUnitDataBase.GetSubUnit("armored_engineers_brigade"))
+	local check1 = voProductionData.TechStatus:IsUnitAvailable(CSubUnitDataBase.GetSubUnit("armored_engineer_brigade"))
 	local check2 = voProductionData.TechStatus:IsUnitAvailable(CSubUnitDataBase.GetSubUnit("sp_artillery_brigade"))
 
 	-- voType.TertiaryMain = "division_hq"
