@@ -201,7 +201,7 @@ units = {
 
     "engineer_brigade": "engineer regiment",
     "motorized_engineer_brigade": "motorized engineer regiment",
-    "armored_engineers_brigade": "armored engineer regiment",
+    "armored_engineer_brigade": "armored engineer regiment",
 
     "airborne_engineer_bat": "airborne engineer regiment",
     "airborne_artillery_brigade": "airborne artillery regiment",
