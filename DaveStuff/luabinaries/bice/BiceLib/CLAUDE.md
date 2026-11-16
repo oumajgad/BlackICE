@@ -115,4 +115,7 @@ demand, so a hook is both cheaper and more honest than a poll that infers.
   build-specific.
 - **OpenHOI3 must not read anything from here.** The rewrite is its own technology; a
   build-specific offset is meaningless to it and a header of ours is the wrong place for it to
-  look. It reads the fact base's prose instead.
+  look. It reads the fact base's prose instead. **One exception, 2026-11-16:** to give BlackICE
+  what it asks of this DLL natively (`OpenHOI3.BiceLib`), OpenHOI3 may read this README and
+  source for what a Lua function does - never an address, offset or layout (OpenHOI3's
+  `CLAUDE.md`, *What this repository may not do*).
