@@ -682,7 +682,7 @@ local UnitTypes = {
 		Index = 85,
 		Type = "air",
 		SubType = "Tactical"},
-	twin_engine_fighters = {
+	twin_engine_fighter = {
 		Index = 86,
 		Serial = 1,
 		Type = "Air",
@@ -2337,7 +2337,7 @@ function BuildUnit(vIC, vsType, vaFirePower)
 	-- NOTE: this won't work, as the ratios will still not be satisfied, and the AI will continue to try to build/license the original units,
 	-- which will in turn continue to build more of the replacement units instead. -Marneman
 	-- local origVsType = vsType
-	-- if (vsType == "twin_engine_fighters" and not(ProductionData.TechStatus:IsUnitAvailable(CSubUnitDataBase.GetSubUnit("twin_engine_fighters")))) then
+	-- if (vsType == "twin_engine_fighter" and not(ProductionData.TechStatus:IsUnitAvailable(CSubUnitDataBase.GetSubUnit("twin_engine_fighter")))) then
 		-- vsType = "multi_role"
 	-- end
 	-- if (vsType == "Flying_boat" and not(ProductionData.TechStatus:IsUnitAvailable(CSubUnitDataBase.GetSubUnit("Flying_boat")))) then
@@ -2384,7 +2384,7 @@ function BuildUnit(vIC, vsType, vaFirePower)
 	local lbLicenseRequired = false
 	lbLicenseRequired, ProductionData.ManpowerTotal =  Support_License.ProductionCheck(loType, ProductionData)
 
--- if(origVsType == "twin_engine_fighters" and lbLicenseRequired) then
+-- if(origVsType == "twin_engine_fighter" and lbLicenseRequired) then
 	-- Utils.LUA_DEBUGOUT("LICENSE REQUIRED: ORIG: " .. origVsType)
 	-- Utils.LUA_DEBUGOUT("VSTYPE AFTER: " .. tostring(vsType))
 	-- Utils.LUA_DEBUGOUT("LOTYPE AFTER:")

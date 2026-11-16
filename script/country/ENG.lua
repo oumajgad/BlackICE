@@ -684,7 +684,7 @@ function P.AirRatio(voProductionData)
 		naval_bomber = 2,
 		strategic_bomber = 2,
 		light_bomber = 2,
-		twin_engine_fighters = 2
+		twin_engine_fighter = 2
 	};
 
 	return laArray

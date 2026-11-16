@@ -158,7 +158,7 @@ function P.ProductionCheck(voType, voProductionData)
 				desiredTech = "multirole_fighter_design"
 			elseif voType.Name == "cag" then
 				desiredTech = "cag_design"
-			elseif voType.Name == "twin_engine_fighters" then
+			elseif voType.Name == "twin_engine_fighter" then
 				desiredTech = "light_bomber"
 			elseif voType.Name == "tactical_bomber" then
 				desiredTech = "twin_engine_bomber_design"

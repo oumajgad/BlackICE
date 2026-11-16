@@ -252,7 +252,7 @@ units = {
     "interceptor": "fighter squadron",
     "multi_role": "fighter-bomber squadron",
     "cas": "close-air-support squadron",
-    "twin_engine_fighters": "twin engine fighter squadron",
+    "twin_engine_fighter": "twin engine fighter squadron",
     "transport_plane": "transport squadron",
     "tactical_bomber": "bomber squadron",
     "light_bomber": "light bomber squadron",
