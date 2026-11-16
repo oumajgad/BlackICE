@@ -276,7 +276,7 @@ units = {
 
     "transport_ship": "transport ship",
     "seaplane_tender": "seaplane carrier",
-    "Convoy_raider_ship": "auxiliary cruiser",
+    "convoy_raider": "auxiliary cruiser",
 
     "torpedo_boat": "torpedo boat",
     "motor_torpedo_boat": "motor torpedo boat",

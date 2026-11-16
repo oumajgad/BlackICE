@@ -659,7 +659,7 @@ local UnitTypes = {
 		Type = "Naval",
 		SubType = "Cruiser"},
 
-	Convoy_raider_ship = {
+	convoy_raider = {
 		Index = 81,
 		Serial = 1,
 		Type = "Naval",
