@@ -498,7 +498,7 @@ function P.Build_armor_brigade(vIC, viManpowerTotal, voType, voProductionData, v
 		voType.TertiaryMain = "division_hq_standard"
 		voType.first = "mechanized_infantry_bat"
 		voType.second = "sp_artillery_brigade"
-		voType.fourth = "armored_engineers_brigade"
+		voType.fourth = "armored_engineer_brigade"
 		voType.sixth = "medium_tank_destroyer_brigade"
 		voType.Support = 0
 		voType.SupportVariation = 0
@@ -522,7 +522,7 @@ function P.Build_armor_brigade(vIC, viManpowerTotal, voType, voProductionData, v
 		voType.TertiaryMain = "division_hq_standard"
 		voType.first = "mechanized_infantry_bat"
 		voType.second = "sp_artillery_brigade"
-		voType.SecondaryMain = "armored_engineers_brigade"
+		voType.SecondaryMain = "armored_engineer_brigade"
 		voType.sixth = "tank_destroyer_brigade"
 		voType.Support = 0
 		voType.SupportVariation = 0
@@ -541,7 +541,7 @@ function P.Build_heavy_armor_brigade(vIC, viManpowerTotal, voType, voProductionD
 		voType.TransportMain = "hftrack_transport"
 		voType.TertiaryMain = "division_hq_standard"
 		voType.second = "sp_artillery_brigade"
-		voType.fourth = "armored_engineers_brigade"
+		voType.fourth = "armored_engineer_brigade"
 		voType.sixth = "medium_tank_destroyer_brigade"
 		voType.Support = 0
 		voType.SupportVariation = 0
@@ -551,7 +551,7 @@ function P.Build_heavy_armor_brigade(vIC, viManpowerTotal, voType, voProductionD
 		voType.TransportMain = "hftrack_transport"
 		voType.TertiaryMain = "division_hq_standard"
 		voType.second = "sp_artillery_brigade"
-		voType.fourth = "armored_engineers_brigade"
+		voType.fourth = "armored_engineer_brigade"
 		voType.sixth = "medium_tank_destroyer_brigade"
 		voType.Support = 0
 		voType.SupportVariation = 0
@@ -564,7 +564,7 @@ end
 function P.Build_light_armor_brigade(vIC, viManpowerTotal, voType, voProductionData, viUnitQuantity)
 
 
-		voType.SecondaryMain = "armored_engineers_brigade"
+		voType.SecondaryMain = "armored_engineer_brigade"
 		voType.TransportMain = "truck_transport"
 		voType.TertiaryMain = "division_hq_standard"
 		voType.first = "motorized_infantry_bat"

@@ -123,7 +123,8 @@ require('utility_settings')
 -- costs nothing until something asks for data. Must come before either utility.
 require('bicedata')
 
-if G_UtilityEnabled then
+-- The wxWidgets utility is deprecated, and OpenHOI3, the new engine (the global OpenHOI3), does not load wxLua at all.
+if G_UtilityEnabled and OpenHOI3 == nil then
     -- Hoi 3 Utility
     require('gui-utility')
     require('gui-utility-help')

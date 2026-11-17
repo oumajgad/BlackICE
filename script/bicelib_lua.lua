@@ -13,8 +13,13 @@ function ResetBiceLibLuaLog()
     end
 end
 
-local ok, mod = pcall(require, "BiceLib")
-if not ok then
+-- OpenHOI3, the new engine (the global OpenHOI3), cannot load BiceLib.dll and gives none of it: BlackICE plays there
+-- without the DLL, and BiceLib's patches are for its later enhanced engine.
+local ok, mod = false, nil
+if OpenHOI3 == nil then
+    ok, mod = pcall(require, "BiceLib")
+end
+if not ok and OpenHOI3 == nil then
     Utils.LUA_DEBUGOUT("Failed to load BiceLib.dll. BlackICE will not work correctly - check your Anti-Virus program")
     Utils.LUA_DEBUGOUT(mod)
     mod = nil

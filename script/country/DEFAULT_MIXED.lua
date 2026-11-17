@@ -131,7 +131,7 @@ function P.LandTechs(voTechnologyData)
 		{"tank_destroyer_brigade_activation", 0},
 
 		-- Unused Armored Engineer
-		{"armored_engineers_brigade_activation", 0},
+		{"armored_engineer_brigade_activation", 0},
 
 		};
 

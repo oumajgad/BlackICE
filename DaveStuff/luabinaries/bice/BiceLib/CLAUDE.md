@@ -115,4 +115,6 @@ demand, so a hook is both cheaper and more honest than a poll that infers.
   build-specific.
 - **OpenHOI3 must not read anything from here.** The rewrite is its own technology; a
   build-specific offset is meaningless to it and a header of ours is the wrong place for it to
-  look. It reads the fact base's prose instead.
+  look. It reads the fact base's prose instead. (2026-11-16: OpenHOI3's normal engine gives
+  none of this DLL's functions; its patches and mechanics belong to OpenHOI3's planned enhanced
+  engine - its `docs/enhanced.md` - and how they may be read for it is decided then.)

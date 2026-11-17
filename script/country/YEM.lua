@@ -71,7 +71,7 @@ function P.LandTechs(voTechnologyData)
 		{"tank_optics", 0},
 		{"heavy_tank_destroyer_brigade_activation", 0},
 		{"amph_armour_brigade_activation", 0},
-		{"armored_engineers_brigade_activation", 0},
+		{"armored_engineer_brigade_activation", 0},
 		{"machine_gun_doctrine", 0},
 		{"Panzerfaust_Bazooka_AT_Tech", 0},
 		{"urban_Fighting_Equipment_and_Training", 0},
