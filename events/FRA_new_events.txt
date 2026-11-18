@@ -193,9 +193,7 @@ country_event = {
 		date = 1938.11.15
 		supplies = 2000
 		money = 300
-	}
-	mean_time_to_happen = {
-		days = 1
+		controls = 2613
 	}
 	title = "EVTNAME33343"
 	desc = "EVTDESC33343"
@@ -205,7 +203,6 @@ country_event = {
 		USA = {
 			country_event = 33344
 		}
-		set_country_flag = air_order_FRA_curtiss_one
 		money = -300
 		supplies = -2000
 		ai_chance = {
@@ -228,9 +225,7 @@ country_event = {
 		date = 1939.08.30
 		supplies = 6000
 		money = 1800
-	}
-	mean_time_to_happen = {
-		days = 1
+		controls = 5160
 	}
 	title = "EVTNAME33346"
 	desc = "EVTDESC33346"
@@ -238,9 +233,8 @@ country_event = {
 	option = {
 		name = "Order these aircrafts"
 		USA = {
-			country_event = 33344
+			country_event = 33354
 		}
-		set_country_flag = air_order_FRA_curtiss_two
 		money = -1800
 		supplies = -6000
 		ai_chance = {
@@ -266,7 +260,9 @@ country_event = {
 	picture = "airorder"
 	option = {
 		name = "Accept"
-		set_global_flag = USA_approves
+		FROM = {
+			country_event = 33345
+		}
 		ai_chance = {
 			factor = 100
 		}
@@ -275,6 +271,38 @@ country_event = {
 		name = "No Need"
 		ai_chance = {
 			factor = 0
+		}
+		# Give them back their money/supplies since we don't want to do the job
+		FROM = {
+			money = 300
+			supplies = 2000
+		}
+	}
+}
+country_event = {
+	id = 33354
+	is_triggered_only = yes
+	title = "EVTNAME33344"
+	desc = "EVTDESC33344"
+	picture = "airorder"
+	option = {
+		name = "Accept"
+		FROM = {
+			country_event = 33347
+		}
+		ai_chance = {
+			factor = 100
+		}
+	}
+	option = {
+		name = "No Need"
+		ai_chance = {
+			factor = 0
+		}
+		# Give them back their money/supplies since we don't want to do the job
+		FROM = {
+			money = 1800
+			supplies = 6000
 		}
 	}
 }
