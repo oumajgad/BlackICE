@@ -75,55 +75,43 @@ country_event = {
 		modifier = {
 			factor = 0.90
 			THIS = {
-				has_country_flag = elite_commandos_2
+				commando_brigade_activation = 2
 			}
 		}
 		modifier = {
 			factor = 0.90
 			THIS = {
-				has_country_flag = elite_commandos_3
+				commando_brigade_activation = 3
 			}
 		}
 		modifier = {
 			factor = 0.90
 			THIS = {
-				has_country_flag = elite_commandos_4
+				commando_brigade_activation = 4
 			}
 		}
 		modifier = {
 			factor = 0.90
 			THIS = {
-				has_country_flag = elite_commandos_5
+				commando_brigade_activation = 5
 			}
 		}
 		modifier = {
 			factor = 0.90
 			THIS = {
-				has_country_flag = elite_commandos_6
+				commando_brigade_activation = 6
 			}
 		}
 		modifier = {
 			factor = 0.90
 			THIS = {
-				has_country_flag = elite_commandos_7
+				commando_brigade_activation = 7
 			}
 		}
 		modifier = {
 			factor = 0.90
 			THIS = {
-				has_country_flag = elite_commandos_8
-			}
-		}
-		modifier = {
-			factor = 0.90
-			THIS = {
-				has_country_flag = elite_commandos_9
-			}
-		}
-		modifier = {
-			factor = 0.90
-			THIS = {
-				has_country_flag = elite_commandos_10
+				commando_brigade_activation = 8
 			}
 		}
 	}
@@ -5438,82 +5426,8 @@ country_event = {
 # 090 - 099 : Mission status events (failed, minor success, major success, etc.), Misc.
 # The Installation Security level is read straight from the technology (installation_security = N)
 # by the payload events above; events 999090-999092, which copied it into a variable, are gone.
-# Background event to set country flags for the levels of the Elite Commandos tech each country has.
-country_event = {
-	id = 999093
-	trigger = {
-		tag = OMG
-	}
-	mean_time_to_happen = {
-		days = 15
-	}
-	title = "Commando Tech Flag Set Event"
-	desc = ""
-	picture = ""
-	option = {
-		name = "Ok."
-		any_country = {
-			limit = {
-				commando_brigade_activation = 1
-			}
-			set_country_flag = elite_commandos_1
-		}
-		any_country = {
-			limit = {
-				commando_brigade_activation = 2
-			}
-			set_country_flag = elite_commandos_2
-		}
-		any_country = {
-			limit = {
-				commando_brigade_activation = 3
-			}
-			set_country_flag = elite_commandos_3
-		}
-		any_country = {
-			limit = {
-				commando_brigade_activation = 4
-			}
-			set_country_flag = elite_commandos_4
-		}
-		any_country = {
-			limit = {
-				commando_brigade_activation = 5
-			}
-			set_country_flag = elite_commandos_5
-		}
-		any_country = {
-			limit = {
-				commando_brigade_activation = 6
-			}
-			set_country_flag = elite_commandos_6
-		}
-		any_country = {
-			limit = {
-				commando_brigade_activation = 7
-			}
-			set_country_flag = elite_commandos_7
-		}
-		any_country = {
-			limit = {
-				commando_brigade_activation = 8
-			}
-			set_country_flag = elite_commandos_8
-		}
-		any_country = {
-			limit = {
-				commando_brigade_activation = 9
-			}
-			set_country_flag = elite_commandos_9
-		}
-		any_country = {
-			limit = {
-				commando_brigade_activation = 10
-			}
-			set_country_flag = elite_commandos_10
-		}
-	}
-}
+# 999001 reads the Elite Commandos level straight from the technology
+# (commando_brigade_activation = N); event 999093, which copied it into flags, is gone.
 
 # Mission: No valid target for the random country chosen during the mission
 country_event = {
@@ -5556,6 +5470,77 @@ country_event = {
 				value = +1
 			}
 		}
+		# Hand out the reward units this country has now earned (CommandoRaids-Units.txt):
+		# each one's trigger says whose it is and at how many points, so only those fire
+		country_event = 999100
+		country_event = 999101
+		country_event = 999102
+		country_event = 999103
+		country_event = 999104
+		country_event = 999105
+		country_event = 999106
+		country_event = 999107
+		country_event = 999108
+		country_event = 999109
+		country_event = 999110
+		country_event = 999111
+		country_event = 999112
+		country_event = 999113
+		country_event = 999114
+		country_event = 999115
+		country_event = 999116
+		country_event = 999117
+		country_event = 999118
+		country_event = 999119
+		country_event = 999120
+		country_event = 999121
+		country_event = 999122
+		country_event = 999123
+		country_event = 999124
+		country_event = 999125
+		country_event = 999126
+		country_event = 999130
+		country_event = 999131
+		country_event = 999140
+		country_event = 999141
+		country_event = 999142
+		country_event = 999150
+		country_event = 999151
+		country_event = 999152
+		country_event = 999153
+		country_event = 999154
+		country_event = 999155
+		country_event = 999156
+		country_event = 999157
+		country_event = 999158
+		country_event = 999160
+		country_event = 999161
+		country_event = 999162
+		country_event = 999170
+		country_event = 999171
+		country_event = 999172
+		country_event = 999173
+		country_event = 999174
+		country_event = 999175
+		country_event = 999176
+		country_event = 999177
+		country_event = 999178
+		country_event = 999179
+		country_event = 999180
+		country_event = 999181
+		country_event = 999182
+		country_event = 999183
+		country_event = 999184
+		country_event = 999190
+		country_event = 999191
+		country_event = 999192
+		country_event = 999193
+		country_event = 999194
+		country_event = 999195
+		country_event = 999196
+		country_event = 999197
+		country_event = 999198
+		country_event = 999199
 	}
 }
 
@@ -5575,6 +5560,77 @@ country_event = {
 				value = +2
 			}
 		}
+		# Hand out the reward units this country has now earned (CommandoRaids-Units.txt):
+		# each one's trigger says whose it is and at how many points, so only those fire
+		country_event = 999100
+		country_event = 999101
+		country_event = 999102
+		country_event = 999103
+		country_event = 999104
+		country_event = 999105
+		country_event = 999106
+		country_event = 999107
+		country_event = 999108
+		country_event = 999109
+		country_event = 999110
+		country_event = 999111
+		country_event = 999112
+		country_event = 999113
+		country_event = 999114
+		country_event = 999115
+		country_event = 999116
+		country_event = 999117
+		country_event = 999118
+		country_event = 999119
+		country_event = 999120
+		country_event = 999121
+		country_event = 999122
+		country_event = 999123
+		country_event = 999124
+		country_event = 999125
+		country_event = 999126
+		country_event = 999130
+		country_event = 999131
+		country_event = 999140
+		country_event = 999141
+		country_event = 999142
+		country_event = 999150
+		country_event = 999151
+		country_event = 999152
+		country_event = 999153
+		country_event = 999154
+		country_event = 999155
+		country_event = 999156
+		country_event = 999157
+		country_event = 999158
+		country_event = 999160
+		country_event = 999161
+		country_event = 999162
+		country_event = 999170
+		country_event = 999171
+		country_event = 999172
+		country_event = 999173
+		country_event = 999174
+		country_event = 999175
+		country_event = 999176
+		country_event = 999177
+		country_event = 999178
+		country_event = 999179
+		country_event = 999180
+		country_event = 999181
+		country_event = 999182
+		country_event = 999183
+		country_event = 999184
+		country_event = 999190
+		country_event = 999191
+		country_event = 999192
+		country_event = 999193
+		country_event = 999194
+		country_event = 999195
+		country_event = 999196
+		country_event = 999197
+		country_event = 999198
+		country_event = 999199
 	}
 }
 
@@ -5594,6 +5650,77 @@ country_event = {
 				value = +3
 			}
 		}
+		# Hand out the reward units this country has now earned (CommandoRaids-Units.txt):
+		# each one's trigger says whose it is and at how many points, so only those fire
+		country_event = 999100
+		country_event = 999101
+		country_event = 999102
+		country_event = 999103
+		country_event = 999104
+		country_event = 999105
+		country_event = 999106
+		country_event = 999107
+		country_event = 999108
+		country_event = 999109
+		country_event = 999110
+		country_event = 999111
+		country_event = 999112
+		country_event = 999113
+		country_event = 999114
+		country_event = 999115
+		country_event = 999116
+		country_event = 999117
+		country_event = 999118
+		country_event = 999119
+		country_event = 999120
+		country_event = 999121
+		country_event = 999122
+		country_event = 999123
+		country_event = 999124
+		country_event = 999125
+		country_event = 999126
+		country_event = 999130
+		country_event = 999131
+		country_event = 999140
+		country_event = 999141
+		country_event = 999142
+		country_event = 999150
+		country_event = 999151
+		country_event = 999152
+		country_event = 999153
+		country_event = 999154
+		country_event = 999155
+		country_event = 999156
+		country_event = 999157
+		country_event = 999158
+		country_event = 999160
+		country_event = 999161
+		country_event = 999162
+		country_event = 999170
+		country_event = 999171
+		country_event = 999172
+		country_event = 999173
+		country_event = 999174
+		country_event = 999175
+		country_event = 999176
+		country_event = 999177
+		country_event = 999178
+		country_event = 999179
+		country_event = 999180
+		country_event = 999181
+		country_event = 999182
+		country_event = 999183
+		country_event = 999184
+		country_event = 999190
+		country_event = 999191
+		country_event = 999192
+		country_event = 999193
+		country_event = 999194
+		country_event = 999195
+		country_event = 999196
+		country_event = 999197
+		country_event = 999198
+		country_event = 999199
 	}
 }
 
