@@ -5,7 +5,7 @@
     "units/*.txt"
   ],
   "doc": "",
-  "source": "CSubUnitDefinition::LoadKey (0x1A3C80, 73 keys) and CUnitAdjuster::LoadKey (0x1D4C10, 4 keys) read out of the game: reversing/findings/FINDINGS-definitions.md, the LoadKey entries of ghidra/project.json, CLASSES.md \"What a unit file's terrain blocks become\", reversing/findings/FINDINGS-unitdef.md; terrain blocks are the categories of map/terrain.txt, the index space of the terrain adjusters (BiceLib GameClasses/CSubUnitDefinition.hpp, read live)",
+  "source": "CSubUnitDefinition::LoadKey (0x1A3C80, 73 keys, every number through TokenToFixedPoint: reversing/findings/FINDINGS-bicereadings.md, section 2) and CUnitAdjuster::LoadKey (0x1D4C10, 4 keys) read out of the game: reversing/findings/FINDINGS-definitions.md, the LoadKey entries of ghidra/project.json, CLASSES.md \"What a unit file's terrain blocks become\", reversing/findings/FINDINGS-unitdef.md; terrain blocks are the categories of map/terrain.txt, the index space of the terrain adjusters (BiceLib GameClasses/CSubUnitDefinition.hpp, read live)",
   "root": "file",
   "blocks": {
     "file": {
@@ -21,6 +21,7 @@
     },
     "stats": {
       "confidence": "confirmed",
+      "all_digits": true,
       "desc": "every key a unit type's definition takes: the unit file's, and a technology's effect on the type",
       "keys": {
         "type": {
@@ -506,6 +507,7 @@
     },
     "adjuster": {
       "confidence": "confirmed",
+      "all_digits": true,
       "desc": "what the unit type gets in one environment (CUnitAdjuster); every figure a fraction, 0.1 is +10%",
       "keys": {
         "attack": {
@@ -528,6 +530,7 @@
     },
     "extra_amphibious_defence": {
       "confidence": "inferred",
+      "all_digits": true,
       "desc": "unit type = number; the key is in the loader's switch, the inside of the block was not read",
       "patterns": [
         {

@@ -8,4 +8,4 @@ part that needs PySide6.
     result = runner.run(modRoot, modes={"code", "references"})
 """
 
-__version__ = "0.3.13"
+__version__ = "0.3.14"

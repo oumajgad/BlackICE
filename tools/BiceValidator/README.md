@@ -253,6 +253,7 @@ what each one's value is:
 | BV305 | a key given twice where one is kept |
 | BV306 | a name that does not exist: a province, a country, a unit type, a technology |
 | BV307 | a `model` list whose length does not fit its unit type |
+| BV314 | a unit figure of more than three decimals - in `units/`, a technology's block for a unit type, or a terrain block. The game reads every digit after the point as thousandths, so `0.3375` is 3.375 ([`FINDINGS-bicereadings.md`](../../../hoi3-reversing/findings/FINDINGS-bicereadings.md), section 2). Modifiers are cut to three places by another reader and are not reported |
 
 **Where a schema's facts come from.** Most loaders were read out of the game. Each is a
 switch over the keys it knows, and that list of keys is the grammar

@@ -57,6 +57,10 @@ Two more things a schema may say:
 
 A value `exactly:a|b` is `one of:` compared with case, for a loader that compares exactly.
 A block with `"skips_unknown": true` has a loader that drops an unknown key's block whole.
+A block or a key with `"all_digits": true` has its numbers read by the engine's
+TokenToFixedPoint, which keeps every digit after the point, so a figure of more than three
+decimals is read ten and more times too large (BV314). A key keeps its block's flag when
+another block includes it, so a technology's effect on a unit type has the unit file's.
 - `"include": ["country:file"]` in a block - that block also takes every key and pattern of
   block `file` of the schema of kind `country`, for a file read by the same loader as
   another kind.
@@ -171,6 +175,7 @@ class Key:
         self.required = bool(data.get("required", False))
         self.confidence = data.get("confidence", block.confidence)
         self.desc = data.get("desc", "")
+        self.all_digits = bool(data.get("all_digits", block.all_digits))
         self.match = data.get("match")          # for a pattern
         self.target = None                      # the Block a block:<name> value is
 
@@ -217,6 +222,9 @@ class Block:
         # does, instead of reading its contents as its own keys.
         self.skips_unknown = bool(data.get("skips_unknown", False))
         self.list = data.get("list")
+        # True where the loader reads its numbers with TokenToFixedPoint, which keeps every
+        # digit after the point: `0.3375` is 3.375 (BV314). A key may say so itself.
+        self.all_digits = bool(data.get("all_digits", False))
         self.keys = {k.lower(): Key(self, k, v) for k, v in data.get("keys", {}).items()}
         self.patterns = [Key(self, p.get("match", "any"), p) for p in data.get("patterns", [])]
         self.include = data.get("include", [])

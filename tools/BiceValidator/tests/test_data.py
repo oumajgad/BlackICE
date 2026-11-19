@@ -173,6 +173,59 @@ LATER_OOB = dedent("""
     """)
 
 
+class DecimalsTest(unittest.TestCase):
+    """BV314: TokenToFixedPoint keeps every digit after the point, so a unit figure of more
+    than three decimals is read too large. A modifier's reader cuts to three, so it is not."""
+
+    @classmethod
+    def setUpClass(cls):
+        cls.mod = TinyMod()
+        cls.mod.write("units/tank.txt", dedent("""
+            tank = {
+                type = land
+                build_cost_ic = 0.3375
+                soft_attack = 1.25
+                plains = { attack = -0.0500 }
+                extra_amphibious_defence = { infantry_brigade = 0.12345 }
+            }
+            """))
+        cls.mod.write("technologies/size.txt", dedent("""
+            size_tech = {
+                tank = { build_cost_ic = -0.3375 }
+                infantry_brigade = { hard_attack = 0.125 }
+            }
+            """))
+        cls.mod.write("common/static_modifiers.txt",
+                      "war = { national_unity = -0.0025 }\n")
+        result = runner.run(cls.mod.root, [rules.CODE], workers=1)
+        cls.found = [(d.file, d.message, d.hint) for d in result.diagnostics
+                     if d.rule == "BV314"]
+
+    @classmethod
+    def tearDownClass(cls):
+        cls.mod.close()
+
+    def test_unit_files_technologies_and_adjusters(self):
+        self.assertEqual(sorted(m for _, m, _ in self.found), [
+            "`attack = -0.0500` is read as -0.5",
+            "`build_cost_ic = -0.3375` is read as -3.375",
+            "`build_cost_ic = 0.3375` is read as 3.375",
+            "`infantry_brigade = 0.12345` is read as 12.345"])
+
+    def test_the_hint_rounds_to_three(self):
+        hints = {m: h for _, m, h in self.found}
+        self.assertIn("`0.338`", hints["`build_cost_ic = 0.3375` is read as 3.375"])
+        self.assertIn("`-0.338`", hints["`build_cost_ic = -0.3375` is read as -3.375"])
+        self.assertIn("`-0.05`", hints["`attack = -0.0500` is read as -0.5"])
+
+    def test_the_reader(self):
+        from bicevalidator.checks.data import token_to_fixed_point
+        for text, read in (("0.5", 500), ("1.25", 1250), ("2", 2000), ("-1.5", -1500),
+                           ("-0.5", -500), ("0.3375", 3375), ("0.0025", 25),
+                           ("1.0001", 1001), (".5", 500), ("-0.0500", -500)):
+            self.assertEqual(token_to_fixed_point(text), read, text)
+
+
 class LeaderTest(unittest.TestCase):
     @classmethod
     def setUpClass(cls):

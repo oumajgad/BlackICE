@@ -8,6 +8,7 @@ wrong key wrecks the rest of the file"). Values are checked for their kind, and 
 existing; conditions and effects inside these files go to the script checker.
 """
 
+import decimal
 import difflib
 import os
 import re
@@ -201,7 +202,8 @@ class DataChecker:
             return
         if node.value is None:
             return      # `key =` with nothing after it is the syntax check's (BV004)
-        self._scalar(node, kind, node.value, spec.describe())
+        if self._scalar(node, kind, node.value, spec.describe()) and spec.all_digits:
+            self._decimals(node)
 
     def _scalar(self, node, kind, value, described, at_value=True):
         """Check one value; False if its shape is wrong."""
@@ -250,6 +252,22 @@ class DataChecker:
             self._report("BV306", node, "%s `%s` does not exist"
                          % (_cap(declared), value), at_value=at_value)
         return True
+
+    def _decimals(self, node):
+        """BV314: a number of more than three decimals, read by TokenToFixedPoint."""
+        value = node.value
+        found = _NUMBER.match(value)
+        point = value.find(".")
+        if not found or point < 0 or len(value) - point - 1 <= 3:
+            return
+        meant = decimal.Decimal(value).quantize(decimal.Decimal("0.001"),
+                                                 rounding=decimal.ROUND_HALF_UP)
+        self._report(
+            "BV314", node, "`%s = %s` is read as %s"
+            % (node.key, value, _thousandths(token_to_fixed_point(value))),
+            hint="The game takes every digit after the point as thousandths. Write at most "
+                 "three decimals: `%s`." % _thousandths(int(meant * 1000)),
+            at_value=True)
 
     def _list(self, node, kind, where):
         for item in node.children:
@@ -427,3 +445,37 @@ def _a(text):
 
 def _cap(text):
     return text[:1].upper() + text[1:]
+
+
+def token_to_fixed_point(text):
+    """What the engine's TokenToFixedPoint makes of \\p text, in thousandths: atoi of the
+    text times 1000, plus every digit after the first `.` read as one 32-bit number - padded
+    with zeros to three digits where there are fewer, never cut where there are more - and
+    negated when the text begins with `-` (reversing/findings/FINDINGS-bicereadings.md,
+    section 2)."""
+    whole = re.match(r"\s*([+-]?\d*)", text).group(1)
+    whole = int(whole) if whole.strip("+-") else 0
+    fraction, digits = 0, 0
+    point = text.find(".")
+    if point >= 0:
+        for char in text[point + 1:]:
+            if not char.isdigit():
+                break
+            fraction = (fraction * 10 + int(char)) & 0xFFFFFFFF
+            digits += 1
+        while digits < 3:
+            fraction = (fraction * 10) & 0xFFFFFFFF
+            digits += 1
+    if fraction >= 0x80000000:
+        fraction -= 0x100000000
+    if text.lstrip().startswith("-"):
+        fraction = -fraction
+    total = (whole * 1000 + fraction) & 0xFFFFFFFF
+    return total - 0x100000000 if total >= 0x80000000 else total
+
+
+def _thousandths(value):
+    """\\p value thousandths as a mod file writes it: `3.375`, `5`, `-0.25`."""
+    sign = "-" if value < 0 else ""
+    whole, part = divmod(abs(value), 1000)
+    return sign + (("%d.%03d" % (whole, part)).rstrip("0").rstrip(".") if part else str(whole))

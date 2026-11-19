@@ -235,6 +235,19 @@ _RULES = [
          "`BiceLib.Leaders.activateHistoryLeaderRanks()`** he comes into service at the first "
          "line's rank, so only a later `rank` is reported."),
 
+    # --- numbers -------------------------------------------------------------------------
+    Rule("BV314", "figure-past-three-decimals", ERROR, CODE, "confirmed",
+         "Unit figure with more than three decimals",
+         "The game keeps its numbers in thousandths. The reader for a unit type's figures - "
+         "in a file of units/, in a technology's block for a unit type, and in a terrain, "
+         "night, river or fort block - takes **every** digit after the point as the "
+         "thousandths, and only pads them where there are fewer than three. So `0.3375` is "
+         "read as 3.375, and `0.5000` as 5: ten or more times what is written, and with "
+         "nothing in any log (TokenToFixedPoint, "
+         "reversing/findings/FINDINGS-bicereadings.md, section 2). Write at most three "
+         "decimals. Modifiers - laws, event modifiers, a technology's effects on a country - "
+         "are read by another reader that cuts to three places, so they are not reported."),
+
     # --- references ----------------------------------------------------------------------
     Rule("BV201", "undefined-event", ERROR, REFERENCES, "confirmed",
          "Event fired that does not exist",
