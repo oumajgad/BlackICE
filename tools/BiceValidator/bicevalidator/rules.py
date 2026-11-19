@@ -81,9 +81,11 @@ _RULES = [
          "Bare word inside a block of keys",
          "A block is either `key = value` pairs or a plain list like `{ 0 0 1 }`. A bare "
          "word among pairs is usually a key that lost its `= value`, a typo, or a number "
-         "split by a space - `-0 6` for `-0.06`. The game does not read past it: a bare `6` "
-         "in `base_values` lost the whole static modifier and crashed every start at "
-         "\"Processing Flags\" (2026-10-19)."),
+         "split by a space - `-0 6` for `-0.06`. The game's key reader takes the word after a "
+         "key in place of the `=` and loses it, and the key gets the value of the pair before "
+         "it: `manpower 0.66` after `infra = 5` is manpower 5. A bare `6` in `base_values` "
+         "lost the whole static modifier and crashed every start at \"Processing Flags\" "
+         "(2026-10-19)."),
 
     # --- schema --------------------------------------------------------------------------
     Rule("BV101", "unknown-key", ERROR, CODE, "confirmed",

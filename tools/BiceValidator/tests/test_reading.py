@@ -134,6 +134,22 @@ class SyntaxTest(unittest.TestCase):
         found = check('desc = "runs on\nid = 5 {"\n')
         self.assertEqual([d.rule for d in found], ["BV006"])
 
+    def test_key_with_no_equals_at_the_top_of_a_file(self):
+        # Kiskunhalas: the file's own top level is a block of pairs too, and the lost value is
+        # one finding with its key, not two.
+        found = check("owner = HUN\ninfra = 5\nmanpower 0.66\nterrain = plains\n",
+                      "history/provinces/x.txt")
+        self.assertEqual([(d.rule, d.line) for d in found], [("BV010", 3)])
+        self.assertIn("loses `0.66`", found[0].message)
+
+    def test_bare_word_in_a_nested_block(self):
+        found = check('regiment = { type = hq_brigade name "HQ" historical_model = 0 }\n',
+                      "history/units/x.txt")
+        self.assertEqual([d.rule for d in found], ["BV010"])
+
+    def test_a_list_is_not_a_block_of_pairs(self):
+        self.assertEqual(check("color = { 1 2 3 }\n", "common/x.txt"), [])
+
 
 if __name__ == "__main__":
     unittest.main()

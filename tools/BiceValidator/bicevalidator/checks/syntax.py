@@ -220,15 +220,44 @@ def check(source, result):
                                   % (token.line, token.end_line),
                                   related=[Related("text ends here", path, token.end_line)]))
 
-    # Events and decisions get the stricter BV113 from the script check instead.
+    # Events and decisions get the stricter BV113 from the script check instead. The file's own
+    # top level is a block of pairs too - a province history's `manpower 0.66` sits there - so
+    # it is looked at with the blocks under it.
     script_file = path.startswith(("events/", "decisions/"))
-    for node in ([] if script_file else parser.walk(result.root)):
+    for node in ([] if script_file else [result.root, *parser.walk(result.root)]):
         if node.is_block and node.children:
             pairs = [c for c in node.children if c.op is not None or c.key is None]
             bare = [c for c in node.children if c.op is None and c.key is not None]
             if pairs and bare:
+                lost = set()
                 for item in bare:
-                    out.append(Diagnostic("BV010", path, item.line, item.col,
-                                          "Bare `%s` among `key = value` pairs" % item.key,
+                    if id(item) in lost:
+                        continue
+                    value = _lost_value(node, item)
+                    if value is not None:
+                        lost.add(id(value))
+                        message = ("`%s %s` has no `=`: the game reads `%s` with the value of the pair "
+                                   "before it and loses `%s`" % (item.key, value.key, item.key, value.key))
+                    else:
+                        message = "Bare `%s` among `key = value` pairs" % item.key
+                    out.append(Diagnostic("BV010", path, item.line, item.col, message,
                                           context=describe(node)))
     return out
+
+
+def _lost_value(block, item):
+    """The bare word on the same line straight after \\p item, which the game takes for the
+    missing `=`'s place and loses; None where there is none.
+
+    The game's key reader takes a key and one token, and reads a value only when that token is
+    `=`; otherwise the token is lost and the key gets the value the pair before it read (read
+    off the executable, hoi3-reversing findings/FINDINGS-triggergrammar.md, section 2, and
+    docs/mechanics/clausewitz.md in OpenHOI3). So `manpower 0.66` after `infra = 5` is
+    manpower 5."""
+    siblings = block.children
+    at = siblings.index(item)
+    after = siblings[at + 1] if at + 1 < len(siblings) else None
+    if after is not None and after.op is None and after.key is not None and after.children is None \
+            and after.line == item.line:
+        return after
+    return None
