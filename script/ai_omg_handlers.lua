@@ -10,7 +10,17 @@ function IntelligenceMinisterUtilityThings()
 		DetermineSpriteDeletionStatus()
 		DetermineBiceLibLoadStatus()
 		RunBiceLibPeriodicsManually()
+		-- A load leaves every country's candidate event list empty, and the engine
+		-- only rebuilds them on a month change - so without this a loaded game fires
+		-- no events at all until the 1st, then fires a month of them at once. This
+		-- calls the game's own rebuild: nothing is patched, and it covers every
+		-- country rather than only the one being played. Once per Lua state, and
+		-- above the wx utility's switch, behind which it was never reached.
+		if BiceLib ~= nil then
+			BiceLib.Events.rebuildCandidates()
+		end
 	end
+
 	if G_UtilityEnabled ~= true then
 		return
 	end
@@ -21,14 +31,6 @@ function IntelligenceMinisterUtilityThings()
 		SaveLoaded = true
 		G_DaysSinceLastUpdate = 0
 		DeterminePlayers()
-		-- A load leaves every country's candidate event list empty, and the engine
-		-- only rebuilds them on a month change - so without this a loaded game fires
-		-- no events at all until the 1st, then fires a month of them at once. This
-		-- calls the game's own rebuild: nothing is patched, and it covers every
-		-- country rather than only the one being played.
-		if BiceLib ~= nil then
-			BiceLib.Events.rebuildCandidates()
-		end
 		Stats.SetUpStatCollectionPage()
 	end
 
