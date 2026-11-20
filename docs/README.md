@@ -41,3 +41,8 @@ The one most relevant to modding is
 [`findings/FINDINGS-script.md`](../../hoi3-reversing/findings/FINDINGS-script.md),
 which is where the trigger and effect lists above came from. The Lua pages come from the
 same place: `luabindExtract.py` recovers every exported function's signature out of the exe.
+
+- **[What BiceLib does](bicelib/features.md)** - every feature of the DLL as behaviour,
+  with no address or offset in it: the fixes and rules, the tooltip and effect texts, the
+  command framework, the in-game utility page by page, and the tooling. Written for a
+  reader who cannot open the DLL's source.
