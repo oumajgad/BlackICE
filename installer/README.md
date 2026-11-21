@@ -7,6 +7,7 @@ archive and the ten step forum post.
 
 ```
 python installer/fetchRedists.py          # once, or when Microsoft ships updates
+python installer/fetchEngine.py           # once, and again when ENGINE_VERSION changes
 python installer/buildInstaller.py 15.2
 ```
 
@@ -34,6 +35,10 @@ the `ISCC` environment variable to override.
 
 - `--no-redist` — build without bundling the Microsoft runtimes. The installer
   still detects and reports what is missing; it just cannot fix it.
+- `--no-engine` — build without the OpenHOI3 engine and its launcher: an
+  installer for the original game alone, whose `.mod` names no engine. For
+  testing; a release always carries the engine, and without this flag the build
+  stops if `fetchEngine.py` has not been run.
 - `--skip-validation` — build even when BICE Validator finds a file the game cannot
   read past. Before building, the build runs the validator's code mode
   ([`tools/BiceValidator`](../tools/BiceValidator/README.md)), stops on a new unmatched
@@ -173,9 +178,64 @@ not a download. The installer enables it with
 `DISM /Online /Enable-Feature /FeatureName:NetFx3`, which pulls from Windows
 Update, and says so plainly if that fails.
 
-### The shortcut
+### The OpenHOI3 engine
 
-The shortcut launches the game directly, which skips the launcher and with it
+From version 16 one install of the mod plays on two engines: the original game
+with `BiceLib.dll`, and [OpenHOI3](https://github.com/Dsafe1/OpenHOI3). The
+engine is a core part of a release, not a component the player can untick.
+
+The mod is made for **one release** of the engine, named in
+`releaseCommon.ENGINE_VERSION` (`openhoi3-0.1.3` is the tag `v0.1.3`). Moving to
+a newer engine is changing that line. The binary is never committed:
+`fetchEngine.py` downloads that release's engine and launcher archives from the
+engine's GitHub releases, checks them against the release's `SHA256SUMS.txt`,
+refuses an engine whose `engine.txt` says another version than the mod names,
+and unpacks them into `installer/openhoi/`. `--from <folder>` takes the archives
+from OpenHOI3's own `export/release` folder instead, for an engine that is not
+published yet.
+
+Both go **inside the mod's own folder**, with every version of the mod:
+
+```
+tfh\mod\BlackICE 16.0.mod             engine = "openhoi3-0.1.3"
+tfh\mod\BlackICE 16.0\engine\         OpenHOI3.exe, engine.txt
+tfh\mod\BlackICE 16.0\launcher\       OpenHOI3.Launcher.exe
+```
+
+- The `.mod` gets the line `engine = "..."` when a release is built
+  (`releaseCommon.writeModFile`). The original game passes over a key it does
+  not know, so the one `.mod` serves both. The template in `Mod File/` has no
+  such line on purpose: a working copy is played on whatever engine its
+  developer has built.
+- The launcher takes the `engine` folder beside its own as its own engine, so
+  the one copy also plays the base game and any mod that names no engine.
+- Per version, so a new version of the mod brings its own launcher and nothing
+  has to stay compatible with an older one. Removing a version removes its
+  engine with it; nothing of OpenHOI3 is installed anywhere else.
+- The engine is a 64 bit program where the game is 32 bit. On a 32 bit Windows
+  it and its shortcuts are left out, the mod is installed for the original
+  alone, and the system check page says so.
+
+The engine is under the GPL-3.0. Its source is the tag the release was built
+from, `ENGINE_REPOSITORY/tree/<tag>`; a release of the mod has to carry that
+link, and the engine's own licences travel inside the two folders.
+
+### The shortcuts
+
+Two, each saying which engine it starts:
+
+```
+BlackICE 16.0 (OpenHOI3)        tfh\mod\BlackICE 16.0\launcher\OpenHOI3.Launcher.exe
+                                --install="<game folder>" --mod="mod/BlackICE 16.0.mod"
+BlackICE 16.0 (original game)   hoi3_tfh.exe  -mod=mod/BlackICE 16.0.mod
+```
+
+The first opens the OpenHOI3 launcher with this install and this version already
+ticked; Play starts it. Those values **are** quoted - they are the launcher's
+own switches. An installer built with `--no-engine` has only the second, under
+the plain name.
+
+The original's shortcut launches the game directly, which skips the launcher and with it
 both the "pick the mod in the launcher" step and the .NET dependency:
 
 ```
@@ -313,15 +373,17 @@ installer/
     redist.iss        runtime detection and silent install
     antivirus.iss     the antivirus warning, and the check BiceLib.dll survived
   fetchRedists.py     downloads the Microsoft runtimes
+  fetchEngine.py      downloads the OpenHOI3 engine and launcher the mod names
   buildInstaller.py   stamps the version, runs ISCC
   redist/             gitignored, filled by fetchRedists.py
+  openhoi/            gitignored, filled by fetchEngine.py: engine/ and launcher/
   staging/            gitignored, generated .mod and unpacked dxvk/borderless
   output/             gitignored, the built installer
 ```
 
 `releaseCommon.py` in the repo root holds the definition of what a release is:
-the folders the mod is made of, where it goes inside the game, and the two lines
-that carry the version.
+the folders the mod is made of, where it goes inside the game, the two lines
+that carry the version, and the release of OpenHOI3 it is made for.
 
 `BlackICE.iss` lists those folders one by one rather than walking the tree, so
 `buildInstaller.py` checks the two agree before compiling (`checkIssCoverage`)

@@ -54,6 +54,14 @@ jobs:
         # system check page instead of installing it.
         run: python installer/fetchRedists.py
 
+      - name: Fetch the OpenHOI3 engine
+        # The release of OpenHOI3 named in releaseCommon.ENGINE_VERSION, from
+        # that project's GitHub releases, checked against its SHA256SUMS.txt.
+        # Not committed either - about 100 MB to download. A core part of a
+        # release, so unlike the runtimes there is no switch for leaving it out
+        # here, and the build below stops without it.
+        run: python installer/fetchEngine.py
+
       - name: Build the installer
         run: python installer/buildInstaller.py "${{ inputs.version }}"
 

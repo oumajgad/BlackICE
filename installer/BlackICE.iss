@@ -141,7 +141,7 @@ Name: "crashdumps"; Description: "Let Windows keep a crash dump if the game cras
 ; Ticked by default. Unticked, the dumps are mini dumps (~40 MB each), which say where the
 ; game crashed but rarely why. inc\crashdumps.iss has the sizes.
 Name: "crashdumps\full"; Description: "Full memory dumps - what we need to explain a crash. Up to 4 GB each, so up to ~20 GB of disk for the 5 kept, used only when the game crashes"; GroupDescription: "Crash reporting:"
-Name: "desktop";   Description: "Create a desktop shortcut that launches {#ModName} directly"; GroupDescription: "Shortcuts:"
+Name: "desktop";   Description: "Create desktop shortcuts that launch {#ModName} directly"; GroupDescription: "Shortcuts:"
 Name: "startmenu"; Description: "Create a Start menu entry"; GroupDescription: "Shortcuts:"
 
 [Files]
@@ -174,6 +174,26 @@ Source: "{#RepoRoot}\tools\visualizeStatistics\visualizeStatisticCLI.exe";      
 ; The Lua the game loads out of the base folder, not the mod folder.
 Source: "{#RepoRoot}\DaveStuff\luabinaries\lua5.1.dll"; DestDir: "{app}"; Components: mod; Flags: ignoreversion
 
+; --- the OpenHOI3 engine and its launcher ----------------------------------
+; The engine this version of the mod is made for, and the launcher that starts
+; it, both inside the mod's own folder: every version of the mod brings its own,
+; so a newer launcher never has to start an older version's engine. Fetched by
+; fetchEngine.py into installer\openhoi; the .mod names the engine's version
+; (releaseCommon.ENGINE_VERSION). The launcher takes the engine folder beside
+; its own as its own engine, so this one copy also plays the base game.
+;
+; Part of the mod component, not one of its own: the engine is a core part of a
+; release. It is a 64 bit program where the game is 32 bit, so on a 32 bit
+; Windows these are left out and the mod is installed for the original alone -
+; the system check page says so.
+;
+; WithEngine is passed by buildInstaller.py; without it (--no-engine) the
+; installer is for the original game alone.
+#ifdef WithEngine
+Source: "openhoi\engine\*";   DestDir: "{app}\tfh\mod\{#ModFolder}\engine";   Components: mod; Flags: recursesubdirs createallsubdirs ignoreversion; Check: IsWin64
+Source: "openhoi\launcher\*"; DestDir: "{app}\tfh\mod\{#ModFolder}\launcher"; Components: mod; Flags: recursesubdirs createallsubdirs ignoreversion; Check: IsWin64
+#endif
+
 ; --- optional extras ------------------------------------------------------
 ; Unpacked at build time, so nobody has to find "extract here" in a context menu.
 ; uninsneveruninstall: Inno must NOT delete these on uninstall. Both are worth
@@ -196,13 +216,33 @@ Source: "redist\*"; DestDir: "{tmp}\redist"; Components: runtimes; Flags: recurs
 ;     "hoi3_tfh.exe"  -mod=mod/BlackICE 1.0.0.mod
 ; Quoting it the way a command line normally would stops the game finding the
 ; mod. The path is relative to tfh\, while WorkingDir is the base folder.
-Name: "{group}\{#ModName} {#ModVersion}"; Filename: "{app}\hoi3_tfh.exe"; Parameters: "-mod=mod/{#ModFolder}.mod"; WorkingDir: "{app}"; Tasks: startmenu
+;
+; With the engine there are two ways to play one install of the mod, so there
+; are two shortcuts and each says which it is. The OpenHOI3 one starts the
+; launcher the mod ships, told which game folder and which mod: it comes up with
+; this version ticked and Play starts it on the engine beside it. Unlike the
+; original's, these values ARE quoted - they are the launcher's own switches.
+#ifdef WithEngine
+  #define OriginalSuffix " (original game)"
+  #define OpenHoiLauncher "{app}\tfh\mod\" + ModFolder + "\launcher\OpenHOI3.Launcher.exe"
+  ; Single quoted for the preprocessor, so that the doubled quotes reach the
+  ; Parameters value as they are - where a doubled quote is one quote.
+  #define OpenHoiParameters '--install=""{app}"" --mod=""mod/' + ModFolder + '.mod""'
+Name: "{group}\{#ModName} {#ModVersion} (OpenHOI3)"; Filename: "{#OpenHoiLauncher}"; Parameters: "{#OpenHoiParameters}"; WorkingDir: "{app}\tfh\mod\{#ModFolder}\launcher"; Tasks: startmenu; Check: IsWin64
+Name: "{autodesktop}\{#ModName} {#ModVersion} (OpenHOI3)"; Filename: "{#OpenHoiLauncher}"; Parameters: "{#OpenHoiParameters}"; WorkingDir: "{app}\tfh\mod\{#ModFolder}\launcher"; Tasks: desktop; Check: IsWin64
+#else
+  #define OriginalSuffix ""
+#endif
+Name: "{group}\{#ModName} {#ModVersion}{#OriginalSuffix}"; Filename: "{app}\hoi3_tfh.exe"; Parameters: "-mod=mod/{#ModFolder}.mod"; WorkingDir: "{app}"; Tasks: startmenu
 Name: "{group}\Hearts of Iron 3 launcher"; Filename: "{app}\launcher.exe"; WorkingDir: "{app}"; Tasks: startmenu
 Name: "{group}\Uninstall {#ModName}"; Filename: "{uninstallexe}"; Tasks: startmenu
-Name: "{autodesktop}\{#ModName} {#ModVersion}"; Filename: "{app}\hoi3_tfh.exe"; Parameters: "-mod=mod/{#ModFolder}.mod"; WorkingDir: "{app}"; Tasks: desktop
+Name: "{autodesktop}\{#ModName} {#ModVersion}{#OriginalSuffix}"; Filename: "{app}\hoi3_tfh.exe"; Parameters: "-mod=mod/{#ModFolder}.mod"; WorkingDir: "{app}"; Tasks: desktop
 
 [Run]
-Filename: "{app}\hoi3_tfh.exe"; Parameters: "-mod=mod/{#ModFolder}.mod"; WorkingDir: "{app}"; Description: "Launch {#ModName} {#ModVersion} now"; Flags: nowait postinstall skipifsilent unchecked
+#ifdef WithEngine
+Filename: "{#OpenHoiLauncher}"; Parameters: "{#OpenHoiParameters}"; WorkingDir: "{app}\tfh\mod\{#ModFolder}\launcher"; Description: "Launch {#ModName} {#ModVersion} on OpenHOI3 now"; Flags: nowait postinstall skipifsilent unchecked; Check: IsWin64
+#endif
+Filename: "{app}\hoi3_tfh.exe"; Parameters: "-mod=mod/{#ModFolder}.mod"; WorkingDir: "{app}"; Description: "Launch {#ModName} {#ModVersion}{#OriginalSuffix} now"; Flags: nowait postinstall skipifsilent unchecked
 
 [UninstallDelete]
 ; The mod tree, plus what the game writes into it while running.
@@ -292,6 +332,15 @@ begin
 
   Report := Report + 'Antivirus' + #13#10;
   Report := Report + DescribeAntivirus(WizardDirValue, '{#ModFolder}') + #13#10;
+
+#ifdef WithEngine
+  Report := Report + 'OpenHOI3 engine' + #13#10;
+  if IsWin64 then
+    Report := Report + '   {#EngineVersion}, with its launcher, in the mod''s own folder' + #13#10 + #13#10
+  else
+    Report := Report + '   left out: it needs a 64 bit Windows, and this one is 32 bit.' + #13#10 +
+              '   The mod is installed for the original game alone.' + #13#10 + #13#10;
+#endif
 
   Report := Report + 'Runtimes' + #13#10;
   Report := Report + RuntimeReport();

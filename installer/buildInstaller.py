@@ -12,6 +12,10 @@ payloads are staged.
 
 Run installer/fetchRedists.py once first, or pass --no-redist to build an
 installer that detects missing runtimes but does not carry them.
+
+Run installer/fetchEngine.py once first too. The OpenHOI3 engine and its
+launcher are a core part of a release, so without them the build stops;
+--no-engine builds an installer for the original game alone, for testing.
 """
 import argparse
 import os
@@ -26,6 +30,7 @@ REPO = os.path.dirname(HERE)
 sys.path.insert(0, REPO)
 
 import releaseCommon  # noqa: E402  - needs REPO on the path first
+import fetchEngine  # noqa: E402  - beside this file
 
 STAGING = os.path.join(HERE, "staging")
 OUTPUT = os.path.join(HERE, "output")
@@ -191,6 +196,26 @@ def reportRedist(useRedist):
     print("  redist bundled: %.1f MB" % (total / 1048576))
 
 
+def checkEngine(useEngine):
+    """Whether the build may go on: the engine the mod names is fetched, or left out on purpose."""
+    if not useEngine:
+        print("  --no-engine: this installer is for the original game alone. Not a release.")
+        return True
+    if not fetchEngine.isFetched():
+        print("\nThe OpenHOI3 engine is not in installer/openhoi, or is not %s."
+              % releaseCommon.ENGINE_VERSION)
+        print("It is a core part of a release. Fetch it with:")
+        print("    python installer/fetchEngine.py")
+        print("or build an installer for the original game alone with --no-engine.")
+        return False
+    total = 0
+    for root, _dirs, files in os.walk(fetchEngine.OPENHOI):
+        total += sum(os.path.getsize(os.path.join(root, f)) for f in files)
+    print("  engine bundled: %s with its launcher, %.0f MB"
+          % (releaseCommon.ENGINE_VERSION, total / 1048576))
+    return True
+
+
 def validateMod():
     """Run BICE Validator's release check. False if the mod has a file the game cannot
     read past - an unmatched bracket, a key with no value - which would otherwise ship."""
@@ -199,7 +224,7 @@ def validateMod():
     return release.check(REPO)
 
 
-def build(version, useRedist, fast, validate=True):
+def build(version, useRedist, fast, validate=True, useEngine=True):
     iscc = findIscc()
     if iscc is None:
         print("Inno Setup 6 was not found.")
@@ -225,8 +250,13 @@ def build(version, useRedist, fast, validate=True):
     else:
         print("  validator: skipped (--skip-validation)")
 
+    if not checkEngine(useEngine):
+        return 1
+
     emptyStaging()
-    releaseCommon.writeModFile(version, STAGING)
+    # The .mod names the engine only when the installer carries it: a .mod that
+    # names an engine which is not in its folder cannot be started by the launcher.
+    releaseCommon.writeModFile(version, STAGING, engine=useEngine)
     print("  stage %-12s %s" % ("mod file", releaseCommon.modFileName(version)))
     stageArchives()
     reportRedist(useRedist)
@@ -234,6 +264,9 @@ def build(version, useRedist, fast, validate=True):
     os.makedirs(OUTPUT, exist_ok=True)
 
     command = [iscc, "/DModVersion=" + version]
+    if useEngine:
+        # Switches on the engine's [Files] and [Icons] lines in BlackICE.iss.
+        command += ["/DWithEngine=1", "/DEngineVersion=" + releaseCommon.ENGINE_VERSION]
     if fast:
         # Switches the [Setup] compression directives; ISCC has no way to
         # override those from the command line.
@@ -290,6 +323,8 @@ def main():
                         help="skip compression, for testing the wizard only")
     parser.add_argument("--skip-validation", action="store_true",
                         help="build even if BICE Validator finds a file the game cannot read")
+    parser.add_argument("--no-engine", action="store_true",
+                        help="leave out the OpenHOI3 engine and launcher: the original game alone, not a release")
     arguments = parser.parse_args()
 
     version = arguments.version
@@ -300,7 +335,8 @@ def main():
         return 1
 
     return build(version, not arguments.no_redist, arguments.fast,
-                 validate=not arguments.skip_validation)
+                 validate=not arguments.skip_validation,
+                 useEngine=not arguments.no_engine)
 
 
 if __name__ == "__main__":

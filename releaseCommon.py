@@ -19,6 +19,32 @@ MOD_FOLDERS = ["battleplans", "cgm", "common", "decisions", "events", "history",
 # Where the mod lives inside the base game folder.
 MOD_PARENT = "tfh/mod"
 
+# The release of OpenHOI3 this version of the mod is made for. A release of the
+# mod ships exactly this engine, in the mod's own engine/ folder, and names it
+# in its .mod file so the OpenHOI3 launcher runs that one and no other. The
+# binary is never committed here: installer/fetchEngine.py downloads the
+# release by this version. Moving to a newer engine is changing this one line.
+#
+# "openhoi3-<x>" is what the engine's engine.txt says; the release it comes
+# from is the tag "v<x>" of ENGINE_REPOSITORY, which is also where its source
+# is - the engine is GPL-3.0, and that link is what shipping it asks of us.
+ENGINE_VERSION = "openhoi3-0.1.3"
+ENGINE_REPOSITORY = "https://github.com/Dsafe1/OpenHOI3"
+
+# Where the engine and its launcher go inside the mod's folder. Their own
+# subfolders, like everything the mod holds for OpenHOI3: the original game
+# never looks in either.
+ENGINE_FOLDER = "engine"
+LAUNCHER_FOLDER = "launcher"
+
+
+def engineTag():
+    """The engine release's git tag, 'v0.1.0' for 'openhoi3-0.1.0'."""
+    prefix = "openhoi3-"
+    if not ENGINE_VERSION.startswith(prefix):
+        raise ValueError("ENGINE_VERSION must begin with %r, got %r" % (prefix, ENGINE_VERSION))
+    return "v" + ENGINE_VERSION[len(prefix):]
+
 REPO = os.path.dirname(os.path.abspath(__file__))
 
 _VERSION_CSV = os.path.join(REPO, "localisation", "bi_version.csv")
@@ -66,11 +92,19 @@ def modFileName(version):
     return "BlackICE %s.mod" % version
 
 
-def writeModFile(version, destination):
+def writeModFile(version, destination, engine=True):
     """Write the versioned .mod next to \p destination, returning its path.
 
     The template in 'Mod File' carries the GitHub name and paths; only the three
-    lines that name the version change.
+    lines that name the version change, and a fourth is added: the engine.
+
+    'engine = "..."' tells the OpenHOI3 launcher which engine this version of
+    the mod was made for. The original game passes over a key it does not know
+    when it is written as key = value, so the same .mod serves both. The
+    template deliberately has no such line: a working copy is played on
+    whatever engine its developer has built, and naming a released one there
+    would make the launcher refuse to start it on any other. Pass engine=False
+    for an installer built without the engine.
     """
     with open(_TEMPLATE_MOD, "r") as handle:
         lines = handle.readlines()
@@ -84,8 +118,16 @@ def writeModFile(version, destination):
             out.append('path = "%s/BlackICE %s"\n' % (MOD_PARENT, version))
         elif key == "user_dir":
             out.append('user_dir = "BlackICE %s"\n' % version)
+        elif key == "engine":
+            # Never the template's: a release names the engine it ships.
+            continue
         else:
             out.append(line)
+
+    if engine:
+        if out and not out[-1].endswith("\n"):
+            out[-1] += "\n"
+        out.append('engine = "%s"\n' % ENGINE_VERSION)
 
     path = os.path.join(destination, modFileName(version))
     with open(path, "w") as handle:
