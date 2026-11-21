@@ -1,0 +1,191 @@
+# The game options OpenHOI3's enhanced mode adds, on the Game tab below the autosave interval.
+#
+# Read by OpenHOI3 alone, and only in its enhanced mode: the original never opens interface/openhoi/, and has no code
+# that would make a window of this name if it did. See docs/openhoi/README.md.
+#
+# OpenHOI3 makes the window below as a part of menu_settings_GAME (interface/settings.gui), so every position here
+# is measured from that tab's corner. It finds the elements by their names, which must stay as they are; where they
+# stand, their fonts and their sprites are the mod's to change. Each row is the autosave row of settings.gui over
+# again, 46 pixels further down:
+#
+#   openhoi_<row>_label              the row's name; its text is a localisation key (localisation/openhoi_options.csv)
+#   openhoi_<row>_value              what is chosen; written by the engine, from the OPENHOI_OPT_... keys
+#   decrease_openhoi_<row>_button    the arrows that step the choice
+#   increase_openhoi_<row>_button
+#
+# The rows: premonth (save before the month ends), timed (save on a timer), edge (scroll at the screen's edge),
+# event (where event windows come up).
+
+guiTypes = {
+	windowType = {
+		name = "openhoi_game_options"
+		backGround=""
+		position = { x= 0 y = 0 }
+		size = { x=240 y = 320 }
+		moveable = 0
+		dontRender = ""
+		horizontalBorder= ""
+		verticalBorder= ""
+		fullScreen = no
+
+		# premonth
+		instantTextBoxType={
+			position = {x = 30 y = 96 }
+			name = "openhoi_premonth_label"
+			font = "Arial12_bold"
+			borderSize = {x = 0 y = 0}
+			maxWidth = 172
+			maxHeight = 18
+			text = "OPENHOI_OPT_PREMONTH"
+			orientation = "UPPER_LEFT"
+			format = centre
+		}
+		instantTextBoxType={
+			position = {x = 30 y = 115 }
+			name = "openhoi_premonth_value"
+			font = "Arial12_headline"
+			borderSize = {x = 0 y = 0}
+			maxWidth = 172
+			maxHeight = 18
+			text = ""
+			orientation = "UPPER_LEFT"
+			format = centre
+		}
+		guiButtonType = {
+			name = "decrease_openhoi_premonth_button"
+			position = { x = 30 y = 106 }
+			quadTextureSprite ="option_prev"
+			tooltip = ""
+			tooltipText =""
+			delayedTooltipText = ""
+		}
+		guiButtonType = {
+			name = "increase_openhoi_premonth_button"
+			position = { x = 165 y = 106 }
+			quadTextureSprite ="option_next"
+			tooltip = ""
+			tooltipText =""
+			delayedTooltipText = ""
+		}
+
+		# timed
+		instantTextBoxType={
+			position = {x = 30 y = 142 }
+			name = "openhoi_timed_label"
+			font = "Arial12_bold"
+			borderSize = {x = 0 y = 0}
+			maxWidth = 172
+			maxHeight = 18
+			text = "OPENHOI_OPT_TIMED"
+			orientation = "UPPER_LEFT"
+			format = centre
+		}
+		instantTextBoxType={
+			position = {x = 30 y = 161 }
+			name = "openhoi_timed_value"
+			font = "Arial12_headline"
+			borderSize = {x = 0 y = 0}
+			maxWidth = 172
+			maxHeight = 18
+			text = ""
+			orientation = "UPPER_LEFT"
+			format = centre
+		}
+		guiButtonType = {
+			name = "decrease_openhoi_timed_button"
+			position = { x = 30 y = 152 }
+			quadTextureSprite ="option_prev"
+			tooltip = ""
+			tooltipText =""
+			delayedTooltipText = ""
+		}
+		guiButtonType = {
+			name = "increase_openhoi_timed_button"
+			position = { x = 165 y = 152 }
+			quadTextureSprite ="option_next"
+			tooltip = ""
+			tooltipText =""
+			delayedTooltipText = ""
+		}
+
+		# edge
+		instantTextBoxType={
+			position = {x = 30 y = 188 }
+			name = "openhoi_edge_label"
+			font = "Arial12_bold"
+			borderSize = {x = 0 y = 0}
+			maxWidth = 172
+			maxHeight = 18
+			text = "OPENHOI_OPT_EDGE"
+			orientation = "UPPER_LEFT"
+			format = centre
+		}
+		instantTextBoxType={
+			position = {x = 30 y = 207 }
+			name = "openhoi_edge_value"
+			font = "Arial12_headline"
+			borderSize = {x = 0 y = 0}
+			maxWidth = 172
+			maxHeight = 18
+			text = ""
+			orientation = "UPPER_LEFT"
+			format = centre
+		}
+		guiButtonType = {
+			name = "decrease_openhoi_edge_button"
+			position = { x = 30 y = 198 }
+			quadTextureSprite ="option_prev"
+			tooltip = ""
+			tooltipText =""
+			delayedTooltipText = ""
+		}
+		guiButtonType = {
+			name = "increase_openhoi_edge_button"
+			position = { x = 165 y = 198 }
+			quadTextureSprite ="option_next"
+			tooltip = ""
+			tooltipText =""
+			delayedTooltipText = ""
+		}
+
+		# event
+		instantTextBoxType={
+			position = {x = 30 y = 234 }
+			name = "openhoi_event_label"
+			font = "Arial12_bold"
+			borderSize = {x = 0 y = 0}
+			maxWidth = 172
+			maxHeight = 18
+			text = "OPENHOI_OPT_EVENT"
+			orientation = "UPPER_LEFT"
+			format = centre
+		}
+		instantTextBoxType={
+			position = {x = 30 y = 253 }
+			name = "openhoi_event_value"
+			font = "Arial12_headline"
+			borderSize = {x = 0 y = 0}
+			maxWidth = 172
+			maxHeight = 18
+			text = ""
+			orientation = "UPPER_LEFT"
+			format = centre
+		}
+		guiButtonType = {
+			name = "decrease_openhoi_event_button"
+			position = { x = 30 y = 244 }
+			quadTextureSprite ="option_prev"
+			tooltip = ""
+			tooltipText =""
+			delayedTooltipText = ""
+		}
+		guiButtonType = {
+			name = "increase_openhoi_event_button"
+			position = { x = 165 y = 244 }
+			quadTextureSprite ="option_next"
+			tooltip = ""
+			tooltipText =""
+			delayedTooltipText = ""
+		}
+	}
+}

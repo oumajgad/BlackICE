@@ -1,0 +1,23 @@
+# This file turns on OpenHOI3's enhanced mode for the mod.
+#
+# The original game never reads it: it only opens the files under common/ that
+# it asks for by name. OpenHOI3 looks for exactly this file, and its being here
+# - even empty - makes every game played from this mod an enhanced one: the
+# engine then mends the faults of the original it has fixes for, and the mod's
+# Lua finds OpenHOI3.Enhanced set to true.
+#
+# Every fix is on unless it is named here as one the mod does not want:
+#
+#     without = { minister_tech_decay simplified_terrain_sea }
+#
+# The fixes, by name:
+#
+#   minister_tech_decay      a minister's technology decay modifier counts, where
+#                            the original throws it away. BiceLib:
+#                            BytePatches.fixMinisterTechDecay
+#   simplified_terrain_sea   the Simplified Terrain map mode colours the sea by
+#                            its terrain, as it does the land. BiceLib:
+#                            BytePatches.seaTerrainColourInSimplifiedMapMode
+#
+# Anything else written here is reported in OpenHOI3's log and ignored.
+# Saves of an enhanced game are kept apart, in "save games/openhoi".
