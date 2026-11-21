@@ -6,6 +6,14 @@
 -- Keep this at line #7 !!!!
 G_MOD_VERSION = "GitHub"
 
+-- Which engine runs this script. The mod plays on two: the original game, with BiceLib.dll, and OpenHOI3
+-- (docs/openhoi/README.md). Ask these two, and nothing else, wherever the engines need different Lua:
+--   G_OPENHOI           true on OpenHOI3, false on the original. OpenHOI3 sets the global OpenHOI3; the original has none.
+--   G_OPENHOI_ENHANCED  true on OpenHOI3 in its enhanced mode, which common/openhoi_enhanced.txt turns on. What
+--                       BiceLib adds to the original, the enhanced mode has natively - so a thing done here through
+--                       BiceLib is skipped when this is true, and a thing only the enhanced mode can do is gated on it.
+G_OPENHOI = OpenHOI3 ~= nil
+G_OPENHOI_ENHANCED = OpenHOI3 ~= nil and OpenHOI3.Enhanced == true
 
 -- set up path
 package.path = package.path .. ";script\\?.lua"

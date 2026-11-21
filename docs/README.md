@@ -21,6 +21,10 @@
   - [The AI objects](lua/ai.md) - what a tick function is handed
   - [Commands and diplomatic actions](lua/commands.md) - the only way to change anything
 
+- **[One mod, two engines](openhoi/README.md)** - from version 16 the mod plays on the original and on OpenHOI3.
+  What a file read by both may hold, where the things for OpenHOI3 go, and the two Lua globals that say which engine
+  is running.
+
 ## Playing
 
 - [Keyboard shortcuts](../Shortcuts.txt)
