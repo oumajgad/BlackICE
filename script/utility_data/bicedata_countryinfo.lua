@@ -51,6 +51,13 @@ function BiceData.CountryInfo.Collect()
             + techContribution(country, "casualty_trickleback")
     end
 
+    -- OpenHOI3 has both figures itself: the off-map IC of the day's IC pass (its
+    -- fix offmap_ic) and the trickleback it applies, modifier and technologies together.
+    if OpenHOI3 ~= nil and OpenHOI3.OffmapIc ~= nil then
+        offmapIc = OpenHOI3.OffmapIc(tag) or 0
+        trickleback = OpenHOI3.Trickleback(tag)
+    end
+
     local icModifier = modifiers:GetValue(CModifier._MODIFIER_GLOBAL_IC_):Get()
         + techContribution(country, "ic_modifier")
     local repairModifier = modifiers:GetValue(CModifier._MODIFIER_UNIT_REPAIR_):Get()

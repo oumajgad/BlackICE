@@ -286,8 +286,9 @@ its way. The three AI forms share `script/openhoi/pageform.lua`: values edited o
 
 Not carried over on Country Info: the Refresh and Auto row (every page re-reads every two seconds while it is
 shown, Global Market only when asked), a button's or a box's own colour (the focus a puppet has is greyed, a
-priority used twice is marked with a red `!`), and two figures of Country Modifiers that BiceLib reads on the
-original and OpenHOI3 does not give yet: Offmap IC reads 0 and Trickleback "unavailable".
+priority used twice is marked with a red `!`). The two figures of Country Modifiers that BiceLib reads on the
+original come from the engine here: Offmap IC from `OpenHOI3.OffmapIc` - what the country's own `ic` modifier adds
+under the fix `offmap_ic` - and Trickleback from `OpenHOI3.Trickleback`, the share a battle applies.
 
 **A page changes the game by giving an order**, as the player does - never by setting something itself. An order is
 a function under `OpenHOI3` that OpenHOI3 names; the first is
