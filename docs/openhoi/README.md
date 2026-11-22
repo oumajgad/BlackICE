@@ -185,6 +185,26 @@ province, and `BiceLib.Leaders.getLeaderDetails` on the original.
 | Game Info | Traits, Generals, Modifiers, Techs, Units, Unit Models |
 | Inspector | Active Flags, Global Flags, Active Variables, Active Event Modifiers |
 | Setup | Country, Misc |
+| Stats | Setup, Statistics |
+
+**The Stats tab.** Setup switches the mod's collection of statistics and edits its list of countries, through
+`BiceLibGui.Stats` as the overlay does. Statistics reads the run's files itself - `<path>/<run>/<TAG>/<statistic>`
+below the game's folder - and draws a line for each series ticked, with `ImGui.PlotLines`. Not carried over from
+the overlay: every series in one plot, the dates under the mouse, and the button that starts
+`visualizeStatisticCLI.exe`. A line goes from reading to reading at even steps, so days with nothing collected
+take no room on it. **The collection itself (`script/utility/stats/stats.lua`, run from the ministers'
+ticks) does not work on OpenHOI3**, so the Statistics page has nothing to read there. It is set aside, not mended:
+see below.
+
+**After the port, some pages move closer into the engine** (decided 2026-11-22; OpenHOI3's `docs/enhanced.md`,
+*Interface*). The pages above bring the utility to OpenHOI3 as it stands on the original. Once that is done:
+
+- **The custom sliders and the trade AI** - Prod. Sliders AI, LS Sliders AI, Trade AI - are to be part of the
+  game's own production, technology and trade screens, not pages of a utility window.
+- **Statistics** are to come from a record OpenHOI3 keeps itself, not from text files the mod's Lua writes a
+  statistic a country a day.
+
+Neither is designed yet. Until then those pages stay as ported.
 
 **The country the pages report on is the one chosen on Setup > Country** - the Lua global `G_PlayerCountry`, as on
 the original: this machine's alone, not saved, and following the country played until another is chosen. A page
