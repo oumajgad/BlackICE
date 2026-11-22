@@ -183,11 +183,34 @@ province, and `BiceLib.Leaders.getLeaderDetails` on the original.
 | --- | --- |
 | Country Info | Country Modifiers, IC Days, Puppets, Strategic Res., Resource Conversion, Strategic Trades, Global Market, National Focus, Minister Buildings, Trade AI, Prod. Sliders AI, LS Sliders AI |
 | Game Info | Traits, Generals, Modifiers, Techs, Units, Unit Models |
-| Inspector | Active Flags, Global Flags, Active Variables, Active Event Modifiers |
+| Inspector | OOB Browser, OOB Report, Active Flags, Global Flags, Active Variables, Active Event Modifiers, Province Buildings |
 | Setup | Country, Misc |
 | Stats | Setup, Statistics |
 | Options | Utility Options |
 | Help | Misc, Ministers + Buildings, National Focus |
+
+**The Inspector's larger pages.** On the original BiceLib reads these out of the game's memory; on OpenHOI3 the
+engine gives the same things to the mod's Lua:
+
+- `OpenHOI3.ProvinceDetails(id)` answers what `BiceLib.GameInfo.getProvinceDetails` answers, in the same shape and
+  scale, and `BiceData.ProvinceBuildings.Details` asks whichever is there. Province Buildings is otherwise the
+  mod's own data, as on the original.
+- `OpenHOI3.OrderOfBattle(tag)` answers every unit of a country with the unit over it, its leader, what it gets
+  and uses of supplies and fuel, and its regiments. `script/openhoi/pageoob.lua` makes the tree and the counts
+  from it, for the OOB Browser and the OOB Report. It is read on Refresh and when the selected country is
+  another, not on a timer.
+
+Not carried over on those pages: the browser's "Move to" (a page cannot move the map), the Auto boxes, and the
+red of a unit without a commander, which is marked with `!` in the tree instead.
+
+**The Inspector's last three pages, as decided on 2026-11-22** (OpenHOI3's `docs/enhanced.md`, *Interface*):
+
+- **Combat Reports** stays a page of the utility. It waits for OpenHOI3 to keep a record of every finished
+  battle, which a page will then read.
+- **Unit Inspector** will not be a page. It goes into the game's own unit panel on OpenHOI3, on new kinds of
+  interface element.
+- **Custom Mapmode** will not be a page either. It goes into the engine: a right click on a map mode's button
+  opens a small list to choose from, as the unit upgrade selection does.
 
 **The Options tab is one page on OpenHOI3.** Utility Options sets the window itself, through `OpenHOI3.Window`
 while the page draws: `Key()` / `CaptureKey()` / `CancelCapture()` / `Capturing()` for the key that opens it,

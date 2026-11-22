@@ -98,11 +98,19 @@ local MODIFIER_FIELDS = {
 
 --- Base production and local modifiers for one province.
 function BiceData.ProvinceBuildings.Details(provinceId)
-    if BiceLib == nil then
+    -- The province's raw figures: BiceLib reads them on the original engine, OpenHOI3 gives them itself
+    -- (docs/openhoi/README.md). Both answer the same table, or nil for an id the map does not have.
+    local details
+    if OpenHOI3 ~= nil then
+        if OpenHOI3.ProvinceDetails == nil then
+            return nil, "This OpenHOI3 does not give province details"
+        end
+        details = OpenHOI3.ProvinceDetails(tonumber(provinceId))
+    elseif BiceLib ~= nil then
+        details = BiceLib.GameInfo.getProvinceDetails(tonumber(provinceId))
+    else
         return nil, "BiceLib.dll was not loaded"
     end
-
-    local details = BiceLib.GameInfo.getProvinceDetails(tonumber(provinceId))
     if details == nil then
         return nil, "No details for province " .. tostring(provinceId)
     end
