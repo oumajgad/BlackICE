@@ -2,9 +2,13 @@
 --
 -- A page of the mod's own windows for OpenHOI3's enhanced mode (docs/openhoi/README.md). OpenHOI3 lists
 -- script/openhoi/windows/ and takes every file there as a page; the original never opens this folder. The Insert
--- key shows the menu of pages. The file returns a table:
---   title    the localisation key of the page's name, on the menu and on its window
---   order    its place on the menu, lower first
+-- key shows the utility window: a tab for each group of pages, the tab's pages listed down its left side. The file
+-- returns a table:
+--   title        the localisation key of the page's name, in its tab's list of pages
+--   order        its place in that list, lower first
+--   group        the localisation key of the tab it stands under; pages naming the same key share a tab
+--   group_order  where that tab stands among the tabs, lower first (the lowest any of its pages gives):
+--                Setup 10, Country Info 20, Game Info 30, Inspector 40, Stats 50, Options 60, Help 70, Debug 80
 --   Collect  reads the game and answers whatever the page will show. Called when the page opens and every two
 --            seconds while it is open - never while the game is working through its hours.
 --   Draw     draws the page from what Collect answered, with OpenHOI3.ImGui. Called every frame. It is given no
@@ -21,6 +25,8 @@ local filter = ""
 return {
 	title = "OPENHOI_WIN_FLAGS",
 	order = 20,
+	group = "OPENHOI_WIN_GROUP_INSPECTOR",
+	group_order = 40,
 
 	Collect = function(player)
 		return {

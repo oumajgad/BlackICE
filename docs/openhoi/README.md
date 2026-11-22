@@ -80,9 +80,10 @@ chooses is kept in `openhoi_settings.txt`, not in `settings.txt`, which the orig
 ## Windows of the mod's own (the utility)
 
 On OpenHOI3 the utility is windows drawn with **Dear ImGui**, as BiceLib's overlay is - but by the mod's own Lua,
-with nothing compiled. The **Insert** key shows a menu of pages; every page ticked on it is a window of its own.
-Nothing lists the pages in one place: **a page is there because its file is**, so a submod adds one by adding its
-own file.
+with nothing compiled. The **Insert** key shows one window: a tab along its top for each group of pages, the
+tab's pages listed down its left side, and the page chosen there on the rest of it. Nothing lists the pages or the
+tabs in one place: **a page is there because its file is**, and a tab is there because a page names it - so a submod
+adds a page, or a whole tab, by adding its own file.
 
 | | where |
 | --- | --- |
@@ -96,8 +97,10 @@ local ImGui = OpenHOI3.ImGui
 local L = OpenHOI3.Localise
 
 return {
-	title = "OPENHOI_WIN_FLAGS",    -- localisation key of its name, on the menu and on its window
-	order = 20,                     -- its place on the menu, lower first
+	title = "OPENHOI_WIN_FLAGS",             -- localisation key of its name, in its tab's list
+	order = 20,                              -- its place in that list, lower first
+	group = "OPENHOI_WIN_GROUP_INSPECTOR",   -- localisation key of the tab it stands under
+	group_order = 40,                        -- where that tab stands among the tabs, lower first
 
 	Collect = function(player)      -- reads the game; answers whatever the page will show
 		return { flags = OpenHOI3.CountryFlags(player) }
@@ -112,9 +115,13 @@ return {
 }
 ```
 
+Pages naming the same `group` key share a tab. The tabs stand in the order of the lowest `group_order` any of
+their pages gives, as the overlay's do: Setup 10, Country Info 20, Game Info 30, Inspector 40, Stats 50, Options 60,
+Help 70, Debug 80. Only the page being looked at runs.
+
 **`Collect` reads the game; `Draw` only draws.** That split is the one rule to keep in mind:
 
-- `Collect(player)` is called when the page opens and every two seconds while it is open, and never while the game
+- `Collect(player)` is called when the page is chosen and every two seconds while it is shown, and never while the game
   is working through its hours. Whatever it returns is kept and handed to `Draw`.
 - `Draw(data, player)` is called every frame. It is given **no game to ask** - calling one of the game's classes
   there is a Lua error, which the page's window then shows in place of the page until the next `Collect`. Anything
@@ -139,14 +146,15 @@ More are added as pages need them. The window itself - title bar, close box, whe
 engine's; a page draws what is inside. If a page forgets an `EndTable`, or fails half way through one, OpenHOI3
 closes what was left open, so a mistake shows as an error in the page's window and not as a crash.
 
-**Every text comes from the localisation**, through `OpenHOI3.Localise(key)`; the menu's own title is the key
+**Every text comes from the localisation**, through `OpenHOI3.Localise(key)`; the window's own title is the key
 `OPENHOI_WINDOWS_MENU`.
 
 What OpenHOI3 gives a page to read the game with, beyond the game's own Lua classes: `OpenHOI3.CountryFlags(tag)`
 and `OpenHOI3.GlobalFlags()`. More will come page by page. A page that changes the game - by posting a command - is
 not built yet.
 
-`script/openhoi/windows/flags.lua`, the Active Flags page, is the worked example, and is commented.
+`script/openhoi/windows/flags.lua`, the Active Flags page, is the worked example, and is commented;
+`globalflags.lua` beside it is a second page under the same tab.
 
 ## What a file read by both engines may hold
 
