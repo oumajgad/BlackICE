@@ -213,8 +213,9 @@ red of a unit without a commander, which is marked with `!` in the tree instead.
   are always named there, so the overlay's note on battles that "name only their winner" has nothing to say. The
   record begins with the first battle that ends in a game played on an OpenHOI3 that keeps it; the DLL's files
   are not read. The two OMG variables and `BiceLibGui.Combat` serve the original engine alone.
-- **Unit Inspector** will not be a page. It goes into the game's own unit panel on OpenHOI3, on new kinds of
-  interface element.
+- **Unit Inspector** is not a page. On OpenHOI3 a click on the ribbon over a selected unit's brigades ("5
+  Brigades") opens the brigade card's window with the figures of the entire unit. Its texts are the
+  `OPENHOI_UNITCARD_*` keys of `localisation/openhoi/windows.csv`.
 - **Custom Mapmode** will not be a page either. It goes into the engine: a right click on a map mode's button
   opens a small list to choose from, as the unit upgrade selection does.
 
