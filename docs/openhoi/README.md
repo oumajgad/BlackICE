@@ -77,6 +77,77 @@ save before the month ends, a save on a timer, scrolling at the screen's edge an
 `localisation/openhoi/options.csv` holds their words. The file's own comments list the element names. What the player
 chooses is kept in `openhoi_settings.txt`, not in `settings.txt`, which the original reads and rewrites.
 
+## Windows of the mod's own (the utility)
+
+On OpenHOI3 the utility is windows drawn with **Dear ImGui**, as BiceLib's overlay is - but by the mod's own Lua,
+with nothing compiled. The **Insert** key shows a menu of pages; every page ticked on it is a window of its own.
+Nothing lists the pages in one place: **a page is there because its file is**, so a submod adds one by adding its
+own file.
+
+| | where |
+| --- | --- |
+| the page | a `.lua` file in `script/openhoi/windows/` - OpenHOI3 takes every file there |
+| its texts | a `.csv` in `localisation/openhoi/` |
+
+The page's file returns a table:
+
+```lua
+local ImGui = OpenHOI3.ImGui
+local L = OpenHOI3.Localise
+
+return {
+	title = "OPENHOI_WIN_FLAGS",    -- localisation key of its name, on the menu and on its window
+	order = 20,                     -- its place on the menu, lower first
+
+	Collect = function(player)      -- reads the game; answers whatever the page will show
+		return { flags = OpenHOI3.CountryFlags(player) }
+	end,
+
+	Draw = function(data, player)   -- draws it, every frame
+		if data == nil then return end
+		for _, name in ipairs(data.flags) do
+			ImGui.Text(name)
+		end
+	end,
+}
+```
+
+**`Collect` reads the game; `Draw` only draws.** That split is the one rule to keep in mind:
+
+- `Collect(player)` is called when the page opens and every two seconds while it is open, and never while the game
+  is working through its hours. Whatever it returns is kept and handed to `Draw`.
+- `Draw(data, player)` is called every frame. It is given **no game to ask** - calling one of the game's classes
+  there is a Lua error, which the page's window then shows in place of the page until the next `Collect`. Anything
+  of the game a page shows has to be in `data`.
+
+What is declared `local` at the top of the file is the page's own state and is kept between frames: the text of a
+filter box, a ticked checkbox.
+
+**The widgets** are under `OpenHOI3.ImGui`, by the names Dear ImGui gives them: `Text`, `TextDisabled`,
+`TextWrapped`, `TextColored`, `Separator`, `SameLine`, `Spacing`, `NewLine`, `SetNextItemWidth`, `Button`,
+`SmallButton`, `Selectable`, `CollapsingHeader`, `Checkbox`, `InputText`, `SliderInt`, `SliderFloat`, `Combo`,
+`IsItemHovered`, `SetTooltip`, `BeginTable` / `TableSetupColumn` / `TableHeadersRow` / `TableNextRow` /
+`TableNextColumn` / `EndTable`, `BeginTabBar` / `BeginTabItem` / `EndTabItem` / `EndTabBar`, `BeginChild` /
+`EndChild`, `TreeNode` / `TreePop`, `PushID` / `PopID`. A widget that holds a value answers `changed, value`:
+
+```lua
+local changed, typed = ImGui.InputText(L("OPENHOI_WIN_FILTER"), filter)
+if changed then filter = typed end
+```
+
+More are added as pages need them. The window itself - title bar, close box, where it stands, its size - is the
+engine's; a page draws what is inside. If a page forgets an `EndTable`, or fails half way through one, OpenHOI3
+closes what was left open, so a mistake shows as an error in the page's window and not as a crash.
+
+**Every text comes from the localisation**, through `OpenHOI3.Localise(key)`; the menu's own title is the key
+`OPENHOI_WINDOWS_MENU`.
+
+What OpenHOI3 gives a page to read the game with, beyond the game's own Lua classes: `OpenHOI3.CountryFlags(tag)`
+and `OpenHOI3.GlobalFlags()`. More will come page by page. A page that changes the game - by posting a command - is
+not built yet.
+
+`script/openhoi/windows/flags.lua`, the Active Flags page, is the worked example, and is commented.
+
 ## What a file read by both engines may hold
 
 Read off the original's own parser (`reversing/findings/FINDINGS-unknownkeys.md`, in the reverse engineering repository). The rules are not style:
