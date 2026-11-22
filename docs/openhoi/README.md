@@ -183,7 +183,7 @@ province, and `BiceLib.Leaders.getLeaderDetails` on the original.
 | --- | --- |
 | Country Info | Country Modifiers, IC Days, Puppets, Strategic Res., Resource Conversion, Strategic Trades, Global Market, National Focus, Minister Buildings, Trade AI, Prod. Sliders AI, LS Sliders AI |
 | Game Info | Traits, Generals, Modifiers, Techs, Units, Unit Models |
-| Inspector | OOB Browser, OOB Report, Active Flags, Global Flags, Active Variables, Active Event Modifiers, Province Buildings |
+| Inspector | OOB Browser, OOB Report, Combat Reports, Active Flags, Global Flags, Active Variables, Active Event Modifiers, Province Buildings |
 | Setup | Country, Misc |
 | Stats | Setup, Statistics |
 | Options | Utility Options |
@@ -205,8 +205,14 @@ red of a unit without a commander, which is marked with `!` in the tree instead.
 
 **The Inspector's last three pages, as decided on 2026-11-22** (OpenHOI3's `docs/enhanced.md`, *Interface*):
 
-- **Combat Reports** stays a page of the utility. It waits for OpenHOI3 to keep a record of every finished
-  battle, which a page will then read.
+- **Combat Reports** stays a page of the utility, and is built. On the original BiceLib catches every battle as
+  it ends and keeps them in files under `script/combat_reports`, a campaign and its sessions told apart by the
+  variables `bice_combat_campaign` and `bice_combat_session` of OMG. **OpenHOI3 keeps the record itself, in the
+  game and in its save**, so the page needs none of that: it reads `OpenHOI3.CombatTally(tag, from_day, to_day)`
+  and `OpenHOI3.LastCombats(tag, count)`, and a savegame loaded has its own record with it. Both sides of a battle
+  are always named there, so the overlay's note on battles that "name only their winner" has nothing to say. The
+  record begins with the first battle that ends in a game played on an OpenHOI3 that keeps it; the DLL's files
+  are not read. The two OMG variables and `BiceLibGui.Combat` serve the original engine alone.
 - **Unit Inspector** will not be a page. It goes into the game's own unit panel on OpenHOI3, on new kinds of
   interface element.
 - **Custom Mapmode** will not be a page either. It goes into the engine: a right click on a map mode's button
