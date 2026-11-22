@@ -39,9 +39,9 @@ is always plain which engine a file is for, and nothing of it is mistaken for th
 | --- | --- |
 | the file that turns the mode on | `common/openhoi_enhanced.txt` |
 | other data files for the engine | `common/openhoi_*.txt` |
-| Lua for the engine | `script/openhoi/` |
+| Lua for the engine | `script/openhoi/`, required with a slash: `require('openhoi/x')` |
 | interface elements for the engine | `interface/openhoi/*.gui` |
-| their texts | `localisation/openhoi_*.csv` |
+| their texts | `localisation/openhoi/*.csv` |
 | an enhanced game's saves | `save games/openhoi/` (the player's folder) |
 | the player's settings for it | `openhoi_settings.txt` (the player's folder, beside `settings.txt`) |
 | the engine and its launcher | `engine/` and `launcher/` in the mod's folder (installed, never committed) |
@@ -55,17 +55,26 @@ engine supplies neither: an element that is not declared is not there, and a tex
 
 - **`.gui` files for the engine go in `interface/openhoi/`.** OpenHOI3 reads that folder after `interface/*.gui`, and
   only in the enhanced mode. They do **not** go in the files the original reads: a new sub-window added to
-  `settings.gui`, say, the original would draw, and never hide. In a folder of its own a window is nothing to the
-  original even if it read the file - it only ever makes a window its code asks for by name.
+  `settings.gui`, say, the original would draw, and never hide.
+- **The original never opens a subfolder of `interface/`, `localisation/` or `script/`.** Read off the executable
+  (`reversing/findings/FINDINGS-guifolders.md`): it lists one folder and drops the directories in it, and `script/` it
+  does not list at all - a Lua file there is opened only by a `require` that names it. That is what makes the three
+  `openhoi` subfolders safe, whatever is in them. A `require` of a file in one is written with a slash,
+  `require('openhoi/x')`; with a dot the original would not find it.
+- **Never a new element kind in a `.gfx` file the original reads.** An element kind it does not know inside
+  `spriteTypes`, `objectTypes` or `lightTypes` makes it write through a null pointer while it loads. In a `.gui` file
+  an unknown kind at the top of `guiTypes` is stepped over, but one inside a window breaks that window. New kinds
+  belong in `interface/openhoi/` only.
 - **Element names are the contract**, as in the original's own files: OpenHOI3 finds an element by its name. Where it
   stands, its font and its sprite are the mod's to change; its name is not.
-- **Texts go in `localisation/openhoi_*.csv`.** The original reads those tables too and has no use for the keys, which
-  is harmless. Keys carry the prefix `OPENHOI_`.
+- **Texts go in `localisation/openhoi/*.csv`**, in the form of every other table. OpenHOI3 reads that folder after
+  `localisation/*.csv`, and only in the enhanced mode; the original does not read it. Keys carry the prefix
+  `OPENHOI_`.
 
 The first of them is the game options: `interface/openhoi/gameoptions.gui` declares the window `openhoi_game_options`,
 which OpenHOI3 makes as a part of the Game tab of the options window - four rows below the autosave interval, for a
 save before the month ends, a save on a timer, scrolling at the screen's edge and where event windows come up - and
-`localisation/openhoi_options.csv` holds their words. The file's own comments list the element names. What the player
+`localisation/openhoi/options.csv` holds their words. The file's own comments list the element names. What the player
 chooses is kept in `openhoi_settings.txt`, not in `settings.txt`, which the original reads and rewrites.
 
 ## What a file read by both engines may hold
