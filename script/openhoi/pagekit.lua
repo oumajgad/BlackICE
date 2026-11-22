@@ -197,4 +197,124 @@ function Kit.Data(name)
 	return BiceLibGui[name]
 end
 
+-- ---------------------------------------------------------------------------------------------------------------
+-- A page that changes something.
+--
+-- The mod's data functions change the game as they always did: they post the game's own command
+-- (CSetVariableCommand) through CCurrentGameState.Post. That needs the game, which a page has only in its Collect.
+-- So a press is noted while drawing - Kit.Ask(function() ... end) - and done at the page's next Collect, which
+-- OpenHOI3 is asked to run at once. What is posted there OpenHOI3 sends as an order of the player's.
+-- ---------------------------------------------------------------------------------------------------------------
+
+local asked = {}
+
+-- Notes something to do with the game at the next Collect, and asks for that Collect at once.
+function Kit.Ask(action)
+	asked[#asked + 1] = action
+	OpenHOI3.Refresh()
+end
+
+-- Whether something asked is still to be done.
+function Kit.Asking()
+	return #asked > 0
+end
+
+-- Does what was asked. A page calls it at the head of its Collect - Kit.Gather does. An action that fails is
+-- written to the log and the rest still run.
+function Kit.RunAsked()
+	local actions = asked
+	asked = {}
+	for _, action in ipairs(actions) do
+		local ok, problem = pcall(action)
+		if not ok and Utils ~= nil and Utils.LUA_DEBUGOUT ~= nil then
+			Utils.LUA_DEBUGOUT("openhoi page: " .. tostring(problem))
+		end
+	end
+end
+
+-- A page's Collect over one of the mod's data tables (BiceLibGui.<name>): what was asked is done first, and
+-- collect(source) answers what the page will draw. Where the data is not loaded the answer says so.
+function Kit.Gather(name, collect)
+	local source = Kit.Data(name)
+	if source == nil then
+		return { missing = true }
+	end
+	Kit.RunAsked()
+	return collect(source)
+end
+
+-- At the head of a page's Draw: whether there is something to draw. data is what Kit.Gather answered, answer the
+-- data function's own table in it. Draws the reason where there is nothing.
+function Kit.Ready(data, answer)
+	if data == nil then
+		return false
+	end
+	if data.missing then
+		ImGui.TextDisabled(L("OPENHOI_WIN_NO_DATA"))
+		return false
+	end
+	return Kit.Available(answer)
+end
+
+-- A change on its way. An order takes a moment to reach the game, and until it has the game still answers the
+-- old value: so the value asked for is kept under a name, and shown in the place of the game's until the game
+-- answers the same - or five seconds have passed, should the game have refused it.
+local pending = {}
+
+function Kit.Pend(name, wanted)
+	pending[name] = { wanted = wanted, since = os.time() }
+end
+
+-- The value to show for a name: the one asked for while it is on its way, else the game's. The second answer is
+-- whether it is still on its way.
+function Kit.Shown(name, actual)
+	local change = pending[name]
+	if change == nil then
+		return actual, false
+	end
+	if change.wanted == actual or os.time() - change.since > 5 then
+		pending[name] = nil
+		return actual, false
+	end
+	return change.wanted, true
+end
+
+Kit.WARNING = { 0.80, 0.60, 0.20, 1.0 }
+Kit.ERROR = { 0.85, 0.35, 0.35, 1.0 }
+Kit.SUCCESS = { 0.45, 0.85, 0.45, 1.0 }
+
+function Kit.Coloured(colour, text)
+	ImGui.TextColored(colour[1], colour[2], colour[3], colour[4], text)
+end
+
+-- A text, in the warning colour with three dots behind it while its change is on its way.
+function Kit.PendingText(text, waiting)
+	if waiting then
+		Kit.Coloured(Kit.WARNING, text .. "...")
+		if ImGui.IsItemHovered() then
+			ImGui.SetTooltip(L("OPENHOI_WIN_WAITING"))
+		end
+	else
+		ImGui.Text(text)
+	end
+end
+
+-- A table of two columns with no heading: a label and its value, a row each. rows is a list of { label, value }.
+function Kit.LabelTable(id, rows)
+	if ImGui.BeginTable(id, 2) then
+		for _, row in ipairs(rows) do
+			ImGui.TableNextRow()
+			ImGui.TableNextColumn()
+			ImGui.Text(tostring(row[1]))
+			ImGui.TableNextColumn()
+			if type(row[2]) == "function" then
+				row[2]()
+			else
+				ImGui.Text(tostring(row[2]))
+			end
+		end
+		ImGui.EndTable()
+	end
+end
+
 return Kit

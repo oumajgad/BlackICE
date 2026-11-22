@@ -181,7 +181,7 @@ province, and `BiceLib.Leaders.getLeaderDetails` on the original.
 
 | tab | pages on OpenHOI3 so far |
 | --- | --- |
-| Country Info | Resource Conversion |
+| Country Info | Country Modifiers, IC Days, Puppets, Strategic Res., Resource Conversion, Strategic Trades, Global Market, National Focus, Minister Buildings, Trade AI, Prod. Sliders AI, LS Sliders AI |
 | Game Info | Traits, Generals, Modifiers, Techs, Units, Unit Models |
 | Inspector | Active Flags, Global Flags, Active Variables, Active Event Modifiers |
 
@@ -189,6 +189,27 @@ As in the overlay: the divider between a list and its details is dragged (`Kit.B
 was the last thing clicked Up, Down, Home and End choose a row. A picture is drawn with `ImGui.Image(path, width,
 height)`, its size asked with `ImGui.ImageSize(path)`, the path below the game's folder as the mod's Lua has it.
 Not carried over: the scrollbar across a sprite wider than its pane - "Fit" scales it down instead.
+
+**A page that sets something through the mod's data functions** - a national focus, a puppet's focus, the three AI
+forms - leaves the setting to them, as the overlay does: they post the game's own `CSetVariableCommand` through
+`CCurrentGameState.Post`. That needs the game, which a page has only in its `Collect`. So the press is noted while
+drawing and done at the next `Collect`, which is asked for at once:
+
+```lua
+if ImGui.SmallButton(L("OPENHOI_WIN_NATFOCUS_SET")) then
+    Kit.Pend("natfocus", index)                       -- show what was asked for until the game answers the same
+    Kit.Ask(function() source.Set(index) end)         -- done in Collect; Kit.Gather runs it
+end
+```
+
+What is posted there OpenHOI3 sends as an order of the player's - it does not go straight into the game - so it
+reaches the host in multiplayer. `Kit.Shown(name, actual)` answers the value to show and whether it is still on
+its way. The three AI forms share `script/openhoi/pageform.lua`: values edited on the page, sent by Apply alone.
+
+Not carried over on Country Info: the Refresh and Auto row (every page re-reads every two seconds while it is
+shown, Global Market only when asked), a button's or a box's own colour (the focus a puppet has is greyed, a
+priority used twice is marked with a red `!`), and two figures of Country Modifiers that BiceLib reads on the
+original and OpenHOI3 does not give yet: Offmap IC reads 0 and Trickleback "unavailable".
 
 **A page changes the game by giving an order**, as the player does - never by setting something itself. An order is
 a function under `OpenHOI3` that OpenHOI3 names; the first is
