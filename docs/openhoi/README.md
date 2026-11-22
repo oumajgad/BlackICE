@@ -244,3 +244,15 @@ whose result depends on that order was already fragile, and differs between the 
 
 A file meant for OpenHOI3 alone that the original would trip over is the mistake to look for: check the six rules
 above before adding a key to a file that is not under an `openhoi` name.
+
+## Removal candidates
+
+What serves the original engine alone and has a replacement on OpenHOI3. Each stays for as long as a release still
+plays on the original, and goes with the first release that does not. Each is also marked where it stands.
+
+| what | where | replaced on OpenHOI3 by |
+| --- | --- | --- |
+| the resource conversion's events and covert operation | events 1553 to 1555 in `events/covert_ops_events.txt`; `set_resource_conversion` in `common/covert_ops.txt`; their texts in `localisation/BiceLib_conversion.csv` | the Resource Conversion page, `script/openhoi/windows/conversion.lua` |
+
+On OpenHOI3 the events still come up and their options change nothing: the `zzDsafe_...` conversion variables they
+set are not read there. They cannot be hidden on one engine until a gate exists (rule 6 above).
