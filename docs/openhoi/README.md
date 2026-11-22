@@ -184,6 +184,19 @@ province, and `BiceLib.Leaders.getLeaderDetails` on the original.
 | Country Info | Country Modifiers, IC Days, Puppets, Strategic Res., Resource Conversion, Strategic Trades, Global Market, National Focus, Minister Buildings, Trade AI, Prod. Sliders AI, LS Sliders AI |
 | Game Info | Traits, Generals, Modifiers, Techs, Units, Unit Models |
 | Inspector | Active Flags, Global Flags, Active Variables, Active Event Modifiers |
+| Setup | Country, Misc |
+
+**The country the pages report on is the one chosen on Setup > Country** - the Lua global `G_PlayerCountry`, as on
+the original: this machine's alone, not saved, and following the country played until another is chosen. A page
+takes it in its `Collect` with `player = Kit.Selected(player)`; the mod's data functions resolve it themselves.
+
+Left out of the Setup tab on OpenHOI3:
+
+- **Special**, the page that moves the 3D unit sprites of `gfx\anims` aside. It exists for the original's 32-bit
+  address space, which loads them though the mod draws none; OpenHOI3 never loads them, and a page of a mod does
+  not write into the game's folder.
+- **Country's "BiceLib setup" section**, which reports BiceLib's own daily job and the HQ unit limits it sets in the
+  original's memory. There is no such job on OpenHOI3.
 
 As in the overlay: the divider between a list and its details is dragged (`Kit.BeginPanes`), and in a list that
 was the last thing clicked Up, Down, Home and End choose a row. A picture is drawn with `ImGui.Image(path, width,

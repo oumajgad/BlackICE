@@ -15,6 +15,7 @@ return {
 	group_order = 20,
 
 	Collect = function(player)
+		player = Kit.Selected(player)
 		return Kit.Gather("CountryInfo", function(source)
 			return { tag = player, answer = source.Collect() }
 		end)

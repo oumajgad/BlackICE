@@ -12,6 +12,10 @@
 
 local ImGui = OpenHOI3.ImGui
 local L = OpenHOI3.Localise
+local Kit = require('openhoi/pagekit')
+
+-- The country whose settings are shown: what is being edited is another country's no longer.
+local shown = nil
 
 -- What is being edited, for each of the two conversions: "energy" and "crude_oil".
 local edits = {}
@@ -101,13 +105,25 @@ return {
 	group_order = 20,
 
 	Collect = function(player)
-		return OpenHOI3.Conversion(player)
+		player = Kit.Selected(player)
+		local data = OpenHOI3.Conversion(player)
+		if data ~= nil then
+			data.tag = player
+		end
+		return data
 	end,
 
 	Draw = function(data, player)
 		if data == nil then
 			return
 		end
+		-- The country chosen on the Setup tab, which the settings are read from and sent for.
+		player = data.tag
+		if shown ~= player then
+			shown = player
+			edits = {}
+		end
+		ImGui.TextDisabled(tostring(player))
 
 		ImGui.TextDisabled(filled("OPENHOI_WIN_CONV_HELD", {
 			ENERGY = whole(data.energy), CRUDE = whole(data.crude_oil), FUEL = whole(data.fuel),

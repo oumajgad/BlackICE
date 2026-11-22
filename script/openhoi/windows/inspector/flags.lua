@@ -19,6 +19,8 @@
 
 local ImGui = OpenHOI3.ImGui
 local L = OpenHOI3.Localise
+-- What the pages share (script/openhoi/pagekit.lua). Here only for the country chosen on the Setup tab.
+local Kit = require('openhoi/pagekit')
 
 -- The page's own state, kept between frames: what is typed into the filter.
 local filter = ""
@@ -30,6 +32,8 @@ return {
 	group_order = 40,
 
 	Collect = function(player)
+		-- The country chosen on the Setup tab's Country page, which is the one played until another is chosen.
+		player = Kit.Selected(player)
 		return {
 			tag = player,
 			-- Sorted by name by the engine; a flag that was set and cleared again is not among them.

@@ -188,6 +188,20 @@ function Kit.Available(answer)
 	return true
 end
 
+-- The country the pages report on and write to: the one chosen on the Setup tab's Country page - the mod's Lua
+-- global G_PlayerCountry, which follows the country played until one is chosen - or, where the mod's data is not
+-- loaded, the country played. It asks the game, so it is for a page's Collect:
+--   Collect = function(player)  player = Kit.Selected(player)  ...
+function Kit.Selected(player)
+	if BiceData ~= nil and BiceData.Players ~= nil and BiceData.Players.CurrentTag ~= nil then
+		local ok, tag = pcall(BiceData.Players.CurrentTag)
+		if ok and tag ~= nil and tag ~= "" then
+			return tostring(tag)
+		end
+	end
+	return player
+end
+
 -- The mod's data functions are loaded by autoexec.lua (gui-imgui.lua) where the utility is switched on. Answers
 -- that table's part of the given name, or draws why there is none and answers nil.
 function Kit.Data(name)

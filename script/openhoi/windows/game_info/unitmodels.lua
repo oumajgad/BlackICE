@@ -69,6 +69,7 @@ return {
 	group_order = 30,
 
 	Collect = function(player)
+		player = Kit.Selected(player)
 		local source = Kit.Data("UnitModels")
 		if source == nil then
 			return { missing = true }

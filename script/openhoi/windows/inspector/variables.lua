@@ -21,6 +21,7 @@ return {
 	group_order = 40,
 
 	Collect = function(player)
+		player = Kit.Selected(player)
 		local rows = {}
 		-- Sorted by name by the engine. A variable at nought is left out, as a save leaves it out.
 		for _, variable in ipairs(OpenHOI3.CountryVariables(player)) do

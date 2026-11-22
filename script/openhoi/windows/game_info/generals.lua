@@ -32,11 +32,13 @@ return {
 	group_order = 30,
 
 	Collect = function(player)
+		player = Kit.Selected(player)
 		local source = Kit.Data("Generals")
 		if source == nil then
 			return { missing = true }
 		end
-		local answer = source.Collect(player)		-- A label names its leader's id in its last brackets.
+		local answer = source.Collect(player)
+		-- A label names its leader's id in its last brackets.
 		local chosen = list.selected
 		local trait = traits.selected
 		local effects = nil

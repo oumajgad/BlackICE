@@ -22,6 +22,7 @@ return {
 	group_order = 40,
 
 	Collect = function(player)
+		player = Kit.Selected(player)
 		local rows = {}
 		-- In the order they were given; the same modifier given twice is two rows.
 		for _, given in ipairs(OpenHOI3.CountryModifiers(player)) do
