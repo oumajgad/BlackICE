@@ -131,8 +131,9 @@ What is declared `local` at the top of the file is the page's own state and is k
 filter box, a ticked checkbox.
 
 **The widgets** are under `OpenHOI3.ImGui`, by the names Dear ImGui gives them: `Text`, `TextDisabled`,
-`TextWrapped`, `TextColored`, `Separator`, `SameLine`, `Spacing`, `NewLine`, `SetNextItemWidth`, `Button`,
-`SmallButton`, `Selectable`, `CollapsingHeader`, `Checkbox`, `InputText`, `SliderInt`, `SliderFloat`, `Combo`,
+`TextWrapped`, `TextColored`, `Separator`, `SeparatorText`, `SameLine`, `Spacing`, `NewLine`, `SetNextItemWidth`,
+`Button`, `SmallButton`, `Selectable`, `CollapsingHeader`, `Checkbox`, `InputText`, `InputInt`, `SliderInt`,
+`SliderFloat`, `Combo`, `BeginDisabled` / `EndDisabled`,
 `IsItemHovered`, `SetTooltip`, `BeginTable` / `TableSetupColumn` / `TableHeadersRow` / `TableNextRow` /
 `TableNextColumn` / `EndTable`, `BeginTabBar` / `BeginTabItem` / `EndTabItem` / `EndTabBar`, `BeginChild` /
 `EndChild`, `TreeNode` / `TreePop`, `PushID` / `PopID`. A widget that holds a value answers `changed, value`:
@@ -150,11 +151,24 @@ closes what was left open, so a mistake shows as an error in the page's window a
 `OPENHOI_WINDOWS_MENU`.
 
 What OpenHOI3 gives a page to read the game with, beyond the game's own Lua classes: `OpenHOI3.CountryFlags(tag)`
-and `OpenHOI3.GlobalFlags()`. More will come page by page. A page that changes the game - by posting a command - is
-not built yet.
+`OpenHOI3.GlobalFlags()` and `OpenHOI3.Conversion(tag)`. More will come page by page.
+
+**A page changes the game by giving an order**, as the player does - never by setting something itself. An order is
+a function under `OpenHOI3` that OpenHOI3 names; the first is
+`OpenHOI3.SetConversion(tag, which, own, per_day, keep, target)`. It asks the game nothing, so it is given from
+`Draw`, on a button's press; OpenHOI3 posts it once the page is drawn and the game runs it with its other orders -
+on every machine in multiplayer, and in a replay. The page gathers again a moment later and shows what came of it.
+Keep what is typed in the page's own `local`s until a button sends it, so that half a number is never an order.
 
 `script/openhoi/windows/flags.lua`, the Active Flags page, is the worked example, and is commented;
-`globalflags.lua` beside it is a second page under the same tab.
+`globalflags.lua` beside it is a second page under the same tab, and `conversion.lua`, Resource Conversion under
+Country Info, is the example of a page that gives orders.
+
+**Resource conversion on OpenHOI3 is a setting of the country's own**, kept by the engine and in its save - not the
+`zzDsafe_...` country variables BiceLib reads on the original (`docs/bicelib/features.md`). The rule is the same:
+for each of the two conversions, whether the player sets it, how much a day, how much of the source to keep and the
+level of the product to stop at, within what IC and technology allow. A country nobody plays converts as the game
+always has.
 
 ## What a file read by both engines may hold
 
