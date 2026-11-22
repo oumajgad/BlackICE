@@ -138,7 +138,10 @@ filter box, a ticked checkbox.
 **The widgets** are under `OpenHOI3.ImGui`, by the names Dear ImGui gives them: `Text`, `TextDisabled`,
 `TextWrapped`, `TextColored`, `Separator`, `SeparatorText`, `SameLine`, `Spacing`, `NewLine`, `SetNextItemWidth`,
 `Button`, `SmallButton`, `Selectable`, `CollapsingHeader`, `Checkbox`, `InputText`, `InputInt`, `SliderInt`,
-`SliderFloat`, `Combo`, `BeginDisabled` / `EndDisabled`,
+`SliderFloat`, `Combo`, `InputTextMultiline` (a box of text that can be copied), `GetContentRegionAvail`,
+`BeginPanes` (columns with a divider to drag, ended by `EndTable`), `ImageSize` / `Image`, `IsItemActive`,
+`IsWindowFocused`, `IsKeyPressed`, `SetScrollHereY`, `SetClipboardText`,
+`BeginDisabled` / `EndDisabled`,
 `IsItemHovered`, `SetTooltip`, `BeginTable` / `TableSetupColumn` / `TableHeadersRow` / `TableNextRow` /
 `TableNextColumn` / `EndTable`, `BeginTabBar` / `BeginTabItem` / `EndTabItem` / `EndTabBar`, `BeginChild` /
 `EndChild`, `TreeNode` / `TreePop`, `PushID` / `PopID`. A widget that holds a value answers `changed, value`:
@@ -155,8 +158,37 @@ closes what was left open, so a mistake shows as an error in the page's window a
 **Every text comes from the localisation**, through `OpenHOI3.Localise(key)`; the window's own title is the key
 `OPENHOI_WINDOWS_MENU`.
 
-What OpenHOI3 gives a page to read the game with, beyond the game's own Lua classes: `OpenHOI3.CountryFlags(tag)`
-`OpenHOI3.GlobalFlags()` and `OpenHOI3.Conversion(tag)`. More will come page by page.
+What OpenHOI3 gives a page to read the game with, beyond the game's own Lua classes: `OpenHOI3.CountryFlags(tag)`,
+`OpenHOI3.GlobalFlags()`, `OpenHOI3.CountryVariables(tag)`, `OpenHOI3.CountryModifiers(tag)` and
+`OpenHOI3.Conversion(tag)`. More will come page by page.
+
+**A page that lists things and shows the chosen one** notes the choice in a `local` while drawing and calls
+`OpenHOI3.Refresh()`: OpenHOI3 then runs its `Collect` again at once, where the chosen thing's figures are read.
+Until the answer is for the choice now made, the page draws a "Loading..." line. `game_info/traits.lua` is the
+commented example.
+
+**The pages share `script/openhoi/pagekit.lua`** - the filter box, a filtered table, a filtered list with a chosen
+row, a box of text - taken with `local Kit = require('openhoi/pagekit')`. It stands beside the `windows` folder and
+not in it, because every file below `windows` is taken for a page.
+
+**The data behind the pages is the same on both engines.** `BiceLibGui.<Page>.<Function>` in
+`script/utility_imgui/` and `BiceData` in `script/utility_data/` parse the mod's files and ask the game's Lua
+classes; on the original BiceLib's overlay draws what they answer, on OpenHOI3 a page under `script/openhoi/windows`
+does. So a change to what a page shows is made once, there, and a page file holds only its drawing. Where such a
+function needs what BiceLib reads out of the running game, it asks OpenHOI3 for the same thing in the same shape
+when `OpenHOI3` is there: `BiceLibGui.Generals.Details` asks `OpenHOI3.LeaderDetails(id)` for a leader's unit and
+province, and `BiceLib.Leaders.getLeaderDetails` on the original.
+
+| tab | pages on OpenHOI3 so far |
+| --- | --- |
+| Country Info | Resource Conversion |
+| Game Info | Traits, Generals, Modifiers, Techs, Units, Unit Models |
+| Inspector | Active Flags, Global Flags, Active Variables, Active Event Modifiers |
+
+As in the overlay: the divider between a list and its details is dragged (`Kit.BeginPanes`), and in a list that
+was the last thing clicked Up, Down, Home and End choose a row. A picture is drawn with `ImGui.Image(path, width,
+height)`, its size asked with `ImGui.ImageSize(path)`, the path below the game's folder as the mod's Lua has it.
+Not carried over: the scrollbar across a sprite wider than its pane - "Fit" scales it down instead.
 
 **A page changes the game by giving an order**, as the player does - never by setting something itself. An order is
 a function under `OpenHOI3` that OpenHOI3 names; the first is

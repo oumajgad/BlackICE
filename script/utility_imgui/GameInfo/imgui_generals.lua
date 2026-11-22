@@ -35,16 +35,23 @@ function BiceLibGui.Generals.Details(id)
         end
 
         local location, locationId, unitName = "unknown", "unknown", "unknown"
-        if BiceLib ~= nil then
-            local live = BiceLib.Leaders.getLeaderDetails(tonumber(id))
-            if live ~= nil then
-                local provinceId = live["province_id"]
-                if provinceId ~= nil then
-                    locationId = tostring(provinceId)
-                    location = BiceData.Translations.Get(tostring(provinceId), "PROV") or "unknown"
-                end
-                unitName = live["unit_name"] or "unknown"
+        -- Where the running game has him: BiceLib reads it on the original engine, OpenHOI3 gives it itself
+        -- (docs/openhoi/README.md). Both answer a table with province_id and unit_name, or nil.
+        local live = nil
+        if OpenHOI3 ~= nil then
+            if OpenHOI3.LeaderDetails ~= nil then
+                live = OpenHOI3.LeaderDetails(tonumber(id))
             end
+        elseif BiceLib ~= nil then
+            live = BiceLib.Leaders.getLeaderDetails(tonumber(id))
+        end
+        if live ~= nil then
+            local provinceId = live["province_id"]
+            if provinceId ~= nil then
+                locationId = tostring(provinceId)
+                location = BiceData.Translations.Get(tostring(provinceId), "PROV") or "unknown"
+            end
+            unitName = live["unit_name"] or "unknown"
         end
 
         return {
