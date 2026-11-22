@@ -1,6 +1,6 @@
 -- The Resource Conversion page: the player's own say in turning energy into crude oil and crude oil into fuel.
 --
--- A page of the mod's own windows for OpenHOI3's enhanced mode; flags.lua beside this file is the commented example
+-- A page of the mod's own windows for OpenHOI3's enhanced mode; inspector/flags.lua is the commented example
 -- of how a page is written (docs/openhoi/README.md). This one is the example of a page that changes the game.
 --
 -- On OpenHOI3 the conversion is a setting of the country's own, kept by the engine and in its save - not the

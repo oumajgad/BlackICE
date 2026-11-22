@@ -87,8 +87,13 @@ adds a page, or a whole tab, by adding its own file.
 
 | | where |
 | --- | --- |
-| the page | a `.lua` file in `script/openhoi/windows/` - OpenHOI3 takes every file there |
+| the page | a `.lua` file in `script/openhoi/windows/` or a folder below it - OpenHOI3 takes every file there |
 | its texts | a `.csv` in `localisation/openhoi/` |
+
+**The pages are kept in a folder for each tab**: `script/openhoi/windows/country_info/`, `.../inspector/`, and so
+on as tabs gain pages. The folders are for our own order only - OpenHOI3 walks them all and reads nothing from a
+folder's name; the tab a page stands under is the `group` its table gives. A submod replaces a page by shipping a
+file at the same path, and two folders may each hold a file of the same name.
 
 The page's file returns a table:
 
@@ -160,9 +165,9 @@ a function under `OpenHOI3` that OpenHOI3 names; the first is
 on every machine in multiplayer, and in a replay. The page gathers again a moment later and shows what came of it.
 Keep what is typed in the page's own `local`s until a button sends it, so that half a number is never an order.
 
-`script/openhoi/windows/flags.lua`, the Active Flags page, is the worked example, and is commented;
-`globalflags.lua` beside it is a second page under the same tab, and `conversion.lua`, Resource Conversion under
-Country Info, is the example of a page that gives orders.
+`script/openhoi/windows/inspector/flags.lua`, the Active Flags page, is the worked example, and is commented;
+`globalflags.lua` beside it is a second page under the same tab, and `country_info/conversion.lua`, Resource
+Conversion under Country Info, is the example of a page that gives orders.
 
 **Resource conversion on OpenHOI3 is a setting of the country's own**, kept by the engine and in its save - not the
 `zzDsafe_...` country variables BiceLib reads on the original (`docs/bicelib/features.md`). The rule is the same:
@@ -252,7 +257,7 @@ plays on the original, and goes with the first release that does not. Each is al
 
 | what | where | replaced on OpenHOI3 by |
 | --- | --- | --- |
-| the resource conversion's events and covert operation | events 1553 to 1555 in `events/covert_ops_events.txt`; `set_resource_conversion` in `common/covert_ops.txt`; their texts in `localisation/BiceLib_conversion.csv` | the Resource Conversion page, `script/openhoi/windows/conversion.lua` |
+| the resource conversion's events and covert operation | events 1553 to 1555 in `events/covert_ops_events.txt`; `set_resource_conversion` in `common/covert_ops.txt`; their texts in `localisation/BiceLib_conversion.csv` | the Resource Conversion page, `script/openhoi/windows/country_info/conversion.lua` |
 
 On OpenHOI3 the events still come up and their options change nothing: the `zzDsafe_...` conversion variables they
 set are not read there. They cannot be hidden on one engine until a gate exists (rule 6 above).

@@ -1,7 +1,8 @@
 -- The Active Flags page: every flag the player's country holds, by name, with a filter.
 --
 -- A page of the mod's own windows for OpenHOI3's enhanced mode (docs/openhoi/README.md). OpenHOI3 lists
--- script/openhoi/windows/ and takes every file there as a page; the original never opens this folder. The Insert
+-- script/openhoi/windows/ and its subfolders and takes every file there as a page; the original never opens them.
+-- The folders are a folder a tab, for our own order: the tab a page stands under is its group, below. The Insert
 -- key shows the utility window: a tab for each group of pages, the tab's pages listed down its left side. The file
 -- returns a table:
 --   title        the localisation key of the page's name, in its tab's list of pages
