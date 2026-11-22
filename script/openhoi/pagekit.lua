@@ -331,4 +331,93 @@ function Kit.LabelTable(id, rows)
 	end
 end
 
+-- A section of the mod's help text (BiceData.Help, script/utility_data/bicedata_help.lua), entry by entry: a
+-- heading as a titled line - or as a paragraph where it is a sentence, longer than sixty characters - an item
+-- with a dash before it, a run of cards as one table of building, focus and ministers, and anything else as a
+-- paragraph.
+function Kit.HelpSection(id, entries)
+	local index = 1
+	while index <= #entries do
+		local entry = entries[index]
+		if entry.kind == "card" then
+			local drawn = ImGui.BeginTable(id .. "_cards" .. index, 3)
+			if drawn then
+				ImGui.TableSetupColumn(L("OPENHOI_WIN_HELP_BUILDING"))
+				ImGui.TableSetupColumn(L("OPENHOI_WIN_HELP_FOCUS"))
+				ImGui.TableSetupColumn(L("OPENHOI_WIN_HELP_MINISTERS"))
+				ImGui.TableHeadersRow()
+			end
+			-- A run of cards is one table; where it is not drawn its cards are passed over all the same.
+			while index <= #entries and entries[index].kind == "card" do
+				local card = entries[index]
+				if drawn then
+					ImGui.TableNextRow()
+					ImGui.TableNextColumn()
+					ImGui.Text(tostring(card.title or ""))
+					ImGui.TableNextColumn()
+					ImGui.TextDisabled(tostring(card.subtitle or ""))
+					ImGui.TableNextColumn()
+					for _, line in ipairs(card.lines or {}) do
+						ImGui.Text(tostring(line))
+					end
+				end
+				index = index + 1
+			end
+			if drawn then
+				ImGui.EndTable()
+			end
+		else
+			local text = tostring(entry.text or "")
+			if entry.kind == "heading" then
+				if #text > 60 then
+					ImGui.Spacing()
+					ImGui.TextWrapped(text)
+				else
+					ImGui.SeparatorText(text)
+				end
+			elseif entry.kind == "item" then
+				ImGui.TextWrapped("- " .. text)
+			else
+				ImGui.TextWrapped(text)
+				ImGui.Spacing()
+			end
+			index = index + 1
+		end
+	end
+end
+
+-- A page of the Help tab that is one section of that text: read once, when the page is first shown, and kept.
+function Kit.HelpPage(title, order, section)
+	local entries = nil
+	return {
+		title = title,
+		order = order,
+		group = "OPENHOI_WIN_GROUP_HELP",
+		group_order = 70,
+
+		Collect = function(player)
+			return Kit.Gather("Help", function(source)
+				if entries == nil then
+					local answer = source.Section(section)
+					if answer.available == false then
+						return { answer = answer }
+					end
+					entries = answer.entries or {}
+				end
+				return { answer = { available = true } }
+			end)
+		end,
+
+		Draw = function(data, player)
+			if not Kit.Ready(data, data and data.answer) or entries == nil then
+				return
+			end
+			if ImGui.BeginChild("help", 0, 0) then
+				Kit.HelpSection(section, entries)
+			end
+			ImGui.EndChild()
+		end,
+	}
+end
+
 return Kit

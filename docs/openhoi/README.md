@@ -186,6 +186,22 @@ province, and `BiceLib.Leaders.getLeaderDetails` on the original.
 | Inspector | Active Flags, Global Flags, Active Variables, Active Event Modifiers |
 | Setup | Country, Misc |
 | Stats | Setup, Statistics |
+| Options | Utility Options |
+| Help | Misc, Ministers + Buildings, National Focus |
+
+**The Options tab is one page on OpenHOI3.** Utility Options sets the window itself, through `OpenHOI3.Window`
+while the page draws: `Key()` / `CaptureKey()` / `CancelCapture()` / `Capturing()` for the key that opens it,
+`Theme()` / `Themes()` / `SetTheme(name)` for its look, `Scale()` / `SetScale(factor)` for its text size and
+`ResetLayout()`. OpenHOI3 keeps the key and the look in `openhoi_settings.txt`; the text size is not kept. The
+looks are the drawing library's three - dark, light, classic - and Army green, which OpenHOI3 draws in colours of
+its own after the overlay's (olive panels, amber headings); the overlay's Grey is not there. The rest of the overlay's Options tab is elsewhere or not there:
+
+- **Game Settings** (edge scrolling, where event popups appear) and **Custom Auto-Saves** are rows of the game's
+  own Options window on OpenHOI3, declared in `interface/openhoi/gameoptions.gui`.
+- **Crash reports** and the **debug console** are BiceLib's.
+
+**The Help tab** draws the mod's own text (`BiceData.Help`) with `Kit.HelpPage`, and the national focuses' effects
+by tier from `BiceLibGui.NatFocus.Effects`.
 
 **The Stats tab.** Setup switches the mod's collection of statistics and edits its list of countries, through
 `BiceLibGui.Stats` as the overlay does. Statistics reads the run's files itself - `<path>/<run>/<TAG>/<statistic>`
