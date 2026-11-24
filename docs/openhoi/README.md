@@ -222,6 +222,10 @@ red of a unit without a commander, which is marked with `!` in the tree instead.
   `row`, `header`, `divider`, `frame` and `field`; `interface/openhoi/builtin_styles.txt` may change them or add
   more. `interface/openhoi/builtin_sample.gui` shows every one (`--window=openhoi_builtin_sample`). The rules are in
   OpenHOI3's `docs/mechanics/builtin.md`.
+- **Custom Mapmode** is not a page. On OpenHOI3 a right click on the Infrastructure, Resources or Supply map mode
+  button opens a list of what that mode can shade by instead; the windows are `interface/openhoi/mapmodes.gui`, the
+  texts the `OPENHOI_MAPMODE_*` keys of `localisation/openhoi/windows.csv`, the rules OpenHOI3's
+  `docs/mechanics/custommapmodes.md`. What stood here before:
 - **Custom Mapmode** will not be a page either. It goes into the engine: a right click on a map mode's button
   opens a small list to choose from, as the unit upgrade selection does.
 
