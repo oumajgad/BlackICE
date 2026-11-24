@@ -216,6 +216,12 @@ red of a unit without a commander, which is marked with `!` in the tree instead.
 - **Unit Inspector** is not a page. On OpenHOI3 a click on the ribbon over a selected unit's brigades ("5
   Brigades") opens the brigade card's window with the figures of the entire unit. Its texts are the
   `OPENHOI_UNITCARD_*` keys of `localisation/openhoi/windows.csv`.
+- **Built-in elements.** A `.gui` file of `interface/openhoi/` may give an icon or a button
+  `built_in = { style = panel size = { x = 300 y = 120 } color = { r = 0 g = 255 b = 0 } }` in place of a
+  `spriteType`: OpenHOI3 paints it, with no texture and no `.gfx` entry. The styles are `flat`, `panel`, `button`,
+  `row`, `header`, `divider`, `frame` and `field`; `interface/openhoi/builtin_styles.txt` may change them or add
+  more. `interface/openhoi/builtin_sample.gui` shows every one (`--window=openhoi_builtin_sample`). The rules are in
+  OpenHOI3's `docs/mechanics/builtin.md`.
 - **Custom Mapmode** will not be a page either. It goes into the engine: a right click on a map mode's button
   opens a small list to choose from, as the unit upgrade selection does.
 
