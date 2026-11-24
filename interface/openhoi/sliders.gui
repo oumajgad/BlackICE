@@ -1,0 +1,186 @@
+# The two slider AI windows of BlackICE on OpenHOI3 - Prod. Sliders AI on the production screen, LS Sliders AI on the
+# technology screen - and the buttons that open them. Filled by script/openhoi/windows/country_info/prodsliders.lua
+# and lssliders.lua. Read by OpenHOI3 alone: the original does not open this folder. Every picture is a built-in
+# element. Written by a script; the rows are numbered from one.
+guiTypes = {
+	windowType = {
+		name = "openhoi_blackice_prodsliders_opener"
+		backGround = ""
+		position = { x = 832 y = 358 }
+		size = { x = 112 y = 24 }
+		moveable = 0
+		dontRender = ""
+		horizontalBorder = ""
+		verticalBorder = ""
+		fullScreen = no
+		Orientation = "UPPER_LEFT"
+		guiButtonType = { name = "open" position = { x = 0 y = 0 } built_in = { style = button size = { x = 112 y = 24 } } buttonText = "OPENHOI_WIN_SLIDERS_OPEN" buttonFont = "Arial12_bold_black" }
+	}
+
+	windowType = {
+		name = "openhoi_blackice_prodsliders"
+		backGround = "background"
+		position = { x = 470 y = 250 }
+		size = { x = 600 y = 266 }
+		moveable = 1
+		dontRender = ""
+		horizontalBorder = ""
+		verticalBorder = ""
+		fullScreen = no
+		Orientation = "UPPER_LEFT"
+		iconType = { name = "background" position = { x = 0 y = 0 } built_in = { style = panel size = { x = 600 y = 266 } } }
+		iconType = { name = "title_bar" position = { x = 4 y = 4 } built_in = { style = header size = { x = 592 y = 22 } } }
+		instantTextBoxType = { name = "title" position = { x = 4 y = 7 } font = "Arial12_bold" text = "" maxWidth = 592 maxHeight = 18 format = centre }
+		guiButtonType = { name = "help" position = { x = 552 y = 6 } built_in = { style = button size = { x = 18 y = 18 } } buttonText = "?" buttonFont = "Arial12_bold_black" }
+		guiButtonType = { name = "close" position = { x = 574 y = 6 } built_in = { style = button size = { x = 18 y = 18 } color = { r = 170 g = 70 b = 60 } } buttonText = "X" buttonFont = "Arial12_bold_black" }
+		guiButtonType = { name = "enable" position = { x = 10 y = 34 } built_in = { style = button size = { x = 100 y = 22 } } buttonText = "" buttonFont = "Arial12_bold_black" }
+		instantTextBoxType = { name = "state" position = { x = 118 y = 37 } font = "Arial12_bold_black" text = "" maxWidth = 110 maxHeight = 18 }
+		guiButtonType = { name = "apply" position = { x = 232 y = 34 } built_in = { style = button size = { x = 80 y = 22 } } buttonText = "OPENHOI_WIN_APPLY" buttonFont = "Arial12_bold_black" }
+		guiButtonType = { name = "reload" position = { x = 318 y = 34 } built_in = { style = button size = { x = 80 y = 22 } } buttonText = "OPENHOI_WIN_FORM_RELOAD" buttonFont = "Arial12_bold_black" }
+		instantTextBoxType = { name = "tag" position = { x = 406 y = 37 } font = "Arial12_bold_black" text = "" maxWidth = 50 maxHeight = 18 }
+		instantTextBoxType = { name = "message" position = { x = 10 y = 61 } font = "Arial12_bold_black" text = "" maxWidth = 580 maxHeight = 18 }
+		instantTextBoxType = { name = "head_category" position = { x = 16 y = 84 } font = "Arial12_bold_black" text = "OPENHOI_WIN_PRODSLIDERS_CATEGORY" maxWidth = 130 maxHeight = 18 }
+		instantTextBoxType = { name = "head_priority" position = { x = 150 y = 84 } font = "Arial12_bold_black" text = "OPENHOI_WIN_PRODSLIDERS_PRIORITY" maxWidth = 70 maxHeight = 18 }
+		instantTextBoxType = { name = "head_amount" position = { x = 226 y = 84 } font = "Arial12_bold_black" text = "OPENHOI_WIN_PRODSLIDERS_AMOUNT" maxWidth = 70 maxHeight = 18 }
+		instantTextBoxType = { name = "head_mode" position = { x = 302 y = 84 } font = "Arial12_bold_black" text = "OPENHOI_WIN_PRODSLIDERS_MODE" maxWidth = 110 maxHeight = 18 }
+		instantTextBoxType = { name = "head_extra" position = { x = 420 y = 84 } font = "Arial12_bold_black" text = "OPENHOI_WIN_PRODSLIDERS_EXTRA" maxWidth = 170 maxHeight = 18 }
+		iconType = { name = "row_1" position = { x = 10 y = 104 } built_in = { style = row size = { x = 580 y = 26 } } }
+		instantTextBoxType = { name = "name_1" position = { x = 16 y = 110 } font = "Arial12_bold_black" text = "" maxWidth = 130 maxHeight = 18 }
+		iconType = { name = "prio_bg_1" position = { x = 150 y = 107 } built_in = { style = field size = { x = 28 y = 20 } } }
+		instantTextBoxType = { name = "prio_1" position = { x = 150 y = 110 } font = "Arial12_bold_black" text = "" maxWidth = 28 maxHeight = 18 format = centre }
+		guiButtonType = { name = "prio_up_1" position = { x = 182 y = 108 } quadTextureSprite = "GFX_production_sortbutton_up" }
+		guiButtonType = { name = "prio_down_1" position = { x = 201 y = 108 } quadTextureSprite = "GFX_production_sortbutton_down" }
+		iconType = { name = "amount_bg_1" position = { x = 226 y = 107 } built_in = { style = field size = { x = 64 y = 20 } } }
+		editBoxType = { name = "amount_1" position = { x = 226 y = 106 } font = "Arial12_black" borderSize = { x = 4 y = 2 } size = { x = 64 y = 20 } text = "" orientation = "UPPER_LEFT" }
+		guiButtonType = { name = "mode_1" position = { x = 302 y = 106 } built_in = { style = button size = { x = 108 y = 22 } } buttonText = "" buttonFont = "Arial12_bold_black" }
+		guiButtonType = { name = "check_1" position = { x = 420 y = 107 } built_in = { style = field size = { x = 20 y = 20 } } buttonText = "" buttonFont = "Arial12_bold_black" }
+		instantTextBoxType = { name = "check_label_1" position = { x = 446 y = 110 } font = "Arial12_black" text = "" maxWidth = 90 maxHeight = 18 }
+		iconType = { name = "extra_bg_1" position = { x = 520 y = 107 } built_in = { style = field size = { x = 66 y = 20 } } }
+		editBoxType = { name = "extra_1" position = { x = 520 y = 106 } font = "Arial12_black" borderSize = { x = 4 y = 2 } size = { x = 66 y = 20 } text = "" orientation = "UPPER_LEFT" }
+		iconType = { name = "row_2" position = { x = 10 y = 130 } built_in = { style = row size = { x = 580 y = 26 } } }
+		instantTextBoxType = { name = "name_2" position = { x = 16 y = 136 } font = "Arial12_bold_black" text = "" maxWidth = 130 maxHeight = 18 }
+		iconType = { name = "prio_bg_2" position = { x = 150 y = 133 } built_in = { style = field size = { x = 28 y = 20 } } }
+		instantTextBoxType = { name = "prio_2" position = { x = 150 y = 136 } font = "Arial12_bold_black" text = "" maxWidth = 28 maxHeight = 18 format = centre }
+		guiButtonType = { name = "prio_up_2" position = { x = 182 y = 134 } quadTextureSprite = "GFX_production_sortbutton_up" }
+		guiButtonType = { name = "prio_down_2" position = { x = 201 y = 134 } quadTextureSprite = "GFX_production_sortbutton_down" }
+		iconType = { name = "amount_bg_2" position = { x = 226 y = 133 } built_in = { style = field size = { x = 64 y = 20 } } }
+		editBoxType = { name = "amount_2" position = { x = 226 y = 132 } font = "Arial12_black" borderSize = { x = 4 y = 2 } size = { x = 64 y = 20 } text = "" orientation = "UPPER_LEFT" }
+		guiButtonType = { name = "mode_2" position = { x = 302 y = 132 } built_in = { style = button size = { x = 108 y = 22 } } buttonText = "" buttonFont = "Arial12_bold_black" }
+		guiButtonType = { name = "check_2" position = { x = 420 y = 133 } built_in = { style = field size = { x = 20 y = 20 } } buttonText = "" buttonFont = "Arial12_bold_black" }
+		instantTextBoxType = { name = "check_label_2" position = { x = 446 y = 136 } font = "Arial12_black" text = "" maxWidth = 90 maxHeight = 18 }
+		iconType = { name = "extra_bg_2" position = { x = 520 y = 133 } built_in = { style = field size = { x = 66 y = 20 } } }
+		editBoxType = { name = "extra_2" position = { x = 520 y = 132 } font = "Arial12_black" borderSize = { x = 4 y = 2 } size = { x = 66 y = 20 } text = "" orientation = "UPPER_LEFT" }
+		iconType = { name = "row_3" position = { x = 10 y = 156 } built_in = { style = row size = { x = 580 y = 26 } } }
+		instantTextBoxType = { name = "name_3" position = { x = 16 y = 162 } font = "Arial12_bold_black" text = "" maxWidth = 130 maxHeight = 18 }
+		iconType = { name = "prio_bg_3" position = { x = 150 y = 159 } built_in = { style = field size = { x = 28 y = 20 } } }
+		instantTextBoxType = { name = "prio_3" position = { x = 150 y = 162 } font = "Arial12_bold_black" text = "" maxWidth = 28 maxHeight = 18 format = centre }
+		guiButtonType = { name = "prio_up_3" position = { x = 182 y = 160 } quadTextureSprite = "GFX_production_sortbutton_up" }
+		guiButtonType = { name = "prio_down_3" position = { x = 201 y = 160 } quadTextureSprite = "GFX_production_sortbutton_down" }
+		iconType = { name = "amount_bg_3" position = { x = 226 y = 159 } built_in = { style = field size = { x = 64 y = 20 } } }
+		editBoxType = { name = "amount_3" position = { x = 226 y = 158 } font = "Arial12_black" borderSize = { x = 4 y = 2 } size = { x = 64 y = 20 } text = "" orientation = "UPPER_LEFT" }
+		guiButtonType = { name = "mode_3" position = { x = 302 y = 158 } built_in = { style = button size = { x = 108 y = 22 } } buttonText = "" buttonFont = "Arial12_bold_black" }
+		guiButtonType = { name = "check_3" position = { x = 420 y = 159 } built_in = { style = field size = { x = 20 y = 20 } } buttonText = "" buttonFont = "Arial12_bold_black" }
+		instantTextBoxType = { name = "check_label_3" position = { x = 446 y = 162 } font = "Arial12_black" text = "" maxWidth = 90 maxHeight = 18 }
+		iconType = { name = "extra_bg_3" position = { x = 520 y = 159 } built_in = { style = field size = { x = 66 y = 20 } } }
+		editBoxType = { name = "extra_3" position = { x = 520 y = 158 } font = "Arial12_black" borderSize = { x = 4 y = 2 } size = { x = 66 y = 20 } text = "" orientation = "UPPER_LEFT" }
+		iconType = { name = "row_4" position = { x = 10 y = 182 } built_in = { style = row size = { x = 580 y = 26 } } }
+		instantTextBoxType = { name = "name_4" position = { x = 16 y = 188 } font = "Arial12_bold_black" text = "" maxWidth = 130 maxHeight = 18 }
+		iconType = { name = "prio_bg_4" position = { x = 150 y = 185 } built_in = { style = field size = { x = 28 y = 20 } } }
+		instantTextBoxType = { name = "prio_4" position = { x = 150 y = 188 } font = "Arial12_bold_black" text = "" maxWidth = 28 maxHeight = 18 format = centre }
+		guiButtonType = { name = "prio_up_4" position = { x = 182 y = 186 } quadTextureSprite = "GFX_production_sortbutton_up" }
+		guiButtonType = { name = "prio_down_4" position = { x = 201 y = 186 } quadTextureSprite = "GFX_production_sortbutton_down" }
+		iconType = { name = "amount_bg_4" position = { x = 226 y = 185 } built_in = { style = field size = { x = 64 y = 20 } } }
+		editBoxType = { name = "amount_4" position = { x = 226 y = 184 } font = "Arial12_black" borderSize = { x = 4 y = 2 } size = { x = 64 y = 20 } text = "" orientation = "UPPER_LEFT" }
+		guiButtonType = { name = "mode_4" position = { x = 302 y = 184 } built_in = { style = button size = { x = 108 y = 22 } } buttonText = "" buttonFont = "Arial12_bold_black" }
+		guiButtonType = { name = "check_4" position = { x = 420 y = 185 } built_in = { style = field size = { x = 20 y = 20 } } buttonText = "" buttonFont = "Arial12_bold_black" }
+		instantTextBoxType = { name = "check_label_4" position = { x = 446 y = 188 } font = "Arial12_black" text = "" maxWidth = 90 maxHeight = 18 }
+		iconType = { name = "extra_bg_4" position = { x = 520 y = 185 } built_in = { style = field size = { x = 66 y = 20 } } }
+		editBoxType = { name = "extra_4" position = { x = 520 y = 184 } font = "Arial12_black" borderSize = { x = 4 y = 2 } size = { x = 66 y = 20 } text = "" orientation = "UPPER_LEFT" }
+		iconType = { name = "row_5" position = { x = 10 y = 208 } built_in = { style = row size = { x = 580 y = 26 } } }
+		instantTextBoxType = { name = "name_5" position = { x = 16 y = 214 } font = "Arial12_bold_black" text = "" maxWidth = 130 maxHeight = 18 }
+		iconType = { name = "prio_bg_5" position = { x = 150 y = 211 } built_in = { style = field size = { x = 28 y = 20 } } }
+		instantTextBoxType = { name = "prio_5" position = { x = 150 y = 214 } font = "Arial12_bold_black" text = "" maxWidth = 28 maxHeight = 18 format = centre }
+		guiButtonType = { name = "prio_up_5" position = { x = 182 y = 212 } quadTextureSprite = "GFX_production_sortbutton_up" }
+		guiButtonType = { name = "prio_down_5" position = { x = 201 y = 212 } quadTextureSprite = "GFX_production_sortbutton_down" }
+		iconType = { name = "amount_bg_5" position = { x = 226 y = 211 } built_in = { style = field size = { x = 64 y = 20 } } }
+		editBoxType = { name = "amount_5" position = { x = 226 y = 210 } font = "Arial12_black" borderSize = { x = 4 y = 2 } size = { x = 64 y = 20 } text = "" orientation = "UPPER_LEFT" }
+		guiButtonType = { name = "mode_5" position = { x = 302 y = 210 } built_in = { style = button size = { x = 108 y = 22 } } buttonText = "" buttonFont = "Arial12_bold_black" }
+		guiButtonType = { name = "check_5" position = { x = 420 y = 211 } built_in = { style = field size = { x = 20 y = 20 } } buttonText = "" buttonFont = "Arial12_bold_black" }
+		instantTextBoxType = { name = "check_label_5" position = { x = 446 y = 214 } font = "Arial12_black" text = "" maxWidth = 90 maxHeight = 18 }
+		iconType = { name = "extra_bg_5" position = { x = 520 y = 211 } built_in = { style = field size = { x = 66 y = 20 } } }
+		editBoxType = { name = "extra_5" position = { x = 520 y = 210 } font = "Arial12_black" borderSize = { x = 4 y = 2 } size = { x = 66 y = 20 } text = "" orientation = "UPPER_LEFT" }
+		iconType = { name = "row_6" position = { x = 10 y = 234 } built_in = { style = row size = { x = 580 y = 26 } } }
+		instantTextBoxType = { name = "name_6" position = { x = 16 y = 240 } font = "Arial12_bold_black" text = "" maxWidth = 130 maxHeight = 18 }
+		iconType = { name = "prio_bg_6" position = { x = 150 y = 237 } built_in = { style = field size = { x = 28 y = 20 } } }
+		instantTextBoxType = { name = "prio_6" position = { x = 150 y = 240 } font = "Arial12_bold_black" text = "" maxWidth = 28 maxHeight = 18 format = centre }
+		guiButtonType = { name = "prio_up_6" position = { x = 182 y = 238 } quadTextureSprite = "GFX_production_sortbutton_up" }
+		guiButtonType = { name = "prio_down_6" position = { x = 201 y = 238 } quadTextureSprite = "GFX_production_sortbutton_down" }
+		iconType = { name = "amount_bg_6" position = { x = 226 y = 237 } built_in = { style = field size = { x = 64 y = 20 } } }
+		editBoxType = { name = "amount_6" position = { x = 226 y = 236 } font = "Arial12_black" borderSize = { x = 4 y = 2 } size = { x = 64 y = 20 } text = "" orientation = "UPPER_LEFT" }
+		guiButtonType = { name = "mode_6" position = { x = 302 y = 236 } built_in = { style = button size = { x = 108 y = 22 } } buttonText = "" buttonFont = "Arial12_bold_black" }
+		guiButtonType = { name = "check_6" position = { x = 420 y = 237 } built_in = { style = field size = { x = 20 y = 20 } } buttonText = "" buttonFont = "Arial12_bold_black" }
+		instantTextBoxType = { name = "check_label_6" position = { x = 446 y = 240 } font = "Arial12_black" text = "" maxWidth = 90 maxHeight = 18 }
+		iconType = { name = "extra_bg_6" position = { x = 520 y = 237 } built_in = { style = field size = { x = 66 y = 20 } } }
+		editBoxType = { name = "extra_6" position = { x = 520 y = 236 } font = "Arial12_black" borderSize = { x = 4 y = 2 } size = { x = 66 y = 20 } text = "" orientation = "UPPER_LEFT" }
+	}
+
+	windowType = {
+		name = "openhoi_blackice_lssliders_opener"
+		backGround = ""
+		position = { x = 1300 y = 240 }
+		size = { x = 112 y = 24 }
+		moveable = 0
+		dontRender = ""
+		horizontalBorder = ""
+		verticalBorder = ""
+		fullScreen = no
+		Orientation = "UPPER_LEFT"
+		guiButtonType = { name = "open" position = { x = 0 y = 0 } built_in = { style = button size = { x = 112 y = 24 } } buttonText = "OPENHOI_WIN_SLIDERS_OPEN" buttonFont = "Arial12_bold_black" }
+	}
+
+	windowType = {
+		name = "openhoi_blackice_lssliders"
+		backGround = "background"
+		position = { x = 720 y = 300 }
+		size = { x = 470 y = 216 }
+		moveable = 1
+		dontRender = ""
+		horizontalBorder = ""
+		verticalBorder = ""
+		fullScreen = no
+		Orientation = "UPPER_LEFT"
+		iconType = { name = "background" position = { x = 0 y = 0 } built_in = { style = panel size = { x = 470 y = 216 } } }
+		iconType = { name = "title_bar" position = { x = 4 y = 4 } built_in = { style = header size = { x = 462 y = 22 } } }
+		instantTextBoxType = { name = "title" position = { x = 4 y = 7 } font = "Arial12_bold" text = "" maxWidth = 462 maxHeight = 18 format = centre }
+		guiButtonType = { name = "help" position = { x = 422 y = 6 } built_in = { style = button size = { x = 18 y = 18 } } buttonText = "?" buttonFont = "Arial12_bold_black" }
+		guiButtonType = { name = "close" position = { x = 444 y = 6 } built_in = { style = button size = { x = 18 y = 18 } color = { r = 170 g = 70 b = 60 } } buttonText = "X" buttonFont = "Arial12_bold_black" }
+		guiButtonType = { name = "enable" position = { x = 10 y = 34 } built_in = { style = button size = { x = 100 y = 22 } } buttonText = "" buttonFont = "Arial12_bold_black" }
+		instantTextBoxType = { name = "state" position = { x = 118 y = 37 } font = "Arial12_bold_black" text = "" maxWidth = 110 maxHeight = 18 }
+		guiButtonType = { name = "apply" position = { x = 232 y = 34 } built_in = { style = button size = { x = 80 y = 22 } } buttonText = "OPENHOI_WIN_APPLY" buttonFont = "Arial12_bold_black" }
+		guiButtonType = { name = "reload" position = { x = 318 y = 34 } built_in = { style = button size = { x = 80 y = 22 } } buttonText = "OPENHOI_WIN_FORM_RELOAD" buttonFont = "Arial12_bold_black" }
+		instantTextBoxType = { name = "tag" position = { x = 406 y = 37 } font = "Arial12_bold_black" text = "" maxWidth = 50 maxHeight = 18 }
+		instantTextBoxType = { name = "message" position = { x = 10 y = 61 } font = "Arial12_bold_black" text = "" maxWidth = 450 maxHeight = 18 }
+		instantTextBoxType = { name = "lower_header" position = { x = 200 y = 84 } font = "Arial12_bold_black" text = "" maxWidth = 110 maxHeight = 18 }
+		instantTextBoxType = { name = "upper_header" position = { x = 330 y = 84 } font = "Arial12_bold_black" text = "" maxWidth = 110 maxHeight = 18 }
+		iconType = { name = "row_1" position = { x = 10 y = 104 } built_in = { style = row size = { x = 450 y = 26 } } }
+		instantTextBoxType = { name = "name_1" position = { x = 16 y = 110 } font = "Arial12_bold_black" text = "" maxWidth = 170 maxHeight = 18 }
+		iconType = { name = "lower_bg_1" position = { x = 200 y = 107 } built_in = { style = field size = { x = 100 y = 20 } } }
+		editBoxType = { name = "lower_1" position = { x = 200 y = 106 } font = "Arial12_black" borderSize = { x = 4 y = 2 } size = { x = 100 y = 20 } text = "" orientation = "UPPER_LEFT" }
+		iconType = { name = "upper_bg_1" position = { x = 330 y = 107 } built_in = { style = field size = { x = 100 y = 20 } } }
+		editBoxType = { name = "upper_1" position = { x = 330 y = 106 } font = "Arial12_black" borderSize = { x = 4 y = 2 } size = { x = 100 y = 20 } text = "" orientation = "UPPER_LEFT" }
+		iconType = { name = "row_2" position = { x = 10 y = 130 } built_in = { style = row size = { x = 450 y = 26 } } }
+		instantTextBoxType = { name = "name_2" position = { x = 16 y = 136 } font = "Arial12_bold_black" text = "" maxWidth = 170 maxHeight = 18 }
+		iconType = { name = "lower_bg_2" position = { x = 200 y = 133 } built_in = { style = field size = { x = 100 y = 20 } } }
+		editBoxType = { name = "lower_2" position = { x = 200 y = 132 } font = "Arial12_black" borderSize = { x = 4 y = 2 } size = { x = 100 y = 20 } text = "" orientation = "UPPER_LEFT" }
+		iconType = { name = "upper_bg_2" position = { x = 330 y = 133 } built_in = { style = field size = { x = 100 y = 20 } } }
+		editBoxType = { name = "upper_2" position = { x = 330 y = 132 } font = "Arial12_black" borderSize = { x = 4 y = 2 } size = { x = 100 y = 20 } text = "" orientation = "UPPER_LEFT" }
+		iconType = { name = "row_3" position = { x = 10 y = 156 } built_in = { style = row size = { x = 450 y = 26 } } }
+		instantTextBoxType = { name = "name_3" position = { x = 16 y = 162 } font = "Arial12_bold_black" text = "" maxWidth = 170 maxHeight = 18 }
+		iconType = { name = "lower_bg_3" position = { x = 200 y = 159 } built_in = { style = field size = { x = 100 y = 20 } } }
+		editBoxType = { name = "lower_3" position = { x = 200 y = 158 } font = "Arial12_black" borderSize = { x = 4 y = 2 } size = { x = 100 y = 20 } text = "" orientation = "UPPER_LEFT" }
+		iconType = { name = "upper_bg_3" position = { x = 330 y = 159 } built_in = { style = field size = { x = 100 y = 20 } } }
+		editBoxType = { name = "upper_3" position = { x = 330 y = 158 } font = "Arial12_black" borderSize = { x = 4 y = 2 } size = { x = 100 y = 20 } text = "" orientation = "UPPER_LEFT" }
+		guiButtonType = { name = "buffer" position = { x = 16 y = 188 } built_in = { style = field size = { x = 20 y = 20 } } buttonText = "" buttonFont = "Arial12_bold_black" }
+		instantTextBoxType = { name = "buffer_label" position = { x = 42 y = 191 } font = "Arial12_black" text = "" maxWidth = 300 maxHeight = 18 }
+	}
+}

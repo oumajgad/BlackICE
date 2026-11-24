@@ -154,4 +154,7 @@ function Form.Ready(form, data)
 	return form.values ~= nil
 end
 
+-- The same sending for a page that fills a window of the game's own interface (script/openhoi/nativeform.lua).
+Form.Apply = apply
+
 return Form
