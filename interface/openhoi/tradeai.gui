@@ -1,0 +1,109 @@
+# The Trade AI window of BlackICE on OpenHOI3 and the button on the production screen that opens it. Filled by
+# script/openhoi/windows/country_info/tradeai.lua. Read by OpenHOI3 alone: the original does not open this folder.
+# Every picture is a built-in element. Written by a script; the rows are numbered from one.
+guiTypes = {
+	windowType = {
+		name = "openhoi_blackice_tradeai_opener"
+		backGround = ""
+		position = { x = 832 y = 371 }
+		size = { x = 112 y = 22 }
+		moveable = 0
+		dontRender = ""
+		horizontalBorder = ""
+		verticalBorder = ""
+		fullScreen = no
+		Orientation = "UPPER_LEFT"
+		guiButtonType = { name = "open" position = { x = 0 y = 0 } built_in = { style = button size = { x = 112 y = 22 } } buttonText = "OPENHOI_WIN_TRADEAI" buttonFont = "Arial12_bold_black" }
+	}
+
+	windowType = {
+		name = "openhoi_blackice_tradeai"
+		backGround = "background"
+		position = { x = 520 y = 260 }
+		size = { x = 520 y = 296 }
+		moveable = 1
+		dontRender = ""
+		horizontalBorder = ""
+		verticalBorder = ""
+		fullScreen = no
+		Orientation = "UPPER_LEFT"
+		iconType = { name = "background" position = { x = 0 y = 0 } built_in = { style = panel size = { x = 520 y = 296 } } }
+		iconType = { name = "title_bar" position = { x = 4 y = 4 } built_in = { style = header size = { x = 512 y = 22 } } }
+		instantTextBoxType = { name = "title" position = { x = 4 y = 7 } font = "Arial12_bold" text = "" maxWidth = 512 maxHeight = 18 format = centre }
+		guiButtonType = { name = "help" position = { x = 472 y = 6 } built_in = { style = button size = { x = 18 y = 18 } } buttonText = "?" buttonFont = "Arial12_bold_black" }
+		guiButtonType = { name = "close" position = { x = 494 y = 6 } built_in = { style = button size = { x = 18 y = 18 } color = { r = 170 g = 70 b = 60 } } buttonText = "X" buttonFont = "Arial12_bold_black" }
+		guiButtonType = { name = "enable" position = { x = 10 y = 34 } built_in = { style = button size = { x = 100 y = 22 } } buttonText = "" buttonFont = "Arial12_bold_black" }
+		instantTextBoxType = { name = "state" position = { x = 118 y = 37 } font = "Arial12_bold_black" text = "" maxWidth = 110 maxHeight = 18 }
+		guiButtonType = { name = "apply" position = { x = 232 y = 34 } built_in = { style = button size = { x = 80 y = 22 } } buttonText = "OPENHOI_WIN_APPLY" buttonFont = "Arial12_bold_black" }
+		guiButtonType = { name = "reload" position = { x = 318 y = 34 } built_in = { style = button size = { x = 80 y = 22 } } buttonText = "OPENHOI_WIN_FORM_RELOAD" buttonFont = "Arial12_bold_black" }
+		instantTextBoxType = { name = "tag" position = { x = 406 y = 37 } font = "Arial12_bold_black" text = "" maxWidth = 50 maxHeight = 18 }
+		instantTextBoxType = { name = "message" position = { x = 10 y = 61 } font = "Arial12_bold_black" text = "" maxWidth = 500 maxHeight = 18 }
+		iconType = { name = "deficit_bg" position = { x = 10 y = 84 } built_in = { style = field size = { x = 90 y = 20 } } }
+		editBoxType = { name = "deficit" position = { x = 10 y = 83 } font = "Arial12_black" borderSize = { x = 4 y = 2 } size = { x = 90 y = 20 } text = "" orientation = "UPPER_LEFT" }
+		instantTextBoxType = { name = "deficit_label" position = { x = 108 y = 87 } font = "Arial12_bold_black" text = "" maxWidth = 300 maxHeight = 18 }
+		instantTextBoxType = { name = "head_resource" position = { x = 16 y = 114 } font = "Arial12_bold_black" text = "OPENHOI_WIN_STRATRES_RESOURCE" maxWidth = 130 maxHeight = 18 }
+		instantTextBoxType = { name = "head_surplus" position = { x = 160 y = 114 } font = "Arial12_bold_black" text = "OPENHOI_WIN_TRADEAI_SURPLUS" maxWidth = 110 maxHeight = 18 }
+		instantTextBoxType = { name = "head_sale" position = { x = 280 y = 114 } font = "Arial12_bold_black" text = "OPENHOI_WIN_TRADEAI_SELL_ABOVE" maxWidth = 110 maxHeight = 18 }
+		instantTextBoxType = { name = "head_cancel" position = { x = 400 y = 114 } font = "Arial12_bold_black" text = "OPENHOI_WIN_TRADEAI_STOCKPILE" maxWidth = 110 maxHeight = 18 }
+		iconType = { name = "row_1" position = { x = 10 y = 134 } built_in = { style = row size = { x = 500 y = 26 } } }
+		instantTextBoxType = { name = "name_1" position = { x = 16 y = 140 } font = "Arial12_bold_black" text = "" maxWidth = 130 maxHeight = 18 }
+		iconType = { name = "surplus_bg_1" position = { x = 160 y = 137 } built_in = { style = field size = { x = 100 y = 20 } } }
+		editBoxType = { name = "surplus_1" position = { x = 160 y = 136 } font = "Arial12_black" borderSize = { x = 4 y = 2 } size = { x = 100 y = 20 } text = "" orientation = "UPPER_LEFT" }
+		iconType = { name = "sale_bg_1" position = { x = 280 y = 137 } built_in = { style = field size = { x = 100 y = 20 } } }
+		editBoxType = { name = "sale_1" position = { x = 280 y = 136 } font = "Arial12_black" borderSize = { x = 4 y = 2 } size = { x = 100 y = 20 } text = "" orientation = "UPPER_LEFT" }
+		instantTextBoxType = { name = "sale_none_1" position = { x = 280 y = 140 } font = "Arial12_black" text = "-" maxWidth = 100 maxHeight = 18 format = centre }
+		iconType = { name = "cancel_bg_1" position = { x = 400 y = 137 } built_in = { style = field size = { x = 100 y = 20 } } }
+		editBoxType = { name = "cancel_1" position = { x = 400 y = 136 } font = "Arial12_black" borderSize = { x = 4 y = 2 } size = { x = 100 y = 20 } text = "" orientation = "UPPER_LEFT" }
+		instantTextBoxType = { name = "cancel_none_1" position = { x = 400 y = 140 } font = "Arial12_black" text = "-" maxWidth = 100 maxHeight = 18 format = centre }
+		iconType = { name = "row_2" position = { x = 10 y = 160 } built_in = { style = row size = { x = 500 y = 26 } } }
+		instantTextBoxType = { name = "name_2" position = { x = 16 y = 166 } font = "Arial12_bold_black" text = "" maxWidth = 130 maxHeight = 18 }
+		iconType = { name = "surplus_bg_2" position = { x = 160 y = 163 } built_in = { style = field size = { x = 100 y = 20 } } }
+		editBoxType = { name = "surplus_2" position = { x = 160 y = 162 } font = "Arial12_black" borderSize = { x = 4 y = 2 } size = { x = 100 y = 20 } text = "" orientation = "UPPER_LEFT" }
+		iconType = { name = "sale_bg_2" position = { x = 280 y = 163 } built_in = { style = field size = { x = 100 y = 20 } } }
+		editBoxType = { name = "sale_2" position = { x = 280 y = 162 } font = "Arial12_black" borderSize = { x = 4 y = 2 } size = { x = 100 y = 20 } text = "" orientation = "UPPER_LEFT" }
+		instantTextBoxType = { name = "sale_none_2" position = { x = 280 y = 166 } font = "Arial12_black" text = "-" maxWidth = 100 maxHeight = 18 format = centre }
+		iconType = { name = "cancel_bg_2" position = { x = 400 y = 163 } built_in = { style = field size = { x = 100 y = 20 } } }
+		editBoxType = { name = "cancel_2" position = { x = 400 y = 162 } font = "Arial12_black" borderSize = { x = 4 y = 2 } size = { x = 100 y = 20 } text = "" orientation = "UPPER_LEFT" }
+		instantTextBoxType = { name = "cancel_none_2" position = { x = 400 y = 166 } font = "Arial12_black" text = "-" maxWidth = 100 maxHeight = 18 format = centre }
+		iconType = { name = "row_3" position = { x = 10 y = 186 } built_in = { style = row size = { x = 500 y = 26 } } }
+		instantTextBoxType = { name = "name_3" position = { x = 16 y = 192 } font = "Arial12_bold_black" text = "" maxWidth = 130 maxHeight = 18 }
+		iconType = { name = "surplus_bg_3" position = { x = 160 y = 189 } built_in = { style = field size = { x = 100 y = 20 } } }
+		editBoxType = { name = "surplus_3" position = { x = 160 y = 188 } font = "Arial12_black" borderSize = { x = 4 y = 2 } size = { x = 100 y = 20 } text = "" orientation = "UPPER_LEFT" }
+		iconType = { name = "sale_bg_3" position = { x = 280 y = 189 } built_in = { style = field size = { x = 100 y = 20 } } }
+		editBoxType = { name = "sale_3" position = { x = 280 y = 188 } font = "Arial12_black" borderSize = { x = 4 y = 2 } size = { x = 100 y = 20 } text = "" orientation = "UPPER_LEFT" }
+		instantTextBoxType = { name = "sale_none_3" position = { x = 280 y = 192 } font = "Arial12_black" text = "-" maxWidth = 100 maxHeight = 18 format = centre }
+		iconType = { name = "cancel_bg_3" position = { x = 400 y = 189 } built_in = { style = field size = { x = 100 y = 20 } } }
+		editBoxType = { name = "cancel_3" position = { x = 400 y = 188 } font = "Arial12_black" borderSize = { x = 4 y = 2 } size = { x = 100 y = 20 } text = "" orientation = "UPPER_LEFT" }
+		instantTextBoxType = { name = "cancel_none_3" position = { x = 400 y = 192 } font = "Arial12_black" text = "-" maxWidth = 100 maxHeight = 18 format = centre }
+		iconType = { name = "row_4" position = { x = 10 y = 212 } built_in = { style = row size = { x = 500 y = 26 } } }
+		instantTextBoxType = { name = "name_4" position = { x = 16 y = 218 } font = "Arial12_bold_black" text = "" maxWidth = 130 maxHeight = 18 }
+		iconType = { name = "surplus_bg_4" position = { x = 160 y = 215 } built_in = { style = field size = { x = 100 y = 20 } } }
+		editBoxType = { name = "surplus_4" position = { x = 160 y = 214 } font = "Arial12_black" borderSize = { x = 4 y = 2 } size = { x = 100 y = 20 } text = "" orientation = "UPPER_LEFT" }
+		iconType = { name = "sale_bg_4" position = { x = 280 y = 215 } built_in = { style = field size = { x = 100 y = 20 } } }
+		editBoxType = { name = "sale_4" position = { x = 280 y = 214 } font = "Arial12_black" borderSize = { x = 4 y = 2 } size = { x = 100 y = 20 } text = "" orientation = "UPPER_LEFT" }
+		instantTextBoxType = { name = "sale_none_4" position = { x = 280 y = 218 } font = "Arial12_black" text = "-" maxWidth = 100 maxHeight = 18 format = centre }
+		iconType = { name = "cancel_bg_4" position = { x = 400 y = 215 } built_in = { style = field size = { x = 100 y = 20 } } }
+		editBoxType = { name = "cancel_4" position = { x = 400 y = 214 } font = "Arial12_black" borderSize = { x = 4 y = 2 } size = { x = 100 y = 20 } text = "" orientation = "UPPER_LEFT" }
+		instantTextBoxType = { name = "cancel_none_4" position = { x = 400 y = 218 } font = "Arial12_black" text = "-" maxWidth = 100 maxHeight = 18 format = centre }
+		iconType = { name = "row_5" position = { x = 10 y = 238 } built_in = { style = row size = { x = 500 y = 26 } } }
+		instantTextBoxType = { name = "name_5" position = { x = 16 y = 244 } font = "Arial12_bold_black" text = "" maxWidth = 130 maxHeight = 18 }
+		iconType = { name = "surplus_bg_5" position = { x = 160 y = 241 } built_in = { style = field size = { x = 100 y = 20 } } }
+		editBoxType = { name = "surplus_5" position = { x = 160 y = 240 } font = "Arial12_black" borderSize = { x = 4 y = 2 } size = { x = 100 y = 20 } text = "" orientation = "UPPER_LEFT" }
+		iconType = { name = "sale_bg_5" position = { x = 280 y = 241 } built_in = { style = field size = { x = 100 y = 20 } } }
+		editBoxType = { name = "sale_5" position = { x = 280 y = 240 } font = "Arial12_black" borderSize = { x = 4 y = 2 } size = { x = 100 y = 20 } text = "" orientation = "UPPER_LEFT" }
+		instantTextBoxType = { name = "sale_none_5" position = { x = 280 y = 244 } font = "Arial12_black" text = "-" maxWidth = 100 maxHeight = 18 format = centre }
+		iconType = { name = "cancel_bg_5" position = { x = 400 y = 241 } built_in = { style = field size = { x = 100 y = 20 } } }
+		editBoxType = { name = "cancel_5" position = { x = 400 y = 240 } font = "Arial12_black" borderSize = { x = 4 y = 2 } size = { x = 100 y = 20 } text = "" orientation = "UPPER_LEFT" }
+		instantTextBoxType = { name = "cancel_none_5" position = { x = 400 y = 244 } font = "Arial12_black" text = "-" maxWidth = 100 maxHeight = 18 format = centre }
+		iconType = { name = "row_6" position = { x = 10 y = 264 } built_in = { style = row size = { x = 500 y = 26 } } }
+		instantTextBoxType = { name = "name_6" position = { x = 16 y = 270 } font = "Arial12_bold_black" text = "" maxWidth = 130 maxHeight = 18 }
+		iconType = { name = "surplus_bg_6" position = { x = 160 y = 267 } built_in = { style = field size = { x = 100 y = 20 } } }
+		editBoxType = { name = "surplus_6" position = { x = 160 y = 266 } font = "Arial12_black" borderSize = { x = 4 y = 2 } size = { x = 100 y = 20 } text = "" orientation = "UPPER_LEFT" }
+		iconType = { name = "sale_bg_6" position = { x = 280 y = 267 } built_in = { style = field size = { x = 100 y = 20 } } }
+		editBoxType = { name = "sale_6" position = { x = 280 y = 266 } font = "Arial12_black" borderSize = { x = 4 y = 2 } size = { x = 100 y = 20 } text = "" orientation = "UPPER_LEFT" }
+		instantTextBoxType = { name = "sale_none_6" position = { x = 280 y = 270 } font = "Arial12_black" text = "-" maxWidth = 100 maxHeight = 18 format = centre }
+		iconType = { name = "cancel_bg_6" position = { x = 400 y = 267 } built_in = { style = field size = { x = 100 y = 20 } } }
+		editBoxType = { name = "cancel_6" position = { x = 400 y = 266 } font = "Arial12_black" borderSize = { x = 4 y = 2 } size = { x = 100 y = 20 } text = "" orientation = "UPPER_LEFT" }
+		instantTextBoxType = { name = "cancel_none_6" position = { x = 400 y = 270 } font = "Arial12_black" text = "-" maxWidth = 100 maxHeight = 18 format = centre }
+	}
+}

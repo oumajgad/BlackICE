@@ -23,9 +23,9 @@ local RESOURCES = {
     { key = "MONEY",          name = "Money",     buffer = 1 },
     { key = "FUEL",           name = "Fuel",      buffer = 1,    saleCap = 30000, cancelCap = 20000 },
     { key = "ENERGY",         name = "Energy",    buffer = 5,    saleCap = 40000, cancelCap = 30000 },
-    { key = "METAL",          name = "Metal",     buffer = 2.5,  saleCap = 20000, cancelCap = 15000 },
+    { key = "METAL",          name = "Metal",     buffer = 3,    saleCap = 20000, cancelCap = 15000 },
     { key = "RARE_MATERIALS", name = "Rares",     buffer = 1,    saleCap = 10000, cancelCap = 7500 },
-    { key = "CRUDE_OIL",      name = "Crude Oil", buffer = 0.25, saleCap = 20000, cancelCap = 15000 },
+    { key = "CRUDE_OIL",      name = "Crude Oil", buffer = 1,    saleCap = 20000, cancelCap = 15000 },
 }
 
 local MAX_DAILY_SELL_DEFAULT = 50

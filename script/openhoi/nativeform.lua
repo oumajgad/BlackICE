@@ -23,10 +23,20 @@ local function shown(value, decimals)
 	return string.format("%d", math.floor(value + 0.5))
 end
 
--- An edit box of the form: values[field]. What is typed is taken as it is typed; else the box shows the value.
+-- A value as a box of whole numbers holds it: rounded to the nearest.
+function Native.Whole(value)
+	return math.floor((tonumber(value) or 0) + 0.5)
+end
+
+-- An edit box of the form: values[field]. What is typed is taken as it is typed - made whole where the box has no
+-- decimals - else the box shows the value.
 function Native.Number(form, element, values, field, decimals)
 	if Gui.Edited(element) then
-		values[field] = tonumber(Gui.Text(element)) or 0
+		local typed = tonumber(Gui.Text(element)) or 0
+		if (decimals or 0) <= 0 then
+			typed = Native.Whole(typed)
+		end
+		values[field] = typed
 		Form.Edited(form)
 	else
 		Gui.SetText(element, shown(values[field], decimals))
