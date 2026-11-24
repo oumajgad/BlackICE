@@ -23,7 +23,9 @@ function P.RefreshCollectionSwitches()
 	end
 
 	local variables = omgCountry:GetVariables()
-	P.CollectStats = variables:GetVariable(CString("StatisticsToggle")):Get() == 1
+	-- OpenHOI3 keeps the statistics itself, in the game and its save (its Statistics page reads that record):
+	-- nothing is written to files day by day there, whatever a save from the original engine has switched on.
+	P.CollectStats = OpenHOI3 == nil and variables:GetVariable(CString("StatisticsToggle")):Get() == 1
 	P.CustomCountryListActive = variables:GetVariable(CString("StatisticsCustomList")):Get() == 1
 
 	-- The cached country list is dropped only when an editor says it changed, so an

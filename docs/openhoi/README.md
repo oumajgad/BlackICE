@@ -216,6 +216,11 @@ red of a unit without a commander, which is marked with `!` in the tree instead.
 - **Unit Inspector** is not a page. On OpenHOI3 a click on the ribbon over a selected unit's brigades ("5
   Brigades") opens the brigade card's window with the figures of the entire unit. Its texts are the
   `OPENHOI_UNITCARD_*` keys of `localisation/openhoi/windows.csv`.
+- **Statistics.** OpenHOI3 keeps the statistics itself, in the game and its save: every country's figures a value
+  a day, where the lobby's rule "Collect statistics" is on (`interface/openhoi/lobbyrules.gui`). The Statistics
+  page reads that record through `OpenHOI3.Statistics` and can write it out as the files the plotting tool reads;
+  the Setup page is gone, and `script/utility/stats/stats.lua` collects nothing on OpenHOI3. The rules are
+  OpenHOI3's `docs/mechanics/statisticsrecord.md`.
 - **Native pages.** A page that names a `window` fills a window of the game's own interface with `OpenHOI3.Gui` in
   place of drawing itself: `script/openhoi/windows/country_info/prodsliders.lua` and `lssliders.lua` over
   `interface/openhoi/sliders.gui`, opened by the "Sliders AI" buttons on the production and technology screens,
