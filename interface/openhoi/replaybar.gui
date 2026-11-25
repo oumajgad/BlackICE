@@ -1,0 +1,63 @@
+# The bar over a game played back on OpenHOI3, and the list of countries its button opens: that the game is a
+# replay, the country looked through, and "Change country". Read by OpenHOI3 alone - the original does not open this
+# folder. Every picture is a built-in element. The texts are OPENHOI_REPLAY_BAR, OPENHOI_REPLAY_BAR_CHOOSE and the
+# tooltip OPENHOI_REPLAY_BAR_CHOOSE_TIP. See OpenHOI3's docs/replay.md, section 16.
+guiTypes = {
+	windowType = {
+		name = "openhoi_replay_bar"
+		backGround = "background"
+		position = { x = -468 y = 6 }
+		size = { x = 460 y = 30 }
+		moveable = 0
+		dontRender = ""
+		horizontalBorder = ""
+		verticalBorder = ""
+		fullScreen = no
+		Orientation = "UPPER_RIGHT"
+
+		iconType = { name = "background" position = { x = 0 y = 0 } built_in = { style = panel size = { x = 460 y = 30 } } }
+		iconType = { name = "title_bar" position = { x = 4 y = 4 } built_in = { style = header size = { x = 70 y = 22 } } }
+		instantTextBoxType = { name = "title" position = { x = 4 y = 7 } font = "Arial12_bold" text = "OPENHOI_REPLAY_BAR" maxWidth = 70 maxHeight = 18 format = centre }
+		instantTextBoxType = { name = "country" position = { x = 84 y = 7 } font = "Arial12_bold_black" text = "" maxWidth = 220 maxHeight = 18 }
+		guiButtonType = { name = "choose" position = { x = 312 y = 4 } built_in = { style = button size = { x = 142 y = 22 } } buttonText = "OPENHOI_REPLAY_BAR_CHOOSE" buttonFont = "Arial12_bold_black" }
+	}
+
+	windowType = {
+		name = "openhoi_replay_countries"
+		backGround = "background"
+		position = { x = 0 y = 0 }
+		size = { x = 236 y = 404 }
+		moveable = 0
+		dontRender = ""
+		horizontalBorder = ""
+		verticalBorder = ""
+		fullScreen = no
+		Orientation = "UPPER_LEFT"
+
+		iconType = { name = "background" position = { x = 0 y = 0 } built_in = { style = panel size = { x = 236 y = 404 } } }
+		listboxType = {
+			name = "list"
+			position = { x = 6 y = 6 }
+			backGround = ""
+			size = { x = 204 y = 392 }
+			Orientation = "UPPER_LEFT"
+			spacing = 0
+			scrollbartype = "standardlistbox_slider"
+			borderSize = { x = 0 y = 0 }
+		}
+	}
+
+	windowType = {
+		name = "openhoi_replay_country_entry"
+		backGround = ""
+		position = { x = 0 y = 0 }
+		size = { x = 204 y = 22 }
+		moveable = 0
+		dontRender = ""
+		horizontalBorder = ""
+		verticalBorder = ""
+		fullScreen = no
+
+		guiButtonType = { name = "pick" position = { x = 0 y = 0 } built_in = { style = row size = { x = 204 y = 22 } } buttonText = "" buttonFont = "Arial12_bold_black" }
+	}
+}
