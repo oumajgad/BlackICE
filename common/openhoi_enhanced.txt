@@ -59,5 +59,32 @@
 #                            holder's global_fuel and of money by global_money;
 #                            the original has the two the wrong way round.
 #
+# Six more give a value the original loads and never uses a meaning. The
+# original has no rule for any of them, so each rule is OpenHOI3's own:
+#
+#   tech_repair_cost         a technology's repair_cost_multiplier for a unit
+#                            type is added with its other figures; the original
+#                            leaves it out of the sum.
+#   trait_dissent_impact     a leader's dissent_impact scales what dissent costs
+#                            his unit at sea, in the air and under bombs, as it
+#                            does on land.
+#   raid_trait_hours         a raid on a convoy, by sea or from the air, counts
+#                            the hours the raider's leader banked in it towards
+#                            his traits, so a trait that wants a convoy battle
+#                            (seawolf) can be earned by raiding.
+#   trait_fort_defence       a unit defending behind a whole level of fort - of
+#                            coastal fort where an attacker comes from the sea -
+#                            has its leaders' fort_defence on its attack and
+#                            defence. The original reaches the trait only for an
+#                            attacker, where it does nothing.
+#   radar_efficiency         a radar station's reach is longer by its country's
+#                            radar_efficiency: reach x (1 + radar_efficiency).
+#   trait_surprise_chance    the side that picks its combat tactic second rolls
+#                            its highest ranked leader's surprise_chance: under
+#                            it, and where it may pick that tactic at all, it
+#                            takes the tactic that counters the other side's
+#                            outright. One roll more, only for a side with the
+#                            trait.
+#
 # Anything else written here is reported in OpenHOI3's log and ignored.
 # Saves of an enhanced game are kept apart, in "save games/openhoi".
