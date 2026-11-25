@@ -1,12 +1,14 @@
 # An enhanced game's own rules in the lobby, beside the original's options: OpenHOI3 puts this window up with its
 # option window where the file declares it. Read by OpenHOI3 alone - the original does not open this folder. Every
-# picture is a built-in element. See OpenHOI3's docs/mechanics/statisticsrecord.md, section 6.
+# picture is a built-in element. See OpenHOI3's docs/mechanics/statisticsrecord.md, section 6, and for the rule on
+# other files docs/multiplayer.md, section 15 - a rule of any game, which OpenHOI3 shows in a window of its own
+# where a mod declares none.
 guiTypes = {
 	windowType = {
 		name = "openhoi_lobby_rules"
 		backGround = "background"
 		position = { x = -232 y = 575 }
-		size = { x = 224 y = 64 }
+		size = { x = 224 y = 90 }
 		moveable = 0
 		dontRender = ""
 		horizontalBorder = ""
@@ -14,7 +16,7 @@ guiTypes = {
 		fullScreen = no
 		Orientation = "UPPER_RIGHT"
 
-		iconType = { name = "background" position = { x = 0 y = 0 } built_in = { style = panel size = { x = 224 y = 64 } } }
+		iconType = { name = "background" position = { x = 0 y = 0 } built_in = { style = panel size = { x = 224 y = 90 } } }
 		iconType = { name = "title_bar" position = { x = 4 y = 4 } built_in = { style = header size = { x = 216 y = 22 } } }
 		instantTextBoxType = { name = "title" position = { x = 4 y = 7 } font = "Arial12_bold" text = "OPENHOI_RULES_TITLE" maxWidth = 216 maxHeight = 18 format = centre }
 
@@ -23,5 +25,10 @@ guiTypes = {
 		instantTextBoxType = { name = "statistics_label" position = { x = 40 y = 37 } font = "Arial12_bold_black" text = "OPENHOI_RULE_STATISTICS" maxWidth = 148 maxHeight = 18 }
 		# What the rule keeps: its tooltip is the text of OPENHOI_RULE_STATISTICS_TIP.
 		guiButtonType = { name = "statistics_help" position = { x = 194 y = 35 } built_in = { style = button size = { x = 18 y = 18 } } buttonText = "?" buttonFont = "Arial12_bold_black" }
+
+		# The host's rule: a player whose game files differ is let in all the same. Its tooltip is OPENHOI_RULE_OTHER_FILES_TIP.
+		guiButtonType = { name = "other_files" position = { x = 12 y = 60 } built_in = { style = field size = { x = 20 y = 20 } } buttonText = "" buttonFont = "Arial12_bold_black" }
+		instantTextBoxType = { name = "other_files_label" position = { x = 40 y = 63 } font = "Arial12_bold_black" text = "OPENHOI_RULE_OTHER_FILES" maxWidth = 148 maxHeight = 18 }
+		guiButtonType = { name = "other_files_help" position = { x = 194 y = 61 } built_in = { style = button size = { x = 18 y = 18 } } buttonText = "?" buttonFont = "Arial12_bold_black" }
 	}
 }
