@@ -83,6 +83,29 @@ the original finds them. **While a release plays on both engines the table is ke
 | `OPENHOI_AI_LENDS_UNITS` | `military` | an AI country lends no unit to whoever holds the ground it stands on. A unit on loan is still given back | `BytePatches.disableInterAiExpeditionaries`, which stops the giving back too |
 | `OPENHOI_WAR_EXHAUSTION_TO_NEUTRALITY` | `diplomacy` | a month of peace hands no war exhaustion to neutrality; the figure goes back to nought all the same. At war it gathers under `max_war_exhaustion` as always | `BytePatches.disableWarExhaustionNeutralityReset`, which sets the figure to nought every month |
 
+## Lines the engine writes, in the mod's words
+
+What BiceLib adds to the original's tooltips in hard-coded English, OpenHOI3's enhanced mode writes from
+`localisation/openhoi/texts.csv`. **A line is switched on by its text being there**: take a key out and the
+original's text shows. So these are no fixes and are not named in `common/openhoi_enhanced.txt`.
+
+| what | keys | on the original |
+| --- | --- | --- |
+| a leader's skill with his highest, in the leader window | `OPENHOI_LEADER_SKILL` (`$SKILL$`, `$MAX$`) | `Leaders.activateLeaderListShowMaxSkill` |
+| what a `load_oob` file would do, in an option's tooltip | `OPENHOI_LOAD_OOB_...`, about twenty-five; `OPENHOI_LOAD_OOB_UNITS` switches it on. A kind of unit with its article is a key each, `OPENHOI_LOAD_OOB_KIND_CORPS` | `EffectTexts.activateLoadOobDetails` |
+| a land unit's summed figures and its damage, in a battle's tooltip | `OPENHOI_BATTLE_STATS_...` and `OPENHOI_BATTLE_DAMAGE_...`, twelve; `OPENHOI_BATTLE_STATS_HEAD` switches it on | `Tooltips.activateCombatUnitStats` |
+| whether a design may be dropped by parachute, in the division designer | `OPENHOI_DESIGNER_PARADROP_YES`, `_NO` (`$WEIGHT$`), `_BLOCKER` (`$NAME$`) | `Tooltips.activateParadropLine` |
+| what a combined arms group gives, on its icon | `OPENHOI_DESIGNER_CA_BONUS` (`$VALUE$`), `_BONUS_TECH` (`$TECH$`), `_BASE`, `_NOT_BASE` | `Tooltips.activateCombinedArmsLine` |
+| the two lines of a scrolled tooltip | `OPENHOI_TOOLTIP_MORE_ABOVE`, `OPENHOI_TOOLTIP_MORE_BELOW` (`$COUNT$`); a yellow `...` without them | `EffectTexts.activateTriggerScroll` |
+
+Two more need no key of their own, because BlackICE's texts already ask: `KILL_LEADER_EFFECT` is filled with
+`$UNIT$`, `$LOCATION$` and `$WHERE$`, and `MANPOWER_DETAILS_IRO` with `$LAND$`, `$AIR$`, `$NAVY$`, `$ROTATION$`,
+`$ROTATIONCOST$`, `$ATTRITION$` and `$TRICKLEBACK$`, as BiceLib fills them on the original.
+
+Where they differ from BiceLib's: the `load_oob` text counts off the engine's own reading of the file; a battle's
+damage is what was really taken off a unit, for strength as for organisation, and is kept in the save with the
+manpower figures; a tooltip of any kind scrolls and says what is left below as well.
+
 ## Interface elements and their texts
 
 What OpenHOI3 draws for its enhanced mode, the mod declares - elements in `.gui` files, words in localisation. The
@@ -454,6 +477,7 @@ plays on the original, and goes with the first release that does not. Each is al
 | the resource conversion's events and covert operation | events 1553 to 1555 in `events/covert_ops_events.txt`; `set_resource_conversion` in `common/covert_ops.txt`; their texts in `localisation/BiceLib_conversion.csv` | the Resource Conversion page, `script/openhoi/windows/country_info/conversion.lua` |
 | the unit limits' Lua | `CheckOobUnitLimitTechnologyStatus` in `script/ai_variable.lua` and its calls; `G_BASE_COC_LIMIT` in `script/ai_globals.lua`; the three `set...UnitLimit` calls in `script/bicelib_lua.lua` | `OPENHOI_..._UNIT_LIMIT` in `common/defines.lua` and the `unit_limit_...` entries of `common/triggered_modifiers.txt` |
 | eight of BiceLib's switches | in `script/bicelib_lua.lua`: `historicalModelLogicFix`, `fixQueuedHistoricalModel`, `enablePlacingNonResearchedBuildings`, `activateOobLeaderRanks`, `activateHistoryLeaderRanks`, `disableWarExhaustionNeutralityReset`, `disableInterAiExpeditionaries`; `Events.rebuildCandidates` in `script/ai_omg_handlers.lua` | the fixes `historical_model_choice`, `queued_historical_model`, `place_unresearched_building`, `oob_leader_ranks`, `history_leader_ranks` and `saved_event_candidates`, and the defines `OPENHOI_WAR_EXHAUSTION_TO_NEUTRALITY` and `OPENHOI_AI_LENDS_UNITS` |
+| ten of BiceLib's display switches | in `script/bicelib_lua.lua`: `activateLeaderListShowMaxSkill`, `activateCtrlUnassignSelected`, `activateKillLeaderVariables`, `activateLoadOobDetails`, `activateTriggerScroll`, `activateManpowerBreakdown`, `activateCombatUnitStats`, `activateParadropLine`, `activateCombinedArmsLine` | `localisation/openhoi/texts.csv`, and the fixes `ctrl_unassign_selected` and `tooltip_scroll` |
 
 On OpenHOI3 the events still come up and their options change nothing: the `zzDsafe_...` conversion variables they
 set are not read there. They cannot be hidden on one engine until a gate exists (rule 6 above).
