@@ -338,7 +338,11 @@ diplomacy = {
 	WARGOAL_ADD_COOLDOWN = 1, -- 1 month
 	LEND_LEASE_NEUTRALITY_LIMIT = 70,
 	LEND_LEASE_MAX_IC_LOW = 0.05,	-- bounds of % of our IC that we can share with LL. Interpolated by current neutrality vs LEND_LEASE_NEUTRALITY_LIMIT aspect.
-	LEND_LEASE_MAX_IC_HIGH = 0.9
+	LEND_LEASE_MAX_IC_HIGH = 0.9,
+	-- OpenHOI3's enhanced engine alone: 0 stops a month of peace handing a country's war exhaustion to its
+	-- neutrality; the figure goes back to nought all the same. On the original:
+	-- BytePatches.disableWarExhaustionNeutralityReset, which sets the figure to nought every month.
+	OPENHOI_WAR_EXHAUSTION_TO_NEUTRALITY = 0
 },
 
 alignment = {
