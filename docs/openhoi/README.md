@@ -48,6 +48,34 @@ is always plain which engine a file is for, and nothing of it is mistaken for th
 
 The one thing with neither is a key added to a file the original already reads - see the next section.
 
+## Rules that are the mod's choice
+
+A fix is how the enhanced mode behaves. A **rule** is a choice of the mod's, and is written as data in the file
+that already holds its subject - a define, a kind of modifier - so that it is in the save and the checksum and no
+script has to set figures day by day.
+
+**How many units a command may hold.** On the original this is BiceLib's `setCorpsUnitLimit` and its two
+siblings, fed by `CheckOobUnitLimitTechnologyStatus`. On OpenHOI3:
+
+| what | where |
+| --- | --- |
+| the base of each level | `common/defines.lua`, section `military`: `OPENHOI_CORPS_UNIT_LIMIT`, `OPENHOI_ARMY_UNIT_LIMIT`, `OPENHOI_ARMY_GROUP_UNIT_LIMIT`. Five where one is not given, which is the original's |
+| what raises or lowers it | three kinds of modifier: `corps_unit_limit`, `army_unit_limit`, `army_group_unit_limit`. From anything a modifier comes from - a triggered modifier, a law, a minister, a strategic resource - and from a technology, which gives its figure a level |
+| a division of one brigade takes no place | `OPENHOI_LONE_BRIGADE_TAKES_NO_PLACE = 1` in the same section |
+
+A country's limit is the base and the **whole part** of what it has of the kind, and never less than one. The
+country asked is the commander's. A theatre has no limit. Nothing is detached when a limit falls. **The AI's own
+sorting of its units into commands counts five to a command as the original does, on both engines** - BiceLib does
+not change it either.
+
+BlackICE's steps are at set levels of seven doctrine technologies, which a figure a level cannot say, so they are
+twelve triggered modifiers, `unit_limit_...`, at the end of `common/triggered_modifiers.txt` with the mod's others -
+there is no file of the engine's own for them. The original reads them too: it logs the three kinds as unknown
+modifiers and drops them, so there each is a row of the Strategic Effects window with its name and its condition
+and no effect, while BiceLib sets the same figures from Lua. Their names are in `localisation/zDD-Flags.csv`, where
+the original finds them. **While a release plays on both engines the table is kept twice** - there and in
+`script/ai_variable.lua` - and the base twice, in `defines.lua` and as `G_BASE_COC_LIMIT`.
+
 ## Interface elements and their texts
 
 What OpenHOI3 draws for its enhanced mode, the mod declares - elements in `.gui` files, words in localisation. The
@@ -404,6 +432,11 @@ whose result depends on that order was already fragile, and differs between the 
 A file meant for OpenHOI3 alone that the original would trip over is the mistake to look for: check the six rules
 above before adding a key to a file that is not under an `openhoi` name.
 
+**BiceValidator checks for the original alone.** A key of OpenHOI3's in a file both engines read is a warning there:
+the twelve `unit_limit_...` entries of `common/triggered_modifiers.txt` give twelve BV308, "`corps_unit_limit` is not
+a key of ...", which is true of the original and meant. An OpenHOI3 switch for the validator, which knows the
+engine's own keys, is on the list for later (2026-11-26); until then those twelve stand and are not in the baseline.
+
 ## Removal candidates
 
 What serves the original engine alone and has a replacement on OpenHOI3. Each stays for as long as a release still
@@ -412,6 +445,7 @@ plays on the original, and goes with the first release that does not. Each is al
 | what | where | replaced on OpenHOI3 by |
 | --- | --- | --- |
 | the resource conversion's events and covert operation | events 1553 to 1555 in `events/covert_ops_events.txt`; `set_resource_conversion` in `common/covert_ops.txt`; their texts in `localisation/BiceLib_conversion.csv` | the Resource Conversion page, `script/openhoi/windows/country_info/conversion.lua` |
+| the unit limits' Lua | `CheckOobUnitLimitTechnologyStatus` in `script/ai_variable.lua` and its calls; `G_BASE_COC_LIMIT` in `script/ai_globals.lua`; the three `set...UnitLimit` calls in `script/bicelib_lua.lua` | `OPENHOI_..._UNIT_LIMIT` in `common/defines.lua` and the `unit_limit_...` entries of `common/triggered_modifiers.txt` |
 
 On OpenHOI3 the events still come up and their options change nothing: the `zzDsafe_...` conversion variables they
 set are not read there. They cannot be hidden on one engine until a gate exists (rule 6 above).

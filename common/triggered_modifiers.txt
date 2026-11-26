@@ -30552,3 +30552,75 @@ veteran_expertise_42 = {
 	unit_start_experience = 20
 	icon = 60
 }
+
+# How many units a command may hold: the doctrine technologies' steps, each at the level its description names.
+#
+# corps_unit_limit, army_unit_limit and army_group_unit_limit are kinds of OpenHOI3's enhanced engine. There a
+# country's limit is the base in common/defines.lua (OPENHOI_CORPS_UNIT_LIMIT, OPENHOI_ARMY_UNIT_LIMIT,
+# OPENHOI_ARMY_GROUP_UNIT_LIMIT) and the whole part of what it has of the kind, from here or from anything else a
+# modifier comes from.
+#
+# The original does not know the three kinds: it logs each as an unknown modifier and drops it. So on the original
+# these twelve are rows of the Strategic Effects window with a name and no effect, and the limits themselves are
+# set by BiceLib from script/ai_variable.lua, CheckOobUnitLimitTechnologyStatus. That is the same table: a step
+# changed here is changed there too.
+unit_limit_corps_command_structure_bk_2 = {
+	potential = { Corps_command_structure_BK = 1 }
+	trigger = { Corps_command_structure_BK = 2 }
+	corps_unit_limit = 1
+}
+unit_limit_corps_command_structure_bk_4 = {
+	potential = { Corps_command_structure_BK = 1 }
+	trigger = { Corps_command_structure_BK = 4 }
+	corps_unit_limit = 1
+}
+unit_limit_corps_hq_sf_4 = {
+	potential = { corps_HQ_SF = 1 }
+	trigger = { corps_HQ_SF = 4 }
+	corps_unit_limit = 1
+}
+unit_limit_corps_hq_sf_5 = {
+	potential = { corps_HQ_SF = 1 }
+	trigger = { corps_HQ_SF = 5 }
+	corps_unit_limit = 1
+}
+unit_limit_army_hq_db_4 = {
+	potential = { army_HQ_DB = 1 }
+	trigger = { army_HQ_DB = 4 }
+	army_unit_limit = 2
+}
+unit_limit_army_command_structure_grand_battle_2 = {
+	potential = { army_command_structure_grand_battle = 1 }
+	trigger = { army_command_structure_grand_battle = 2 }
+	army_unit_limit = 1
+}
+unit_limit_army_command_structure_grand_battle_4 = {
+	potential = { army_command_structure_grand_battle = 1 }
+	trigger = { army_command_structure_grand_battle = 4 }
+	army_unit_limit = 1
+}
+unit_limit_army_hq_sf_4 = {
+	potential = { army_HQ_SF = 1 }
+	trigger = { army_HQ_SF = 4 }
+	army_unit_limit = 1
+}
+unit_limit_army_hq_sf_5 = {
+	potential = { army_HQ_SF = 1 }
+	trigger = { army_HQ_SF = 5 }
+	army_unit_limit = 1
+}
+unit_limit_army_group_hq_db_3 = {
+	potential = { army_group_HQ_DB = 1 }
+	trigger = { army_group_HQ_DB = 3 }
+	army_group_unit_limit = 1
+}
+unit_limit_armygroup_command_structure_grand_battle_2 = {
+	potential = { armygroup_command_structure_grand_battle = 1 }
+	trigger = { armygroup_command_structure_grand_battle = 2 }
+	army_group_unit_limit = 1
+}
+unit_limit_armygroup_command_structure_grand_battle_4 = {
+	potential = { armygroup_command_structure_grand_battle = 1 }
+	trigger = { armygroup_command_structure_grand_battle = 4 }
+	army_group_unit_limit = 1
+}

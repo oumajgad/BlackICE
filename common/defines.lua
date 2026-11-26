@@ -260,7 +260,15 @@ military = {
 	CAG_STACKING_PENALTY = 0.2,
 	CAG_SHIP_ATTACK_STR_BONUS = 1.75, -- attack bonus if CAG attacks ships who are busy in combat
 	CAG_SHIP_ATTACK_ORG_BONUS = 1,
-	NEW_LEADER_ORG_HIT = 0.3
+	NEW_LEADER_ORG_HIT = 0.3,
+	-- The four below are read by OpenHOI3's enhanced engine alone; the original fetches its defines by name and
+	-- never asks for them. How many land units a corps, an army and an army group may command. On the original
+	-- BiceLib is given the same figure as G_BASE_COC_LIMIT (script/ai_globals.lua): keep the two in step.
+	-- What raises them is at the end of common/triggered_modifiers.txt.
+	OPENHOI_CORPS_UNIT_LIMIT = 4,
+	OPENHOI_ARMY_UNIT_LIMIT = 4,
+	OPENHOI_ARMY_GROUP_UNIT_LIMIT = 4,
+	OPENHOI_LONE_BRIGADE_TAKES_NO_PLACE = 1 -- a division of one brigade takes no place under its commander
 },
 
 diplomacy = {
