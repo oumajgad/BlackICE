@@ -246,6 +246,15 @@ province, and `BiceLib.Leaders.getLeaderDetails` on the original.
 | Stats | Setup, Statistics |
 | Options | Utility Options |
 | Help | Misc, Ministers + Buildings, National Focus |
+| Debug | Engine Profiler |
+
+**Engine Profiler** (`script/openhoi/windows/engine/profiler.lua`) is a page for OpenHOI3 alone, with nothing like
+it on the original: how long the game's hours take, step by step - an ordinary hour, an hour that turns a day, the
+last 240 hours as a line, every step of the engine's hour by the engine's own name with its parts under it - a
+table sorted by the heading clicked (`BeginSortedTable`), the steps among themselves and each step's parts - the
+orders the hours run by kind - and what the program says of itself: frames a second, memory, what is drawn. It
+reads `OpenHOI3.Profile.Read()`; the timing starts when the page is first opened and runs until its Stop. Its
+folder is `engine` and not `debug` because the repository's `.gitignore` leaves every folder called `Debug` out.
 
 **The Inspector's larger pages.** On the original BiceLib reads these out of the game's memory; on OpenHOI3 the
 engine gives the same things to the mod's Lua:
