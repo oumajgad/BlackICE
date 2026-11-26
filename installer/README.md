@@ -11,6 +11,13 @@ python installer/fetchEngine.py           # once, and again when ENGINE_VERSION 
 python installer/buildInstaller.py 15.2
 ```
 
+A test build takes the engine's newest build instead of the release the mod names:
+
+```
+python installer/fetchEngine.py --latest  # again whenever the engine has moved on
+python installer/buildInstaller.py GitHub
+```
+
 The result lands in `installer/output/`. Nothing else is needed — no zip, no
 converting it to a self extracting archive.
 
@@ -39,6 +46,10 @@ the `ISCC` environment variable to override.
   installer for the original game alone, whose `.mod` names no engine. For
   testing; a release always carries the engine, and without this flag the build
   stops if `fetchEngine.py` has not been run.
+- `--any-engine` — ship whatever engine is unpacked in `installer/openhoi`, not
+  only the release the mod names. A test build (the version `GitHub`) does so
+  anyway; this is for a build under another version, a release candidate on an
+  engine not yet released. Such an installer is no release.
 - `--skip-validation` — build even when BICE Validator finds a file the game cannot
   read past. Before building, the build runs the validator's code mode
   ([`tools/BiceValidator`](../tools/BiceValidator/README.md)), stops on a new unmatched
@@ -193,6 +204,24 @@ refuses an engine whose `engine.txt` says another version than the mod names,
 and unpacks them into `installer/openhoi/`. `--from <folder>` takes the archives
 from OpenHOI3's own `export/release` folder instead, for an engine that is not
 published yet.
+
+**A test build ships the engine's newest build instead.** OpenHOI3's pipeline
+publishes two kinds of release: a numbered one for each tag `v<x>`, which stays
+as it is, and one under the tag `latest` (`releaseCommon.ENGINE_LATEST_TAG`),
+which it makes again at every change to its main branch. `fetchEngine.py
+--latest` takes that one - its archives are named `...-latest.zip` whatever
+version they hold, and it is fetched again only when the release's
+`SHA256SUMS.txt` has changed - and `buildInstaller.py` ships it where the
+version is `GitHub`, writing into the `.mod` the version that engine's own
+`engine.txt` says, `openhoi3-<date>-<commit>`. So nobody names an engine for a
+test build, and a release cannot ship one by accident: under any other version
+the build stops at an engine that is not `ENGINE_VERSION`, unless it is told
+`--any-engine`. `--from <folder>` with a folder that holds one engine other than
+the named release - a build between two releases - takes it the same way.
+
+On GitHub, *Build installer* has an `engine` input: `auto` (the default) is
+`latest` for the version `GitHub` and `named` for any other; `latest` and
+`named` say it outright.
 
 Both go **inside the mod's own folder**, with every version of the mod:
 
@@ -373,7 +402,7 @@ installer/
     redist.iss        runtime detection and silent install
     antivirus.iss     the antivirus warning, and the check BiceLib.dll survived
   fetchRedists.py     downloads the Microsoft runtimes
-  fetchEngine.py      downloads the OpenHOI3 engine and launcher the mod names
+  fetchEngine.py      downloads the OpenHOI3 engine and launcher: the release the mod names, or the newest build
   buildInstaller.py   stamps the version, runs ISCC
   redist/             gitignored, filled by fetchRedists.py
   openhoi/            gitignored, filled by fetchEngine.py: engine/ and launcher/

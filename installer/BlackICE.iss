@@ -179,7 +179,8 @@ Source: "{#RepoRoot}\DaveStuff\luabinaries\lua5.1.dll"; DestDir: "{app}"; Compon
 ; it, both inside the mod's own folder: every version of the mod brings its own,
 ; so a newer launcher never has to start an older version's engine. Fetched by
 ; fetchEngine.py into installer\openhoi; the .mod names the engine's version
-; (releaseCommon.ENGINE_VERSION). The launcher takes the engine folder beside
+; (releaseCommon.ENGINE_VERSION for a release; for a test build the version of
+; the engine's newest build, which is what is unpacked). The launcher takes the engine folder beside
 ; its own as its own engine, so this one copy also plays the base game.
 ;
 ; Part of the mod component, not one of its own: the engine is a core part of a

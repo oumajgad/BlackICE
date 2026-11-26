@@ -31,11 +31,27 @@ MOD_PARENT = "tfh/mod"
 ENGINE_VERSION = "openhoi3-0.1.3"
 ENGINE_REPOSITORY = "https://github.com/Dsafe1/OpenHOI3"
 
+# The engine's rolling build: the release of this tag in ENGINE_REPOSITORY, which
+# the engine's pipeline makes again at every change to its main branch. Its
+# archives are named by the tag, whatever version their engine.txt says. A test
+# build of the mod ships it (installer/fetchEngine.py --latest), so that such a
+# build is on the newest engine without anybody naming one; a release ships
+# ENGINE_VERSION and nothing else.
+ENGINE_LATEST_TAG = "latest"
+
+# The version a test build is stamped with: what the working copy calls itself.
+TEST_VERSION = "GitHub"
+
 # Where the engine and its launcher go inside the mod's folder. Their own
 # subfolders, like everything the mod holds for OpenHOI3: the original game
 # never looks in either.
 ENGINE_FOLDER = "engine"
 LAUNCHER_FOLDER = "launcher"
+
+
+def isTestBuild(version):
+    """Whether a build of this version is a test build and no release."""
+    return version == TEST_VERSION
 
 
 def engineTag():
@@ -104,7 +120,9 @@ def writeModFile(version, destination, engine=True):
     template deliberately has no such line: a working copy is played on
     whatever engine its developer has built, and naming a released one there
     would make the launcher refuse to start it on any other. Pass engine=False
-    for an installer built without the engine.
+    for an installer built without the engine, and the version itself - what
+    the engine.txt of the engine shipped says - where that is not the release
+    the mod names: a test build on the engine's rolling build.
     """
     with open(_TEMPLATE_MOD, "r") as handle:
         lines = handle.readlines()
@@ -127,7 +145,7 @@ def writeModFile(version, destination, engine=True):
     if engine:
         if out and not out[-1].endswith("\n"):
             out[-1] += "\n"
-        out.append('engine = "%s"\n' % ENGINE_VERSION)
+        out.append('engine = "%s"\n' % (engine if isinstance(engine, str) else ENGINE_VERSION))
 
     path = os.path.join(destination, modFileName(version))
     with open(path, "w") as handle:

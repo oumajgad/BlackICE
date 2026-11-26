@@ -10,6 +10,14 @@ on:
         description: 'Version to stamp into the build, e.g. 15.2. "GitHub" for a test build.'
         required: true
         default: 'GitHub'
+      engine:
+        description: 'The OpenHOI3 engine to ship. auto: the newest build for the test build "GitHub", the release the mod names for any other version.'
+        type: choice
+        options:
+          - auto
+          - named
+          - latest
+        default: auto
       bundle_runtimes:
         description: 'Bundle the Microsoft runtimes (C++, DirectX). Adds ~56 MB and a few minutes.'
         type: boolean
@@ -54,16 +62,46 @@ jobs:
         # system check page instead of installing it.
         run: python installer/fetchRedists.py
 
+      - name: Choose the OpenHOI3 engine
+        # A test build - the version "GitHub" - ships the engine's rolling build,
+        # the release "latest" that OpenHOI3's own pipeline makes again at every
+        # change to its main branch. Any other version ships the release named in
+        # releaseCommon.ENGINE_VERSION, which stays as it is. The input overrides
+        # either way: "latest" for a release candidate on an engine not yet
+        # released, "named" for a test build on the released one.
+        id: engine
+        shell: pwsh
+        run: |
+          $engine = '${{ inputs.engine }}'
+          if ($engine -eq 'auto') {
+            $engine = if ('${{ inputs.version }}' -eq 'GitHub') { 'latest' } else { 'named' }
+          }
+          "The engine: $engine"
+          "which=$engine" >> $env:GITHUB_OUTPUT
+
       - name: Fetch the OpenHOI3 engine
-        # The release of OpenHOI3 named in releaseCommon.ENGINE_VERSION, from
-        # that project's GitHub releases, checked against its SHA256SUMS.txt.
-        # Not committed either - about 100 MB to download. A core part of a
-        # release, so unlike the runtimes there is no switch for leaving it out
-        # here, and the build below stops without it.
-        run: python installer/fetchEngine.py
+        # From that project's GitHub releases, checked against the release's
+        # SHA256SUMS.txt. Not committed either - about 100 MB to download. A
+        # core part of a release, so unlike the runtimes there is no switch for
+        # leaving it out here, and the build below stops without it.
+        shell: pwsh
+        run: |
+          if ('${{ steps.engine.outputs.which }}' -eq 'latest') {
+            python installer/fetchEngine.py --latest
+          } else {
+            python installer/fetchEngine.py
+          }
 
       - name: Build the installer
-        run: python installer/buildInstaller.py "${{ inputs.version }}"
+        # --any-engine where the rolling build was chosen for a version that is no
+        # test build: the build would otherwise stop at an engine the mod does not name.
+        shell: pwsh
+        run: |
+          if ('${{ steps.engine.outputs.which }}' -eq 'latest') {
+            python installer/buildInstaller.py "${{ inputs.version }}" --any-engine
+          } else {
+            python installer/buildInstaller.py "${{ inputs.version }}"
+          }
 
       - name: Show what was built
         run: |

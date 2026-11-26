@@ -16,6 +16,12 @@ installer that detects missing runtimes but does not carry them.
 Run installer/fetchEngine.py once first too. The OpenHOI3 engine and its
 launcher are a core part of a release, so without them the build stops;
 --no-engine builds an installer for the original game alone, for testing.
+
+A release ships the engine the mod names, releaseCommon.ENGINE_VERSION, and
+stops where another is unpacked. A test build - the version "GitHub" - ships
+whatever engine is unpacked, which fetchEngine.py --latest makes the engine's
+newest build, and its .mod names that one. --any-engine does the same for a
+build under any other version: a release candidate on an engine not yet released.
 """
 import argparse
 import os
@@ -196,24 +202,41 @@ def reportRedist(useRedist):
     print("  redist bundled: %.1f MB" % (total / 1048576))
 
 
-def checkEngine(useEngine):
-    """Whether the build may go on: the engine the mod names is fetched, or left out on purpose."""
+def checkEngine(useEngine, anyEngine=False):
+    """Whether the build may go on, and the engine it ships.
+
+    Returns (True, version) with the version of the engine unpacked in
+    installer/openhoi, (True, None) where the engine is left out on purpose,
+    and (False, None) where the build must stop: no engine is unpacked, or one
+    that is not the release the mod names while \p anyEngine does not allow it.
+    """
     if not useEngine:
         print("  --no-engine: this installer is for the original game alone. Not a release.")
-        return True
-    if not fetchEngine.isFetched():
-        print("\nThe OpenHOI3 engine is not in installer/openhoi, or is not %s."
-              % releaseCommon.ENGINE_VERSION)
+        return True, None
+    found = fetchEngine.fetchedVersion()
+    if found is None:
+        print("\nThe OpenHOI3 engine is not in installer/openhoi.")
         print("It is a core part of a release. Fetch it with:")
-        print("    python installer/fetchEngine.py")
+        print("    python installer/fetchEngine.py            the release the mod names, %s"
+              % releaseCommon.ENGINE_VERSION)
+        print("    python installer/fetchEngine.py --latest   the engine's newest build, for a test build")
         print("or build an installer for the original game alone with --no-engine.")
-        return False
+        return False, None
+    if found != releaseCommon.ENGINE_VERSION and not anyEngine:
+        print("\nThe OpenHOI3 engine in installer/openhoi is %s, and the mod names %s."
+              % (found, releaseCommon.ENGINE_VERSION))
+        print("A release ships the engine it names. Fetch that one with:")
+        print("    python installer/fetchEngine.py")
+        print("or ship the one unpacked, which is then no release, with --any-engine.")
+        return False, None
     total = 0
     for root, _dirs, files in os.walk(fetchEngine.OPENHOI):
         total += sum(os.path.getsize(os.path.join(root, f)) for f in files)
-    print("  engine bundled: %s with its launcher, %.0f MB"
-          % (releaseCommon.ENGINE_VERSION, total / 1048576))
-    return True
+    print("  engine bundled: %s with its launcher, %.0f MB" % (found, total / 1048576))
+    if found != releaseCommon.ENGINE_VERSION:
+        print("        not the release the mod names (%s): this installer is no release."
+              % releaseCommon.ENGINE_VERSION)
+    return True, found
 
 
 def validateMod():
@@ -224,7 +247,7 @@ def validateMod():
     return release.check(REPO)
 
 
-def build(version, useRedist, fast, validate=True, useEngine=True):
+def build(version, useRedist, fast, validate=True, useEngine=True, anyEngine=False):
     iscc = findIscc()
     if iscc is None:
         print("Inno Setup 6 was not found.")
@@ -250,13 +273,17 @@ def build(version, useRedist, fast, validate=True, useEngine=True):
     else:
         print("  validator: skipped (--skip-validation)")
 
-    if not checkEngine(useEngine):
+    # A test build ships whatever engine is unpacked - the engine's newest build,
+    # where fetchEngine.py --latest unpacked it - and a release only the one it names.
+    engineOk, engineVersion = checkEngine(useEngine, anyEngine or releaseCommon.isTestBuild(version))
+    if not engineOk:
         return 1
 
     emptyStaging()
     # The .mod names the engine only when the installer carries it: a .mod that
     # names an engine which is not in its folder cannot be started by the launcher.
-    releaseCommon.writeModFile(version, STAGING, engine=useEngine)
+    # It names the engine shipped, by what that engine's own engine.txt says.
+    releaseCommon.writeModFile(version, STAGING, engine=engineVersion if useEngine else False)
     print("  stage %-12s %s" % ("mod file", releaseCommon.modFileName(version)))
     stageArchives()
     reportRedist(useRedist)
@@ -266,7 +293,7 @@ def build(version, useRedist, fast, validate=True, useEngine=True):
     command = [iscc, "/DModVersion=" + version]
     if useEngine:
         # Switches on the engine's [Files] and [Icons] lines in BlackICE.iss.
-        command += ["/DWithEngine=1", "/DEngineVersion=" + releaseCommon.ENGINE_VERSION]
+        command += ["/DWithEngine=1", "/DEngineVersion=" + engineVersion]
     if fast:
         # Switches the [Setup] compression directives; ISCC has no way to
         # override those from the command line.
@@ -325,6 +352,9 @@ def main():
                         help="build even if BICE Validator finds a file the game cannot read")
     parser.add_argument("--no-engine", action="store_true",
                         help="leave out the OpenHOI3 engine and launcher: the original game alone, not a release")
+    parser.add_argument("--any-engine", action="store_true",
+                        help="ship whatever engine is unpacked, not only the release the mod names; "
+                             "a test build (version '%s') does so anyway" % releaseCommon.TEST_VERSION)
     arguments = parser.parse_args()
 
     version = arguments.version
@@ -336,7 +366,8 @@ def main():
 
     return build(version, not arguments.no_redist, arguments.fast,
                  validate=not arguments.skip_validation,
-                 useEngine=not arguments.no_engine)
+                 useEngine=not arguments.no_engine,
+                 anyEngine=arguments.any_engine)
 
 
 if __name__ == "__main__":

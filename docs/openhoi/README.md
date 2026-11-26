@@ -27,7 +27,9 @@ The file's own comments list the fixes by name. A fix named here that the engine
 OpenHOI3's log.
 
 The `.mod` file of a release also carries `engine = "openhoi3-<x>"`, which names the engine release the mod ships
-(`releaseCommon.ENGINE_VERSION`; see [the installer](../../installer/README.md)). The working copy's `.mod` has no
+(`releaseCommon.ENGINE_VERSION`; see [the installer](../../installer/README.md)). A test build - the version
+`GitHub` - ships the engine's newest build instead, the release `latest` of the engine's repository, and its `.mod`
+names that build's own version, `openhoi3-<date>-<commit>`. The working copy's `.mod` has no
 such line, so a developer plays it on whatever engine they have built.
 
 ## Where things for OpenHOI3 go
