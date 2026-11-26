@@ -76,6 +76,13 @@ and no effect, while BiceLib sets the same figures from Lua. Their names are in 
 the original finds them. **While a release plays on both engines the table is kept twice** - there and in
 `script/ai_variable.lua` - and the base twice, in `defines.lua` and as `G_BASE_COC_LIMIT`.
 
+**Two more, each one define** - not given, the original's rule:
+
+| define | section | at 0 | on the original |
+| --- | --- | --- | --- |
+| `OPENHOI_AI_LENDS_UNITS` | `military` | an AI country lends no unit to whoever holds the ground it stands on. A unit on loan is still given back | `BytePatches.disableInterAiExpeditionaries`, which stops the giving back too |
+| `OPENHOI_WAR_EXHAUSTION_TO_NEUTRALITY` | `diplomacy` | a month of peace hands no war exhaustion to neutrality; the figure goes back to nought all the same. At war it gathers under `max_war_exhaustion` as always | `BytePatches.disableWarExhaustionNeutralityReset`, which sets the figure to nought every month |
+
 ## Interface elements and their texts
 
 What OpenHOI3 draws for its enhanced mode, the mod declares - elements in `.gui` files, words in localisation. The
@@ -446,6 +453,7 @@ plays on the original, and goes with the first release that does not. Each is al
 | --- | --- | --- |
 | the resource conversion's events and covert operation | events 1553 to 1555 in `events/covert_ops_events.txt`; `set_resource_conversion` in `common/covert_ops.txt`; their texts in `localisation/BiceLib_conversion.csv` | the Resource Conversion page, `script/openhoi/windows/country_info/conversion.lua` |
 | the unit limits' Lua | `CheckOobUnitLimitTechnologyStatus` in `script/ai_variable.lua` and its calls; `G_BASE_COC_LIMIT` in `script/ai_globals.lua`; the three `set...UnitLimit` calls in `script/bicelib_lua.lua` | `OPENHOI_..._UNIT_LIMIT` in `common/defines.lua` and the `unit_limit_...` entries of `common/triggered_modifiers.txt` |
+| eight of BiceLib's switches | in `script/bicelib_lua.lua`: `historicalModelLogicFix`, `fixQueuedHistoricalModel`, `enablePlacingNonResearchedBuildings`, `activateOobLeaderRanks`, `activateHistoryLeaderRanks`, `disableWarExhaustionNeutralityReset`, `disableInterAiExpeditionaries`; `Events.rebuildCandidates` in `script/ai_omg_handlers.lua` | the fixes `historical_model_choice`, `queued_historical_model`, `place_unresearched_building`, `oob_leader_ranks`, `history_leader_ranks` and `saved_event_candidates`, and the defines `OPENHOI_WAR_EXHAUSTION_TO_NEUTRALITY` and `OPENHOI_AI_LENDS_UNITS` |
 
 On OpenHOI3 the events still come up and their options change nothing: the `zzDsafe_...` conversion variables they
 set are not read there. They cannot be hidden on one engine until a gate exists (rule 6 above).

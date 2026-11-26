@@ -86,9 +86,41 @@
 #                            outright. One roll more, only for a side with the
 #                            trait.
 #
-# Rules that are the mod's choice are not named here - they are data where their subject is: how many units a
-# command may hold is OPENHOI_..._UNIT_LIMIT in common/defines.lua and the unit_limit_ entries that end
-# common/triggered_modifiers.txt
+# Six more are fixes BiceLib has on the original, each under the name given:
+#
+#   historical_model_choice  a historical model that asks for a level above the
+#                            one held loses to every model that does not, so a
+#                            country is not shown a model it has not
+#                            researched. Display only. BiceLib:
+#                            BytePatches.historicalModelLogicFix
+#   queued_historical_model  a queued brigade's historical_model gives a level
+#                            for every technology of its type, 0 for one the
+#                            model does not name, so no level lands on the
+#                            technology before it. BiceLib:
+#                            ComplexPatches.fixQueuedHistoricalModel
+#   place_unresearched_building
+#                            a finished building waiting to be placed may go
+#                            where its country has not researched it; every
+#                            other test of the placing stands, and ordering one
+#                            still asks for the technology. BiceLib:
+#                            ComplexPatches.enablePlacingNonResearchedBuildings
+#   oob_leader_ranks         a land leader a file of units puts on a land unit
+#                            of his own country takes the rank of that unit's
+#                            level and is put in service. BiceLib:
+#                            Leaders.activateOobLeaderRanks
+#   history_leader_ranks     a leader put in service on the day his history
+#                            first gives him a rank takes the rank that line
+#                            names, 1 to 4, where the original gives rank 1.
+#                            BiceLib: Leaders.activateHistoryLeaderRanks
+#   saved_event_candidates   a save keeps each country's candidate events, so a
+#                            loaded game fires events from its first day, where
+#                            the original's fires none until its month turns.
+#                            BiceLib: Events.rebuildCandidates
+#
+# Rules that are the mod's choice are not named here - they are data where their subject is, in
+# common/defines.lua: how many units a command may hold (OPENHOI_..._UNIT_LIMIT, with the unit_limit_ entries
+# that end common/triggered_modifiers.txt), whether the AI lends its units (OPENHOI_AI_LENDS_UNITS) and whether
+# war exhaustion is handed to neutrality at peace (OPENHOI_WAR_EXHAUSTION_TO_NEUTRALITY)
 # (docs/openhoi/README.md, "Rules that are the mod's choice").
 #
 # Anything else written here is reported in OpenHOI3's log and ignored.
