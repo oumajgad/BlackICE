@@ -268,7 +268,11 @@ military = {
 	OPENHOI_CORPS_UNIT_LIMIT = 4,
 	OPENHOI_ARMY_UNIT_LIMIT = 4,
 	OPENHOI_ARMY_GROUP_UNIT_LIMIT = 4,
-	OPENHOI_LONE_BRIGADE_TAKES_NO_PLACE = 1 -- a division of one brigade takes no place under its commander
+	OPENHOI_LONE_BRIGADE_TAKES_NO_PLACE = 1, -- a division of one brigade takes no place under its commander
+	-- OpenHOI3's enhanced engine alone: 0 stops an AI country lending its units to whoever holds the ground they
+	-- stand on; a unit on loan is still given back. On the original: BytePatches.disableInterAiExpeditionaries,
+	-- which stops the giving back as well.
+	OPENHOI_AI_LENDS_UNITS = 0
 },
 
 diplomacy = {
