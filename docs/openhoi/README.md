@@ -248,7 +248,7 @@ province, and `BiceLib.Leaders.getLeaderDetails` on the original.
 | Stats | Setup, Statistics |
 | Options | Utility Options |
 | Help | Misc, Ministers + Buildings, National Focus |
-| Debug | Engine Profiler |
+| Debug | Engine Profiler, Engine Fixes |
 
 **Engine Profiler** (`script/openhoi/windows/engine/profiler.lua`) is a page for OpenHOI3 alone, with nothing like
 it on the original: how long the game's hours take, step by step - an ordinary hour, an hour that turns a day, the
@@ -257,6 +257,16 @@ table sorted by the heading clicked (`BeginSortedTable`), the steps among themse
 orders the hours run by kind - and what the program says of itself: frames a second, memory, what is drawn. It
 reads `OpenHOI3.Profile.Read()`; the timing starts when the page is first opened and runs until its Stop. Its
 folder is `engine` and not `debug` because the repository's `.gitignore` leaves every folder called `Debug` out.
+
+**Engine Fixes** (`script/openhoi/windows/engine/fixes.lua`) lists every fix of the enhanced mode with a tick box
+that switches it on or off **in the game being played** - for trying a fix against the game without it. It reads
+`OpenHOI3.Rules()` and gives the engine's order `OpenHOI3.SetFix(name, on)`. A change holds at once, also while the
+game is paused, and is saved with the game; `common/openhoi_enhanced.txt` is not touched and stays what a new game
+starts with. Between several machines **only the host** may switch a fix, and the page says so on the others. Two
+fixes act only as the files are read (`unit_figure_decimals`, `tech_repair_cost`) and are shown greyed: those are
+set in the file and need a restart. What each fix does is a text of `localisation/openhoi/windows.csv`,
+`OPENHOI_FIX_` and the fix's name in capitals - **a new fix of the engine's needs its line there**, or its row has
+a name and no description.
 
 **The Inspector's larger pages.** On the original BiceLib reads these out of the game's memory; on OpenHOI3 the
 engine gives the same things to the mod's Lua:
@@ -456,7 +466,8 @@ G_OPENHOI_ENHANCED  -- true on OpenHOI3 in its enhanced mode
   it.
 - **Something a fix already does** - a workaround in script for a fault the enhanced mode mends - is skipped by
   asking for that fix: `OpenHOI3.Fixes.minister_tech_decay` is `true` when it is on. Ask it only behind
-  `G_OPENHOI_ENHANCED`; `OpenHOI3` is nil on the original.
+  `G_OPENHOI_ENHANCED`; `OpenHOI3` is nil on the original. It is what `common/openhoi_enhanced.txt` said when the
+  scripts were loaded: a fix switched later on the Engine Fixes page does not change it.
 - A parameter both engines need may be **declared twice** for as long as both are served: once for BiceLib in Lua,
   once for the enhanced mode in data. That duplication ends with version 16.
 

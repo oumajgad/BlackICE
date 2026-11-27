@@ -501,3 +501,58 @@ OPENHOI_WIN_PROFILE_STEPS;The steps of the game's hours;;;;;;;;;;;;;x
 OPENHOI_WIN_PROFILE_PARTS;Show the parts of steps;;;;;;;;;;;;;x
 OPENHOI_WIN_PROFILE_STEPS_HELP;A step is named as the engine names it. Click a heading to sort by it, and again to turn the order round. An indented line is a part of the step above it and is counted in that step as well. Parts that run side by side on several processor threads can add up to more than their step.;;;;;;;;;;;;;x
 OPENHOI_WIN_PROFILE_REST;(what is not timed);;;;;;;;;;;;;x
+#The Engine Fixes page (script/openhoi/windows/engine/fixes.lua).;;;;;;;;;;;;;;x
+OPENHOI_WIN_FIXES;Engine Fixes;;;;;;;;;;;;;x
+OPENHOI_WIN_FIXES_NO_GAME;No game is running.;;;;;;;;;;;;;x
+OPENHOI_WIN_FIXES_FAITHFUL;This game is played by the original's rules. It has no fixes to switch.;;;;;;;;;;;;;x
+OPENHOI_WIN_FIXES_HELP;Every fix of the enhanced engine, switched on or off for the game being played. A change holds at once, also while the game is paused, and is saved with the game. A figure made once a day or once a month follows at its next making. A new game starts with what common/openhoi_enhanced.txt says.;;;;;;;;;;;;;x
+OPENHOI_WIN_FIXES_HOST_ONLY;Only the host may switch a fix.;;;;;;;;;;;;;x
+OPENHOI_WIN_FIXES_COUNT;$ON$ of $ALL$ fixes are on.;;;;;;;;;;;;;x
+OPENHOI_WIN_FIXES_COL_ON;On;;;;;;;;;;;;;x
+OPENHOI_WIN_FIXES_COL_NAME;Fix;;;;;;;;;;;;;x
+OPENHOI_WIN_FIXES_COL_WHAT;What it does;;;;;;;;;;;;;x
+OPENHOI_WIN_FIXES_AT_LOAD;Acts as the files are read. Set it in common/openhoi_enhanced.txt and restart.;;;;;;;;;;;;;x
+#A fix's description on that page: OPENHOI_FIX_ and the fix's name in capitals.;;;;;;;;;;;;;;x
+OPENHOI_FIX_MINISTER_TECH_DECAY;A minister's technology decay modifier counts. The original throws it away.;;;;;;;;;;;;;x
+OPENHOI_FIX_SIMPLIFIED_TERRAIN_SEA;The Simplified Terrain map mode colours the sea by its terrain, as it does the land.;;;;;;;;;;;;;x
+OPENHOI_FIX_OFFMAP_IC;A country-level ic modifier counts as off-map IC. The original never reads it.;;;;;;;;;;;;;x
+OPENHOI_FIX_FRESH_SCREENS;Screens the original writes once and then leaves are kept up to date: the province view, the technology panel, a diplomacy row, the list of trades, a fleet's cargo, the air map mode's colours and the list of decisions. Display only.;;;;;;;;;;;;;x
+OPENHOI_FIX_MENU_RESUMES;Closing the in-game menu starts the clock again where the menu stopped it, also after Save Game, Game Options or Message Settings was opened.;;;;;;;;;;;;;x
+OPENHOI_FIX_TOOLTIPS_ON_SCREEN;A tooltip is kept from leaving the screen at the left and the top too. Display only.;;;;;;;;;;;;;x
+OPENHOI_FIX_SHOWN_FIGURES;Figures the original shows wrongly are shown as they are: a fleet's positioning penalty, a production slider with nothing needed, a fleet's organisation regain at sea, tribute as a loss, a leader's experience at skill 11 and the ground's attrition in the division designer. Display only.;;;;;;;;;;;;;x
+OPENHOI_FIX_UNIT_ORDINALS;A new unit's number takes the ending of its last two digits: 111th, 112th, 113th, where the original writes 111st, 112nd, 113rd. Changes the names of units made from then on.;;;;;;;;;;;;;x
+OPENHOI_FIX_AIR_ORDERS_FOR_ALL;With several air units selected, the orders window greys a mission that any of them may not fly. The original offers the first unit's missions and hands them to all.;;;;;;;;;;;;;x
+OPENHOI_FIX_KEY_WITHOUT_EQUALS;In a province's history and a unit file, a key with no equals sign takes the word after it. The original gives the key the value of the pair before it.;;;;;;;;;;;;;x
+OPENHOI_FIX_UNIT_FIGURE_DECIMALS;A unit figure of more than three decimals is cut to three: 0.3375 is 0.337, where the original reads 3.375.;;;;;;;;;;;;;x
+OPENHOI_FIX_YIELD_MODIFIERS;A province's yield of fuel is scaled by global_fuel and of money by global_money. The original has the two the wrong way round.;;;;;;;;;;;;;x
+OPENHOI_FIX_TECH_REPAIR_COST;A technology's repair_cost_multiplier for a unit type is added with its other figures. The original leaves it out of the sum.;;;;;;;;;;;;;x
+OPENHOI_FIX_TRAIT_DISSENT_IMPACT;A leader's dissent_impact scales what dissent costs his unit at sea, in the air and under bombs, as it does on land.;;;;;;;;;;;;;x
+OPENHOI_FIX_RAID_TRAIT_HOURS;A raid on a convoy counts the hours the raider's leader banked in it towards his traits, so seawolf can be earned by raiding.;;;;;;;;;;;;;x
+OPENHOI_FIX_TRAIT_FORT_DEFENCE;A unit defending behind a whole level of fort has its leaders' fort_defence on its attack and defence. The original reaches the trait only for an attacker, where it does nothing.;;;;;;;;;;;;;x
+OPENHOI_FIX_RADAR_EFFICIENCY;A radar station's reach is longer by its country's radar_efficiency.;;;;;;;;;;;;;x
+OPENHOI_FIX_TRAIT_SURPRISE_CHANCE;The side that picks its combat tactic second rolls its leader's surprise_chance, and under it takes the tactic that counters the other side's. One roll more for a side with the trait.;;;;;;;;;;;;;x
+OPENHOI_FIX_HISTORICAL_MODEL_CHOICE;A historical model that asks for a level above the one held loses to every model that does not, so a country is not shown a model it has not researched. Display only.;;;;;;;;;;;;;x
+OPENHOI_FIX_QUEUED_HISTORICAL_MODEL;A queued brigade's historical model gives a level for every technology of its type, so no level lands on the technology before it.;;;;;;;;;;;;;x
+OPENHOI_FIX_PLACE_UNRESEARCHED_BUILDING;A finished building waiting to be placed may go where its country has not researched it. Ordering one still asks for the technology.;;;;;;;;;;;;;x
+OPENHOI_FIX_OOB_LEADER_RANKS;A land leader a file of units puts on a land unit of his own country takes the rank of that unit's level and is put in service.;;;;;;;;;;;;;x
+OPENHOI_FIX_HISTORY_LEADER_RANKS;A leader put in service on the day his history first gives him a rank takes the rank that line names, where the original gives rank 1.;;;;;;;;;;;;;x
+OPENHOI_FIX_SAVED_EVENT_CANDIDATES;A save keeps each country's candidate events, so a loaded game fires events from its first day. The original's fires none until its month turns.;;;;;;;;;;;;;x
+OPENHOI_FIX_CTRL_UNASSIGN_SELECTED;With Ctrl held, agreeing to the leader window's remove all leaders takes the leaders off the selected units alone.;;;;;;;;;;;;;x
+OPENHOI_FIX_TOOLTIP_SCROLL;A tooltip taller than the screen shows as many lines as fit and is moved through with Alt and the wheel, or Alt and the Up or Down key.;;;;;;;;;;;;;x
+OPENHOI_FIX_AIR_REGROUP_AGREES;The AI joins a small air group to another only where its own splitting rule would not take a wing out again. The original joins and splits the mod's own air types for the whole game.;;;;;;;;;;;;;x
+OPENHOI_FIX_DEBT_REPAID;A payment on a debt comes off the debt, so it is paid off after YEARS_TO_REPAY_DEBT years of peace. The original never lowers a debt.;;;;;;;;;;;;;x
+OPENHOI_FIX_DEBT_REVOKE_COST;Revoking a country's leave to run a debt costs the creditor who revokes. The original charges the debtor.;;;;;;;;;;;;;x
+OPENHOI_FIX_LEND_LEASE_PARTIAL;A lend-lease receiver whose share is more than the giver's stockpile pays for is given what it does pay for. The original gives it nothing.;;;;;;;;;;;;;x
+OPENHOI_FIX_TACTIC_AGGRESSIVENESS;Each side of a land battle picks its tactic by its own leader's aggressiveness. The original's attacker picks by the defender's leader and its defender by none.;;;;;;;;;;;;;x
+OPENHOI_FIX_FRIENDLY_FIRE_TARGET;A ship that fires on its own side fires on the ship its roll points to. The original's always ends on the last ship of the last fleet.;;;;;;;;;;;;;x
+OPENHOI_FIX_COMBINED_ARMS_CONDITION;has_combined_arms = no in a tactic's or a trait's trigger holds where no unit has combined arms. The original reads nothing after the key.;;;;;;;;;;;;;x
+OPENHOI_FIX_REDEPLOY_DELAY_ONCE;A strategic redeployment draws its attack delay once, on arrival, and holds it at its base on the way. The original draws a new one every hour.;;;;;;;;;;;;;x
+OPENHOI_FIX_INTERDICTION_TARGET;Interdiction flies at the province of its list where the most of the enemy is on the move, and with no enemy in any of them at one by a draw. The original takes the last it sees.;;;;;;;;;;;;;x
+OPENHOI_FIX_AIR_RAID_WAITS;An air unit raiding convoys waits at its base until its next try is due. The original's flies out at once and wastes every other sortie.;;;;;;;;;;;;;x
+OPENHOI_FIX_MINISTER_INTEL;offmap_political_intel and peace_offmap_intel, which the original reads nowhere, add to how well the country knows another. 0.1 is worth one spy.;;;;;;;;;;;;;x
+OPENHOI_FIX_WEIGHTED_SONGS;The next song is drawn by its chance. The original always takes the heaviest.;;;;;;;;;;;;;x
+OPENHOI_FIX_OCCUPATION_POLICY_CHECKED;The order that sets an occupation policy asks the policy's allow as the button does, and a policy goes back to none once the two are at peace.;;;;;;;;;;;;;x
+OPENHOI_FIX_AMPHIBIOUS_DEFENCE;A ship type's extra_amphibious_defence counts for the brigades it names, and a landing with no invasion defence has the define's penalty exactly.;;;;;;;;;;;;;x
+OPENHOI_FIX_SOUTHERN_SEASONS;The south of the map has seasons, the north's half a year on, with the cold and the days of its latitude. The original's south is summer all year. Moves the balance.;;;;;;;;;;;;;x
+OPENHOI_FIX_AIR_DEFENCE_COUNTS;A wing's air_defence meets shots in an air battle, as a unit's defence does on land. The original works it out and never reads it. Moves the balance.;;;;;;;;;;;;;x
+OPENHOI_FIX_MAP_TEXT_BY_TIME;A message's text on the map lives by the second, not by the frame. Display only.;;;;;;;;;;;;;x

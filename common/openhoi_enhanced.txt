@@ -172,6 +172,7 @@
 #                            the brigades it names - the landing_craft's here -
 #                            and a landing with no invasion defence has the
 #                            define's penalty exactly, not a hundredth more.
+#                            NOT WANTED YET, see "without" below.
 #   map_text_by_time         a message's text on the map lives by the second,
 #                            not by the frame, so as long on every machine.
 #                            Display only.
@@ -212,9 +213,12 @@
 # Anything else written here is reported in OpenHOI3's log and ignored.
 # Saves of an enhanced game are kept apart, in "save games/openhoi".
 
-# The fixes the mod goes without for now (2026-11-27). Both move the balance and wait for a look at the mod's
-# figures: the air units were balanced with air_defence doing nothing, and winter in the south is new everywhere
-# below the map's middle. Take a name out of the list to switch its fix on.
-# A game already saved keeps the rules it was saved with: a save from before these two fixes existed names
-# neither, so it plays WITH them once loaded on an engine that has them.
-without = { air_defence_counts southern_seasons }
+# The fixes the mod goes without for now (2026-11-27). All three move the balance and wait for a look at the mod's
+# figures: the air units were balanced with air_defence doing nothing, winter in the south is new everywhere
+# below the map's middle, and the landing craft's extra_amphibious_defence has never counted for anything. Take a
+# name out of the list to switch its fix on.
+# A game already saved keeps the rules it was saved with: a save from before these three fixes existed names
+# none of them, so it plays WITH them once loaded on an engine that has them.
+# A fix can be switched in a running game too, on the utility window's Engine Fixes page (Debug tab, host only);
+# that changes the game played and its saves, never this file.
+without = { air_defence_counts southern_seasons amphibious_defence }
