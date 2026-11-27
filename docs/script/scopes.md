@@ -21,7 +21,7 @@ Scopes nest, and `limit` narrows one. See
 | `country tag` | The specified country. | `tag  = { effects… }` |  |
 | `FROM` | The country that triggered the current event. | `FROM  = { effects… }` | 512 |
 | `THIS` | The current country. | `THIS  = { effects… }` | 784 |
-| `limit` | Limits the given scope to more narrow conditions. (for example - an event 500 will fire for any/every country in Axis:) | `limit = { ... }` | 5898 |
+| `limit` | Limits the given scope to more narrow conditions. (for example - an event 500 will fire for any/every country in Axis:) **Only inside a scope that iterates** (`any_...`, `random_...`, a region): inside a country's or a province's block it does nothing and the effects beside it run anyway - see [the overview](README.md#limit-only-works-in-a-scope-that-iterates). | `limit = { ... }` | 5898 |
 | `any_neighbor_country` | Any country neighboring the current country. | `any_neighbor_country = { triggers… }` | 1 |
 | `any_neighbor_province` | Any province neighboring the current province. | `any_neighbor_province = { triggers… }` | 116 |
 | `any_owned_province` | Any owned province. | `any_owned_province = { triggers… }` | 72 |

@@ -133,6 +133,44 @@ any_country = {              # for every country in the game...
 (`any_country`, `any_owned`, `random_owned`), `limit` filters which members the block
 applies to. Without it, `any_country = { country_event = 500 }` fires for everybody.
 
+### `limit` only works in a scope that iterates
+
+**Inside a country's or a province's block, `limit` does nothing, and the effects beside it
+run anyway.** This reads like a condition and is not one:
+
+```
+3185 = {
+    limit = { controlled_by = SOV }     # never asked
+    create_revolt = 6                   # happens whoever holds 3185
+}
+```
+
+`limit` is a key of the effects that go through a list - `any_country`, `any_owned`,
+`any_controlled`, `any_neighbor_country`, `any_neighbor_province`, `random_country`,
+`random_owned`, `random_neighbor_province`, `random_empty_neighbor_province` - and of a
+region's name. Anywhere else - `GER = { }`, `3185 = { }`, `owner = { }`, `FROM = { }` - the
+engine takes the word for a scope of its own that it can never find, skips what is inside
+it without a word, and carries on with the rest of the block.
+
+To make the condition count, put it where one is read: in the event's `trigger`, in the
+decision's `allow`, or in the `limit` of an iterating scope around the block -
+
+```
+any_country = {
+    limit = { tag = SOV  3185 = { controlled_by = SOV } }
+    3185 = { create_revolt = 6 }
+}
+```
+
+Here `tag = SOV` only makes the list one country long.
+
+Read out of the game and then tried in it, on 2026-11-27
+([`findings/FINDINGS-effectgrammar.md`](../../../hoi3-reversing/findings/FINDINGS-effectgrammar.md),
+section 3). The mod itself still has 66 such blocks, counted that day, in ten files -
+`OperationOverlord.txt`, `eventOOBs_GER.txt` and `zBI_SOV_Events.txt` hold sixteen each.
+The original says nothing about them; OpenHOI3 names each one, file and line, in its
+`openhoi3_validation.log`.
+
 Scopes nest as deep as you like. `owner`, `controller` and `capital_scope` move from a
 province to a country; `any_owned` and `random_owned` move from a country to its
 provinces. [scopes.md](scopes.md) lists them all.
