@@ -9,6 +9,8 @@ Everything is in **[docs/](docs/README.md)**. The main ones:
 | [The Paradox script language](docs/script/README.md) | How the game's text files work, with a worked event. Start here before writing any. |
 | [Triggers](docs/script/triggers.md) · [Effects](docs/script/effects.md) · [Scopes](docs/script/scopes.md) · [Modifiers](docs/script/modifiers.md) | Every keyword the engine accepts - 152 conditions and 91 effects, read out of the game itself |
 | [Orders of battle](docs/script/oob.md) | The unit files in `history/units/` - the land, naval and air hierarchies, and the production queue |
+| [The Lua API](docs/lua/README.md) | The country AI is code, not data: how the files load, where the engine calls in, and what it hands a script |
+| [One mod, two engines](docs/openhoi/README.md) | From version 16 the mod plays on the original game and on [OpenHOI3](https://github.com/Dsafe1/OpenHOI3). What a file read by both may hold, and where the things for OpenHOI3 go |
 | [Keyboard shortcuts](Shortcuts.txt) | |
 | [The installer](installer/README.md) | How the setup exe is built |
 
@@ -42,11 +44,12 @@ one with `hoi3_tfh.exe` in it) - there is nothing to extract and no zip inside a
 zip.
 
 Start it from the **Actions** tab, pick **Build installer**, and press **Run
-workflow**. Two options:
+workflow**. Three options:
 
 | Option | What it does |
 | --- | --- |
 | **version** | Stamped into the build. Leave it as `GitHub` for a test version, or give a release number like `15.2`. |
+| **engine** | Which OpenHOI3 engine the installer ships. Leave it as `auto`: a test version takes the engine's newest build, any other version the engine release the mod names. `named` and `latest` force one or the other. |
 | **bundle_runtimes** | Includes the Microsoft runtimes (C++, DirectX) so the installer can fix a machine that is missing them. Adds about 56 MB and a few minutes. Untick it for a quicker test build. |
 
 When it finishes, download the artifact from the run's summary page. It is kept
@@ -60,8 +63,10 @@ public repositories on GitHub's standard runners.
 ![Second](https://github.com/oumajgad/BlackICE/blob/master/DaveStuff/action2.png?raw=true "Where to download the file")
 
 The installer also patches `hoi3_tfh.exe` for 4 GB of memory, moves the unused
-3D sprites aside, installs any missing runtimes and makes a shortcut - all the
-steps that used to be done by hand after extracting the zip.
+3D sprites aside and installs any missing runtimes - all the steps that used to
+be done by hand after extracting the zip. From version 16 it installs the
+OpenHOI3 engine and its launcher inside the mod's folder as well, and makes two
+shortcuts: one that starts the mod on OpenHOI3, one on the original game.
 
 To build one locally instead, see [installer/README.md](installer/README.md).
 

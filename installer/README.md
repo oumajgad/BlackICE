@@ -23,7 +23,8 @@ converting it to a self extracting archive.
 
 Or run it on a runner: the **Build installer** action
 (`.github/workflows/build-installer.yml`) does the same thing from the Actions
-tab and uploads the exe as the run's artifact. It takes a version and a
+tab and uploads the exe as the run's artifact. It takes a version, which engine
+to ship (`auto`, `named` or `latest`; see *The OpenHOI3 engine* below) and a
 "bundle the runtimes" tickbox. See the [root README](../README.md).
 
 ### Requirements

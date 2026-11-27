@@ -19,8 +19,8 @@ Everything is switched in `script/utility_settings.lua`:
 | `G_ImguiUtilityEnabled` | this overlay. Off also means the Direct3D hooks are never installed |
 | `G_ImguiWarmupEnabled` | parse the mod's files at startup rather than when a page first asks |
 
-**Press INSERT** in game to show and hide it. It starts hidden, so it never covers a
-loading screen or the main menu.
+**Press INSERT** in game to show and hide it; the key can be changed on the overlay's own
+Options window. It starts hidden, so it never covers a loading screen or the main menu.
 
 ## How it gets on screen
 
@@ -47,22 +47,26 @@ where it is convenient:
 1. **`script/utility_data/bicedata_*.lua`** - providers. They read and write game
    state and parse the mod's files, and hold no UI of any kind. Both utilities use
    them, which is why there is only one copy of the rules.
-2. **`script/utility_imgui/imgui_*.lua`** - one per page. They shape a provider's data
-   into the flat tables the overlay can read, and nothing more.
-3. **`BiceLib/Gui/Pages/*.cpp`** - one per page, grouped into folders by dock. They
+2. **`script/utility_imgui/<group>/imgui_*.lua`** - one per page, in a folder for its
+   dock group. They shape a provider's data into the flat tables the overlay can read,
+   and nothing more.
+3. **`BiceLib/Gui/Pages/<group>/*.cpp`** - one per page, in the same folders. They
    draw, and they hold the state that belongs to being on screen.
 
-A page that reads the game's memory directly skips Lua entirely - see `Oob/` for the
-order of battle, which reads unit structures itself. Offsets for that come from the
-memory map in `DaveStuff/mem`, and anything learned about those structures should go
-back there.
+A page that reads the game's memory directly skips Lua entirely - see the order of battle
+pages in `Inspector/`, which read unit structures themselves through
+`GameState/OrderOfBattle.cpp`. Offsets for that are the `GameClasses` headers', each citing
+the findings file of the fact base that established it (`reversing/`, a repository of its
+own, normally `hoi3-reversing` beside the mod). Anything learned about those structures
+goes into the fact base's record and the header both; the older memory map in
+`DaveStuff/mem` is a lead and no longer where facts are kept.
 
 `Gui/LuaBridge.cpp` is the only file that touches a `lua_State`. Pages call Lua by
 dotted path (`BiceLibGui.Techs.Collect`) and read plain fields back.
 
 ## Windows and layout
 
-Pages declare a `group()`, and each group gets its own dockable window: `Main`,
+Pages declare a `group()`, and each group gets its own dockable window: `Setup`,
 `Country Info`, `Game Info`, `Inspector`, `Stats`, `Options`, `Help`, `Debug`. A single
 tab bar would be unusable with thirty pages on it.
 
@@ -75,8 +79,11 @@ how to take the code's arrangement again.
 
 **Never call the game's Lua API outside a running session.** `CCurrentGameState` and
 friends fault inside the game's own C++ at the main menu and `lua_pcall` cannot catch
-it. The bridge gates every call on `sessionActive()`; note that this means "a game
-state object exists", which is already true at the main menu.
+it. The bridge gates every call on `sessionActive()`, which reads the game's own
+`in_game` flag: "a game is on screen". It read the state pointer until that flag was
+found, and the state object exists from the main menu onward, so the pointer said "yes"
+in exactly the place the guard has to say "no". Once-a-day work asks the stricter
+`GameClock::movedInPlay()`; `CLAUDE.md` beside this file says why both exist.
 
 **Game text is Windows-1252.** ImGui needs UTF-8 and draws anything else as its
 fallback glyph, so German names arrive as a row of `?`. Everything read from the game
@@ -99,6 +106,7 @@ not to be what we assumed then fails instead of taking the process down.
   they hold; every texture created and still alive, by format.
 - **Lua Console** - run Lua in the game's own state, with saved scripts.
 - **Thread Check** - which thread the overlay is on.
+- **Slot 11 Probe** - a reverse engineering probe, of no use in a normal session.
 
 ## Adding a page
 
@@ -116,4 +124,6 @@ msbuild BiceLib.sln /p:Configuration=Debug /p:Platform=win32
 ```
 
 That maps to the `ReleaseDebug|Win32` profile and produces `ReleaseDebug/BiceLib.dll`.
-Copy that over `script/BiceLib.dll` in the mod repository.
+Copy that over `script/BiceLib.dll` in the mod repository - or run `.\Deploy.ps1`, which
+does both and stops there. Moving the DLL into the game's own folder is a separate step
+and is never done by a script here.

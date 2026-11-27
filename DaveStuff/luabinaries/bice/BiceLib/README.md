@@ -20,10 +20,17 @@ Two other files cover the parts this one does not:
 | | |
 | --- | --- |
 | `README-imgui.md` | the utility overlay - what it draws, how it is switched on, how it gets on screen |
-| `reversing/README.md` | how the addresses in here were found, and the tooling that finds more |
+| `reversing/README.md` | how the addresses in here were found, and the tooling that finds more. `reversing/` is the fact base, a repository of its own since 2026-10-07, normally checked out as `hoi3-reversing` beside the mod |
 
 Everything below is the Lua API, grouped as it is grouped in Lua. Almost all of it is
 switched on from `script/bicelib_lua.lua`, which runs once per session.
+
+**Every switch hands back a boolean** - the `activate...`, `fix...`, `enable...` and
+`disable...` functions and the patches: whether it went in, with the reason in the console
+where it did not. That holds whether or not an entry below lists a return value.
+
+`docs/bicelib/features.md` at the mod's root describes the same features as behaviour, with
+no address in it, for a reader who cannot open this source.
 
 ## Loading it
 
@@ -149,17 +156,6 @@ switched on from `script/bicelib_lua.lua`, which runs once per session.
     * Goes through all leaders and checks if their rank specific traits match their current rank.
     * **Params**: /
     * **Return values**: /
-* **~~activateLeaderPromotionSkillLoss()~~ (currently bugged)**
-    * This will make leaders lose/gain skill levels when the are promoted/demoted, like it was in older Hoi games.
-    * Each leader has to receive a "pskill_XYZ" trait which represents his pure skill level. With the combination of rank + pure skill the game can now determine the appropiate skill level.
-    * Percentual progress towards the next skill level is preserved 1:1 between promotions/demotions (rounded down to the nearest whole %).
-    * If a leader has gained a skill level by fighting long enough his "pskill" trait will be updated during the next rank change.
-    * If a leader doesn't have a "pskill" he is not affected by this entire mechanic.
-    * **Params**: /
-    * **Return values**: /
-    * **Notes**:
-        * The game actually tracks the total experience amount gained, and each level requires a different amount of total exp. Due to number overflow this causes the entire skill progression system to break past lvl 10. There are some extremely complicated instructions in the code which appear to accomodate values above lvl 10, by saving the value as a 64 bit number, but inside a savefile it only saves a 32 bit number. The 64 bit number also appears to be very much broken.
-        * The skill number display will only be updated after reopening the leader list.
 * **addTraitToLeader(int leaderId, string traitName)**
     * Adds a trait to a leader.
     * **Params**:
@@ -183,9 +179,23 @@ switched on from `script/bicelib_lua.lua`, which runs once per session.
     * **Params**: /
     * **Return values**: /
 * **activateLeaderListShowMaxSkillSelected()**
-    * Same as *activateLeaderListShowMaxSkill*, except that this applies to the currently active leader in the leader list
+    * The same for the currently active leader in the leader list.
     * **Params**: /
     * **Return values**: /
+    * **Notes**:
+        * Either name installs both - the list and the selected leader - so calling one is
+          enough; the second is kept so scripts that call it keep working.
+* **activateCtrlUnassignSelected()**
+    * Holding **Ctrl** while confirming the "unassign all leaders" dialog unassigns only the
+      leaders of the units that are selected. With Ctrl up the dialog does what it always
+      did.
+    * **Params**: /
+    * **Return values**:
+        1. *ok*: whether the hook went in
+    * **Notes**:
+        * Multiplayer safe: the key is read on the machine of the player who clicked, which
+          then posts one command for each selected unit, each naming its own unit.
+          `Hooks/UnassignSelected.hpp` has the details.
 * **activateOobLeaderRanks()**
     * Gives a leader an order of battle puts on a land unit the rank the game itself wants
       for that unit: division 1, corps 2, army 3, army group and theatre 4. He is raised or
@@ -361,6 +371,23 @@ Patches which require some extra logic and hooking.
     * **Params**: /
     * **Return values**: true if both conversions were patched
 
+## BiceLib.Events
+* **rebuildCandidates()**
+    * Rebuilds every country's list of candidate events now. A loaded game has those lists
+      empty - they are not in the save, and the game builds them only in its monthly pass -
+      so without this no event but an `is_triggered_only` one fires until the month turns,
+      and then a month's worth arrive at once.
+    * **Params**: /
+    * **Return values**:
+        1. *ok*: *false* if it did not run - no game on screen, a save or a load under way,
+           or not the build this was written against
+    * **Notes**:
+        * Nothing is patched: the game's own rebuild is called earlier, the same call its
+          monthly pass makes. Calling it when the lists are already good costs one wasted
+          pass.
+        * `script/ai_omg_handlers.lua` calls it once after each save is loaded.
+        * reversing/findings/FINDINGS-events.md has the reading.
+
 ## BiceLib.EffectTexts
 Extra variables for what the game shows when an effect fires. **Each of these only adds
 variables - nothing appears until the localisation asks for them.**
@@ -413,6 +440,19 @@ until the localisation asks.**
       `$TOUGHNESS$`, `$ARMOR$` and `$AIRATTACK$` to `BATTLE_ATTACKMOD`, totalled over the
       division's brigades from each one's own definition - which already has its technology
       in it.
+    * **Params**: /
+    * **Return values**: /
+* **activateParadropLine()**
+    * Starts the division designer's terrain tooltip with whether the design can be
+      paradropped: "This unit can be paradropped", or that it can not, with the brigades that
+      stop it listed under it. Every brigade needs `can_paradrop`, as the game's own test for
+      boarding a plane does.
+    * **Params**: /
+    * **Return values**: /
+* **activateCombinedArmsLine()**
+    * Says on each combined arms indicator of the division designer what its group gives:
+      under the group's name its bonus, research included, and whether it is a base group -
+      without a brigade of one, no group counts.
     * **Params**: /
     * **Return values**: /
 
