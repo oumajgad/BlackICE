@@ -1053,6 +1053,11 @@ guiTypes = {
 		}
 	}
 	#DECISION ENTRY#
+	# OpenHOI3's enhanced mode adds a tick to every row, left of info_icon, which says whether the decision counts for
+	# the "decisions available" alert. It is NOT declared here on purpose: the original reads this file and would draw
+	# an element it knows nothing of as a dead box. It is the window openhoi_decision_alert in
+	# interface/openhoi/decisionalert.gui, a folder the original never opens, and OpenHOI3 puts it into the row itself.
+	# Keep x = 305 to 323 of the row free for it, or move it there.
 	windowType = {
 		name = "diplomatic_decision_entry"
 		backGround=""

@@ -131,6 +131,16 @@ engine supplies neither: an element that is not declared is not there, and a tex
   `localisation/*.csv`, and only in the enhanced mode; the original does not read it. Keys carry the prefix
   `OPENHOI_`.
 
+**The decision list's alert tick** (`interface/openhoi/decisionalert.gui`, window `openhoi_decision_alert`, a field
+named `alert`): OpenHOI3 puts one into every row of the diplomacy screen's decision list, left of the "?". Ticked - an
+X - the decision counts for the "decisions available" alert; unticked, the alert passes it over, and the decision is
+offered and taken as before. A click switches one decision, Ctrl+click every decision the list shows. All count until
+unticked; what is unticked is the country's, shared by everyone who plays it, and is kept in the save. **It is not in
+`diplomatic_decision_entry` itself** (`interface/country_diplomacy.gui`), where the original would draw it as a dead
+box; that entry carries a comment saying so, and the row's x = 305 to 323 is the tick's - move the window's position
+with the row if the row is laid out anew. Its texts are `OPENHOI_DECISION_ALERT_ON`, `_OFF` and `_ALL` in
+`localisation/openhoi/windows.csv`.
+
 The first of them is the game options: `interface/openhoi/gameoptions.gui` declares the window `openhoi_game_options`,
 which OpenHOI3 makes as a part of the Game tab of the options window - four rows below the autosave interval, for a
 save before the month ends, a save on a timer, scrolling at the screen's edge and where event windows come up - and

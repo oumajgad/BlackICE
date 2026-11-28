@@ -1,0 +1,30 @@
+# The tick beside each decision in the diplomacy screen's list, which says whether the decision counts for the
+# "decisions available" alert. OpenHOI3's enhanced mode puts one of these windows into every row of the list
+# (diplomatic_decision_entry, interface/country_diplomacy.gui), at the place given here, measured from the row's
+# upper left corner. Read by OpenHOI3 alone - the original does not open this folder, which is why the tick is here
+# and not in the row's own declaration: there the original would draw it too, and it would do nothing.
+#
+# The field shows an X while the decision counts; a click takes the decision out of the alert or puts it back, and
+# with Ctrl held does the same for every decision the list shows. All decisions count until unticked. What is unticked
+# is the country's - everyone who plays it shares it - and is kept in the save. The decision is offered and taken as
+# before; only the alert passes it over. Its tooltip is OPENHOI_DECISION_ALERT_ON or _OFF, with _ALL under the dashes
+# (localisation/openhoi/windows.csv). See OpenHOI3's docs/mechanics/events.md, section 12.
+#
+# Without this file there is no tick, and every decision counts.
+guiTypes = {
+	windowType = {
+		name = "openhoi_decision_alert"
+		backGround = ""
+		# Left of the row's "?" (info_icon, at x = 328) and right of its title, which is 300 wide.
+		position = { x = 305 y = -8 }
+		size = { x = 18 y = 18 }
+		moveable = 0
+		dontRender = ""
+		horizontalBorder = ""
+		verticalBorder = ""
+		fullScreen = no
+
+		# A tick with no picture of its own: a field that shows an X while it is on.
+		guiButtonType = { name = "alert" position = { x = 0 y = 0 } built_in = { style = field size = { x = 18 y = 18 } } buttonText = "" buttonFont = "Arial12_bold_black" }
+	}
+}
